@@ -1,0 +1,1 @@
+.zip source folder downloaded from https://s3-us-west-2.amazonaws.com/cs188websitecontent/projects/release/tutorial/v1/001/tutorial.zip
