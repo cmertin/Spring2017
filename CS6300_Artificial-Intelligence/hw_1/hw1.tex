@@ -1,0 +1,131 @@
+\documentclass[11pt]{article}
+
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{notes}
+
+\textwidth=6.5in
+\textheight=8.75in
+\oddsidemargin=0.0in
+\evensidemargin=0.0in
+\topmargin=-0.5in
+
+\begin{document}
+\thispagestyle{empty}
+
+\renewcommand{\arraystretch}{1.5}
+
+\lecture{CS 6300, Spring 2017}{HW01: Search}{Due: 24 January 2017}
+
+Please use \LaTeX\ to produce your writeups. See the Homework Assignments 
+page on the class website for details.
+
+\begin{flushleft}
+Name: \rule{2.5in}{0.1pt}
+\end{flushleft}
+
+\section{Search}
+
+Execute the following search algorithms on the graph below using
+priority queues, by filling in the search table for each part.  (Not
+all steps will necessarily be used.)  The arcs are bi-directional.
+
+  \begin{center}
+  \centerline{\includegraphics[width=3.5in]{cs188-sp12-midterm.eps}}
+  \end{center}
+
+  \begin{description}
+
+  \item[1 Breadth First Graph Search]
+
+  \end{description}
+
+    \begin{center}
+    \begin{tabular}{|l|l@{\hspace*{4.5in}}|l|} \hline
+    \bf Step & \bf Priority Queue                                   & \bf Expand \\ \hline
+    1 &                                                             &  \\ \hline
+    2 &                                                             &  \\ \hline
+    3 &                                                             &  \\ \hline
+    4 &                                                             &  \\ \hline
+    5 &                                                             &  \\ \hline
+    6 &                                                             &  \\ \hline
+    7 &                                                             &  \\ \hline
+    8 &                                                             &  \\ \hline
+    \end{tabular}
+    \end{center}
+
+\clearpage
+
+  \begin{description}
+
+  \item[2 Depth First Graph Search]
+
+  \end{description}
+
+    \begin{center}
+    \begin{tabular}{|l|l@{\hspace*{4.5in}}|l|} \hline
+    \bf Step & \bf Priority Queue                                   & \bf Expand \\ \hline
+    1 &                                                             &  \\ \hline
+    2 &                                                             &  \\ \hline
+    3 &                                                             &  \\ \hline
+    4 &                                                             &  \\ \hline
+    5 &                                                             &  \\ \hline
+    6 &                                                             &  \\ \hline
+    7 &                                                             &  \\ \hline
+    8 &                                                             &  \\ \hline
+    \end{tabular}
+    \end{center}
+
+  \begin{description}
+
+  \item[3 Uniform Cost Graph Search]
+
+  \end{description}
+
+    \begin{center}
+    \begin{tabular}{|l|l@{\hspace*{4.5in}}|l|} \hline
+    \bf Step & \bf Priority Queue                                   & \bf Expand \\ \hline
+    1 &                                                             &  \\ \hline
+    2 &                                                             &  \\ \hline
+    3 &                                                             &  \\ \hline
+    4 &                                                             &  \\ \hline
+    5 &                                                             &  \\ \hline
+    6 &                                                             &  \\ \hline
+    7 &                                                             &  \\ \hline
+    8 &                                                             &  \\ \hline
+    \end{tabular}
+    \end{center}
+
+  \begin{description}
+
+\clearpage
+
+  \item[4] Consider the heuristics for this problem shown in the table below.
+
+     \begin{center}
+     \begin{tabular}{|l|l|l|}\hline
+     State & $h_1$ & $h_2$ \\ \hline
+     S     & 5     & 4     \\ \hline
+     A     & 3     & 2     \\ \hline
+     B     & 6     & 6     \\ \hline
+     C     & 2     & 1     \\ \hline
+     D     & 3     & 3     \\ \hline
+     G     & 0     & 0     \\ \hline
+     \end{tabular}
+     \end{center}
+
+     \begin{enumerate}
+
+     \item Is $h_1$ admissible?  If not, why? \\[.5in]
+
+     \item Is $h_1$ consistent?  If not, why? \\[.5in]
+
+     \item Is $h_2$ admissible?  If not, why? \\[.5in]
+
+     \item Is $h_2$ consistent?  If not, why?
+
+     \end{enumerate}
+
+  \end{description}
+
+\end{document}
