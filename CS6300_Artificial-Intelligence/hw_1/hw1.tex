@@ -3,6 +3,8 @@
 \usepackage{times}
 \usepackage{graphicx}
 \usepackage{notes}
+\usepackage{color, soul}
+\usepackage{amsmath}
 
 \textwidth=6.5in
 \textheight=8.75in
@@ -21,7 +23,7 @@ Please use \LaTeX\ to produce your writeups. See the Homework Assignments
 page on the class website for details.
 
 \begin{flushleft}
-Name: \rule{2.5in}{0.1pt}
+Name: \underline{Christopher Mertin}
 \end{flushleft}
 
 \section{Search}
@@ -31,7 +33,7 @@ priority queues, by filling in the search table for each part.  (Not
 all steps will necessarily be used.)  The arcs are bi-directional.
 
   \begin{center}
-  \centerline{\includegraphics[width=3.5in]{cs188-sp12-midterm.eps}}
+  \centerline{\includegraphics[width=3.5in]{diagram.pdf}}
   \end{center}
 
   \begin{description}
@@ -41,16 +43,16 @@ all steps will necessarily be used.)  The arcs are bi-directional.
   \end{description}
 
     \begin{center}
-    \begin{tabular}{|l|l@{\hspace*{4.5in}}|l|} \hline
-    \bf Step & \bf Priority Queue                                   & \bf Expand \\ \hline
-    1 &                                                             &  \\ \hline
-    2 &                                                             &  \\ \hline
-    3 &                                                             &  \\ \hline
-    4 &                                                             &  \\ \hline
-    5 &                                                             &  \\ \hline
-    6 &                                                             &  \\ \hline
-    7 &                                                             &  \\ \hline
-    8 &                                                             &  \\ \hline
+    \begin{tabular}{|l|l|l|} \hline
+    \bf Step & \bf Priority Queue  & \bf Expand \\ \hline
+    1 & S & S \\ \hline
+    2 & S-A, S-G & S-A\\ \hline
+    3 & \textcolor{red}{\textbf{\hl{S-G}}}, S-A-B, S-A-C&  Found G\\ \hline
+    4 & & \\ \hline
+    5 & &  \\ \hline
+    6 &  &  \\ \hline
+    7 &   &  \\ \hline
+    8 &   &  \\ \hline
     \end{tabular}
     \end{center}
 
@@ -63,16 +65,16 @@ all steps will necessarily be used.)  The arcs are bi-directional.
   \end{description}
 
     \begin{center}
-    \begin{tabular}{|l|l@{\hspace*{4.5in}}|l|} \hline
-    \bf Step & \bf Priority Queue                                   & \bf Expand \\ \hline
-    1 &                                                             &  \\ \hline
-    2 &                                                             &  \\ \hline
-    3 &                                                             &  \\ \hline
-    4 &                                                             &  \\ \hline
-    5 &                                                             &  \\ \hline
-    6 &                                                             &  \\ \hline
-    7 &                                                             &  \\ \hline
-    8 &                                                             &  \\ \hline
+    \begin{tabular}{|l|l|l|} \hline
+    \bf Step & \bf Priority Queue  & \bf Expand \\ \hline
+    1 & S & S \\ \hline
+    2 & S-A, S-G  &  S-A\\ \hline
+    3 & S-A-B, S-A-C, S-G  & S-A-B \\ \hline
+    4 & S-A-B-D, S-A-C, S-G & S-A-B-D \\ \hline
+    5 & \textcolor{red}{\textbf{\hl{S-A-B-D-G}}}, S-A-B-D-C, S-A-C, S-G  &  Found G\\ \hline
+    6 &   &  \\ \hline
+    7 &   &  \\ \hline
+    8 &   &  \\ \hline
     \end{tabular}
     \end{center}
 
@@ -83,16 +85,17 @@ all steps will necessarily be used.)  The arcs are bi-directional.
   \end{description}
 
     \begin{center}
-    \begin{tabular}{|l|l@{\hspace*{4.5in}}|l|} \hline
-    \bf Step & \bf Priority Queue                                   & \bf Expand \\ \hline
-    1 &                                                             &  \\ \hline
-    2 &                                                             &  \\ \hline
-    3 &                                                             &  \\ \hline
-    4 &                                                             &  \\ \hline
-    5 &                                                             &  \\ \hline
-    6 &                                                             &  \\ \hline
-    7 &                                                             &  \\ \hline
-    8 &                                                             &  \\ \hline
+    \begin{tabular}{|l|l|l|} \hline
+
+    \bf Step & \bf Priority Queue  & \bf Expand \\ \hline
+    1 & S & S \\ \hline
+    2 & S-A, S-G & S-A \\ \hline
+    3 & S-A-C, S-A-B, S-G & S-A-C \\ \hline
+    4 & S-A-C-D, S-A-C-G, S-A-B, S-G  & S-A-C-D \\ \hline
+    5 & \textcolor{red}{\textbf{\hl{S-A-C-G}}}, S-A-C-D-B, S-A-C-D-G, S-A-B, S-G  & Found G \\ \hline
+    6 &   &  \\ \hline
+    7 &   &  \\ \hline
+    8 &   &  \\ \hline
     \end{tabular}
     \end{center}
 
@@ -116,13 +119,21 @@ all steps will necessarily be used.)  The arcs are bi-directional.
 
      \begin{enumerate}
 
-     \item Is $h_1$ admissible?  If not, why? \\[.5in]
+     \item Is $h_1$ admissible?  If not, why? \\
 
-     \item Is $h_1$ consistent?  If not, why? \\[.5in]
+       Not admissible as $h_{1}(S) = 5$, while the actual ``optimal cost'' from $S \rightarrow G$ is 4. It must be less than or equal to the actual cost to be admissible.
 
-     \item Is $h_2$ admissible?  If not, why? \\[.5in]
+     \item Is $h_1$ consistent?  If not, why? \\
 
-     \item Is $h_2$ consistent?  If not, why?
+       Not consistent as $h_{1}(S) - h_{1}(G) > \text{cost}(S \rightarrow G)$
+
+     \item Is $h_2$ admissible?  If not, why? \\
+
+       Not admissible as $h_{2}(A) = 2$, while the actual ``optimal cost'' from $A \rightarrow G$ is 3. It must be less than or equal to the actual cost to be admissible.
+
+     \item Is $h_2$ consistent?  If not, why? \\
+
+       Not consistent as $h_{2}(B) - h_{2}(C) > \text{cost}(B \rightarrow C)$
 
      \end{enumerate}
 
