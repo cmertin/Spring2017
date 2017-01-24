@@ -92,12 +92,15 @@ def depthFirstSearch(problem):
     current = (problem.getStartState(), [], [])
     fringe.push(current)
 
-    while fringe.isEmpty() is False:
+    while fringe.isEmpty() is False or problem.isGoalState(node) is True:
+        
         node, actions, visited = fringe.pop()
-        for pos, direction, steps in problem.getSuccessors(node):
+        if problem.isGoalState(node):
+            return actions
+
+        successors = problem.getSuccessors(node)
+        for pos, direction, steps in successors:
             if pos not in visited:
-                if problem.isGoalState(pos):
-                    return actions + [direction]
                 fringe.push((pos, actions + [direction], visited + [node]))
     return []
 
