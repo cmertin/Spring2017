@@ -18,7 +18,6 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
-from structs import *
 
 class SearchProblem:
     """
@@ -88,14 +87,18 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    #print problem
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    print problem.getStartState()
-    print problem.getSuccessors('C')
-    print problem.getSuccessors(problem.getStartState())[0]
-    util.raiseNotDefined()
+    fringe  = util.Stack()
+    current = (problem.getStartState(), [], [])
+    fringe.push(current)
+
+    while fringe.isEmpty() is False:
+        node, actions, visited = fringe.pop()
+        for pos, direction, steps in problem.getSuccessors(node):
+            if pos not in visited:
+                if problem.isGoalState(pos):
+                    return actions + [direction]
+                fringe.push((pos, actions + [direction], visited + [node]))
+    return []
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
