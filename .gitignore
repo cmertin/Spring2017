@@ -4,3 +4,7 @@
 *.log
 *.tar
 *.zip
+*.bbl
+*.blg
+*.out
+\#*
