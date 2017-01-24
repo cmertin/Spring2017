@@ -18,6 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+from util import Stack, Queue
 
 class SearchProblem:
     """
@@ -87,7 +88,7 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    fringe  = util.Stack()
+    fringe  = Stack()
     current = (problem.getStartState(), [], [])
     fringe.push(current)
 
