@@ -76,18 +76,7 @@ def tinyMazeSearch(problem):
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    "*** YOUR CODE HERE ***"
     fringe  = Stack()
     fringe.push((problem.getStartState(), [], []))
 
@@ -105,7 +94,6 @@ def depthFirstSearch(problem):
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
     fringe = Queue()
     fringe.push((problem.getStartState(), [], []))
     all_visit = []
@@ -126,7 +114,6 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
     fringe = PriorityQueue()
     fringe.push((problem.getStartState(), [], []), 0)
     all_visit = []
@@ -145,8 +132,6 @@ def uniformCostSearch(problem):
                     fringe.push((pos, actions + [direction], visited + [node]), cost)
     return []
 
-    util.raiseNotDefined()
-
 def nullHeuristic(state, problem=None):
     """
     A heuristic function estimates the cost from the current state to the nearest
@@ -156,8 +141,24 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    fringe = PriorityQueue()
+    fringe.push((problem.getStartState(), [], []), 0)
+    all_visit = []
+
+    while fringe.isEmpty() is False or problem.isGoalState(node) is True:
+        node, actions, visited = fringe.pop()
+        if node not in all_visit:
+            all_visit.append(node)
+            if problem.isGoalState(node):
+                return actions
+        
+            successors = problem.getSuccessors(node)
+            for pos, direction, steps in successors:
+                if pos not in all_visit:
+                    cost = problem.getCostOfActions(actions + [direction])
+                    cost += heuristic(pos, problem)
+                    fringe.push((pos, actions + [direction], visited + [node]), cost)
+    return []
 
 
 # Abbreviations
