@@ -18,7 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
-from util import Stack, Queue, PriorityQueue, PriorityQueueWithFunction
+from util import Stack, Queue, PriorityQueue
 
 class SearchProblem:
     """
