@@ -390,6 +390,7 @@ def ClosestPoint(fromPoint, candidatesList):
 
     return closestCorner
 
+# Returns the manhattan distance for the corner problem
 def manhattanDist(a, b):
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 

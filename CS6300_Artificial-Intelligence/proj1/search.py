@@ -78,14 +78,15 @@ def depthFirstSearch(problem):
     Search the deepest nodes in the search tree first.
     """
     fringe  = Stack()
+    # Push the root onto the fringe
     fringe.push((problem.getStartState(), [], []))
 
     while fringe.isEmpty() is False or problem.isGoalState(node) is True:
-        
+        # Stores the node, the action to get there, and the visited list
         node, actions, visited = fringe.pop()
         if problem.isGoalState(node):
             return actions
-
+        # Get the successors of the current node
         successors = problem.getSuccessors(node)
         for pos, direction, steps in successors:
             if pos not in visited:
@@ -95,19 +96,23 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     fringe = Queue()
+    # Push the root onto the fringe
     fringe.push((problem.getStartState(), [], []))
     all_visit = []
 
     while fringe.isEmpty() is False or problem.isGoalState(node) is True:
-        
+        # Pop off the last and get the node, action, and visited list
         node, actions, visited = fringe.pop()
+        # Check to see if the node has been visited before
+        # and add it since it's now been "visited"
         if node not in all_visit:
             all_visit.append(node)
             if problem.isGoalState(node):
                 return actions
-        
+            # Check the successors
             successors = problem.getSuccessors(node)
             for pos, direction, steps in successors:
+                # Adds to the fringe but doesn't "visit"
                 if pos not in all_visit:
                     fringe.push((pos, actions + [direction], visited + [node]))
     return []
