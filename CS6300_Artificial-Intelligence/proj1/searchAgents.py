@@ -377,11 +377,16 @@ def cornersHeuristic(state, problem):
 
 def ClosestPoint(fromPoint, candidatesList):
 
+    # Returns none if there are no points
     if len(candidatesList) == 0:
         return None
 
+    # Sets the initial point to the first in the list
+    # and calculates the distance
     closestCorner = candidatesList[0]
     closestCost = manhattanDist(fromPoint, closestCorner)
+    # Iterates through the list, if a point is closer, it 
+    # updates and returns the closest
     for candidate in candidatesList[1:]:
         cost = manhattanDist(fromPoint, candidate) 
         if closestCost > cost:
@@ -485,16 +490,20 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-
     foodList = foodGrid.asList()
+
     if len(foodList) == 0:
         return 0
-
-    farthestFood = mazeDistance(position, foodList[0], problem.startingGameState)
+        
+    # Calculate the distance of the first and store it
+    farthestFood = mazeDistance(position, foodList[0], 
+                                problem.startingGameState)
+    # Return the value of the farthest food
     for food in foodList:
         foodDist = mazeDistance(position, food, problem.startingGameState)
         if foodDist > farthestFood:
             farthestFood = foodDist
+
     return farthestFood
 
 class ClosestDotSearchAgent(SearchAgent):
@@ -524,6 +533,7 @@ class ClosestDotSearchAgent(SearchAgent):
         food = gameState.getFood()
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
+        # Does BFS to get optimal path to closest dot
         return search.bfs(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
