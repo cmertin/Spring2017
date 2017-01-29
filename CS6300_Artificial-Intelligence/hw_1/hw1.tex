@@ -12,10 +12,15 @@
 \evensidemargin=0.0in
 \topmargin=-0.5in
 
+\usepackage{tikz}
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+
 \begin{document}
 \thispagestyle{empty}
 
 \renewcommand{\arraystretch}{1.5}
+
+
 
 \lecture{CS 6300, Spring 2017}{HW01: Search}{Due: 24 January 2017}
 
@@ -125,7 +130,16 @@ all steps will necessarily be used.)  The arcs are bi-directional.
 
      \item Is $h_1$ consistent?  If not, why? \\
 
-       Not consistent as $h_{1}(S) - h_{1}(G) > \text{cost}(S \rightarrow G)$
+       To be consistent, $h(n) \leq c(n, a, n^{\prime}) + h(n^{\prime})$, where $a$ is any action and $n^{\prime}$ is every successor of $n$. Therefore, the estimated cost of reaching the goal from $n$ is no greater than the step cost of getting to $n^{\prime}$ plus the estimated cost of reaching the goal from $n^{\prime}$.
+
+       Yes, it is consistent as we have 
+       \begin{align*}
+         h(S) &\leq c(S\rightarrow A) + c(A\rightarrow C \rightarrow G) + h(A)\\
+         5 &\leq 1+1+2+2\\
+         5 &\leq 6\;\checkmark
+         \end{align*}
+
+         This also holds true for all other nodes. 
 
      \item Is $h_2$ admissible?  If not, why? \\
 
@@ -133,7 +147,15 @@ all steps will necessarily be used.)  The arcs are bi-directional.
 
      \item Is $h_2$ consistent?  If not, why? \\
 
-       Not consistent as $h_{2}(B) - h_{2}(C) > \text{cost}(B \rightarrow C)$
+       Yes, it is consistent. An example node is as follows:
+       \begin{align*}
+         h(S) &\leq c(S\rightarrow A) + c(A\rightarrow C \rightarrow G) + h(A)\\
+         4 &\leq 1+1+2+2\\
+         4 &\leq 6\;\checkmark
+         \end{align*}
+
+         The rest of the nodes are left as an exercise to the reader.
+
 
      \end{enumerate}
 
