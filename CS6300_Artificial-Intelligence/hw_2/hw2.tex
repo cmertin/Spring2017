@@ -2,6 +2,7 @@
 
 \usepackage{times}
 \usepackage{graphicx}
+\usepackage{forest}
 
 \setlength{\textwidth}{6.5in}
 \setlength{\textheight}{8.9in}
@@ -10,10 +11,30 @@
 \setlength{\headheight}{-0.05in}
 \setlength{\headsep}{0.0in}
 
+\usetikzlibrary{decorations.markings}
+
+\newsavebox\mybox
+\savebox\mybox{%
+  \tikz{
+    \draw[ultra thick,red] (-4pt,-4pt) -- (4pt,4pt);
+    \draw[ultra thick,red] (-4pt,4pt) -- (4pt,-4pt);
+  }%
+}  
+
+\tikzset{
+myedge/.style={
+  decoration={
+   markings,
+   mark=at position 0.5 with \node {\usebox\mybox};
+  },
+  postaction=decorate
+  }
+}
+
 \begin{document}
 
 \begin{center}
-{\bf CS 6300} \hfill {\large\bf HW02: CSPs and Minimax Search} \hfill {\bf January 31, 2017}
+{\bf CS 6300} \hfill {\large\bf HW2: CSPs and Minimax Search} \hfill {\bf January 31, 2017}
 \end{center}
 
 Please use \LaTeX\ to produce your writeups. See the Homework
@@ -21,8 +42,8 @@ Assignments page on the class website for details.
 
 \section*{1 CSPs}
 
-You are in charge of scheduling arrivals for Pohonk Internation
-Airport.  The airport has two runways (R and L), and four landing time
+You are in charge of scheduling arrivals for Pohonk International
+Airport (PIA).  The airport has two runways (R and L), and four landing time
 slots (T1, T2, T3, T4).  Today, there will be 4 arrivals, each of
 which you must assign a runway and a time slot.  Here are the
 requirements for the schedule:
@@ -67,18 +88,20 @@ requirements for the schedule:
   \paragraph{Binary Constraints:}
 
   \begin{flushleft}\begin{tabular}{ll}
-  ?  & ? \\
-  ?  & ? \\
-  ?  & ? \\
+  PIA closes  & T(AF1), T(AF1)$\pm$1 \ \ \ $\forall\ \{$B777, C$\}$ \\
+  T(B777)  & T(B777) $<$ T(BA) \\
+  T(C)  & T(C) $<$ T(B777) \\
   \end{tabular}\end{flushleft}
 
 \item Write constraint 5 in explicit form. \\
 
+T(B777, BA) = $\{$(T1, T2), (T1, T3), (T1, T4), (T2, T3), (T2, T4), (T3, T4)$\}$
+
 \item Enforce all {\it unary} constraints by deleting values in the table below.
 
 \begin{center}\begin{tabular}{l|cccccccc|}
-{\bf AF1}  & R1 & R2 & R3 & R4 & L1 & L2 & L3 & L4 \\ 
-{\bf B777} & R1 & R2 & R3 & R4 & L1 & L2 & L3 & L4 \\ 
+{\bf AF1}  & R1 & R2 & R3 & R4 & & & & \\ 
+{\bf B777} &  &  &  &  & L1 & L2 & L3 & L4 \\ 
 {\bf C}    & R1 & R2 & R3 & R4 & L1 & L2 & L3 & L4 \\ 
 {\bf BA}   & R1\&L1 & R2\&L2 & R3\&L3 & R4\&L4 &  &  &  &  \\ 
 \end{tabular}\end{center}
@@ -87,20 +110,70 @@ requirements for the schedule:
   arc-consistency.  Show your sequence of steps; i.e., the arc you
   picked and the resulting domain change.
 
-  \begin{enumerate}
 
-  \item Arc $X->Y$:  X loses value ?? due to constraint ??.
 
-  \item Etc.
- 
-  \end{enumerate}
+\begin{enumerate}
+\item T(BA) $\rightarrow$ T(B777): Loses T(BA):R1\&L1 due to 5
+\begin{center}\begin{tabular}{l|cccccccc|}
+{\bf AF1}  & R1 & R2 & R3 & R4 & & & & \\ 
+{\bf B777} &  &  &  &  & L1 & L2 & L3 & L4 \\ 
+{\bf C}    & R1 & R2 & R3 & R4 & L1 & L2 & L3 & L4 \\ 
+{\bf BA}   & & R2\&L2 & R3\&L3 & R4\&L4 &  &  &  &  \\ 
+\end{tabular}\end{center}
+
+\item T(B777) $\rightarrow$ T(C): Loses T(B777):L1 due to 7
 
 \begin{center}\begin{tabular}{l|cccccccc|}
-{\bf AF1}  & R1 & R2 & R3 & R4 & L1 & L2 & L3 & L4 \\ 
-{\bf B777} & R1 & R2 & R3 & R4 & L1 & L2 & L3 & L4 \\ 
+{\bf AF1}  & R1 & R2 & R3 & R4 & & & & \\ 
+{\bf B777} &  &  &  &  & & L2 & L3 & L4 \\ 
 {\bf C}    & R1 & R2 & R3 & R4 & L1 & L2 & L3 & L4 \\ 
-{\bf BA}   & R1\&L1 & R2\&L2 & R3\&L3 & R4\&L4 &  &  &  &  \\ 
+{\bf BA}   & & R2\&L2 & R3\&L3 & R4\&L4 &  &  &  &  \\ 
 \end{tabular}\end{center}
+
+\item T(C) $\rightarrow$ T(B777): Loses T(C):R4 \& L4 due to 7
+
+\begin{center}\begin{tabular}{l|cccccccc|}
+{\bf AF1}  & R1 & R2 & R3 & R4 & & & & \\ 
+{\bf B777} &  &  &  &  & & L2 & L3 & L4 \\ 
+{\bf C}    & R1 & R2 & R3 & & L1 & L2 & L3 & \\ 
+{\bf BA}   & & R2\&L2 & R3\&L3 & R4\&L4 &  &  &  &  \\ 
+\end{tabular}\end{center}
+
+\item T(AF1) $\rightarrow$ T(C): Loses T(AF1):R2, R3, R4 and T(C): R/L1 R/L 2 due to 2
+
+\begin{center}\begin{tabular}{l|cccccccc|}
+{\bf AF1}  & R1 & & & & & & & \\ 
+{\bf B777} &  &  &  &  & & L2 & L3 & L4 \\ 
+{\bf C}    &  & & R3 & & & & L3 & \\ 
+{\bf BA}   & & R2\&L2 & R3\&L3 & R4\&L4 &  &  &  &  \\ 
+\end{tabular}\end{center}
+
+\item T(B777) $\rightarrow$ T(C): Loses T(B777):L2 and L3 due to 7
+
+\begin{center}\begin{tabular}{l|cccccccc|}
+{\bf AF1}  & R1 & & & & & & & \\ 
+{\bf B777} &  &  &  &  & & & & L4 \\ 
+{\bf C}    &  & & R3 & & & & L3 & \\ 
+{\bf BA}   & & R2\&L2 & R3\&L3 & R4\&L4 &  &  &  &  \\ 
+\end{tabular}\end{center}
+
+\item T(BA) $\rightarrow$ T(C): Loses T(BA):R3\&L3 due to 8
+
+\begin{center}\begin{tabular}{l|cccccccc|}
+{\bf AF1}  & R1 & & & & & & & \\ 
+{\bf B777} &  &  &  &  & & & & L4 \\ 
+{\bf C}    &  & & R3 & & & & L3 & \\ 
+{\bf BA}   & & R2\&L2 & & R4\&L4 &  &  &  &  \\ 
+\end{tabular}\end{center}
+
+\item T(BA) $\rightarrow$ T(B777): Loses T(BA):R4\&L4 due to 8
+\begin{center}\begin{tabular}{l|cccccccc|}
+{\bf AF1}  & R1 & & & & & & & \\ 
+{\bf B777} &  &  &  &  &  &  &  & L4 \\ 
+{\bf C}    & & & R3 &  & & & L3 &  \\ 
+{\bf BA}   &  & R2\&L2 &  &  &  &  &  &  \\
+\end{tabular}\end{center}
+\end{enumerate}
 
 \item Assuming you have not yet found a unique solution, perform
   backtracking search, and maintain arc-consistency after each
@@ -136,11 +209,116 @@ to right, the nodes at the next level under $A_1$ as $A_{11}, A_{12},
 A_{13}$ from left to right, the nodes under $A_2$ as $A_{21}, A_{22},
 A_{23}$, etc.  The terminal nodes have 3 indexes $A_{ijk}$.
 
-\centerline{\includegraphics[width=0.9\textwidth]{minimax.png}}
+\begin{figure}[h]
+\centering
+\scalebox{1}
+{%
+\begin{forest}
+[$\nabla$
+    [$\triangle$
+        [$\nabla$
+            [5]
+            [7]
+        ]
+        [$\nabla$
+            [-4]
+            [-3]
+        ]
+        [$\nabla$
+            [8]
+            [9]
+        ]
+    ]
+    [$\triangle$
+        [$\nabla$
+            [-7]
+            [-1]
+        ]
+        [$\nabla$
+            [-6]
+            [2]
+        ]
+        [$\nabla$
+            [3]
+            [6]
+        ]
+    ]
+    [$\triangle$
+        [$\nabla$
+            [-8]
+            [-5]
+        ]
+        [$\nabla$
+            [1]
+            [-9]
+        ]
+        [$\nabla$
+            [4]
+            [-2]
+        ]
+    ]
+]
+\end{forest}
+}
+\caption{Minimax tree}
+\end{figure}
 
 \begin{enumerate}
 
 \item Carry out minimax search.  Give the values for each node.
+
+\begin{figure}[h]
+\centering
+\scalebox{1}
+{%
+\begin{forest}
+[-1
+    [-3, edge={myedge}
+        [7, edge={myedge}
+            [5, edge={myedge}]
+            [7]
+        ]
+        [-3
+            [-4, edge={myedge}]
+            [-3]
+        ]
+        [9, edge={myedge}
+            [8, edge={myedge}]
+            [9]
+        ]
+    ]
+    [-1
+        [-1
+            [-7, edge={myedge}]
+            [-1]
+        ]
+        [2, edge={myedge}
+            [-6, edge={myedge}]
+            [2]
+        ]
+        [6, edge={myedge}
+            [3, edge={myedge}]
+            [6]
+        ]
+    ]
+    [-5, edge={myedge}
+        [-5
+            [-8, edge={myedge}]
+            [-5]
+        ]
+        [1, edge={myedge}
+            [1]
+            [-9, edge={myedge}]
+        ]
+        [4, edge={myedge}
+            [4]
+            [-2, edge={myedge}]
+        ]
+    ]
+]
+\end{forest}
+}
+\end{figure}
 
 \item Now use $\alpha-\beta$ pruning.  Let $ab_{i}$ be the
   $\alpha-\beta$ values passed down an edge to node $i$, etc., for all
@@ -148,6 +326,59 @@ A_{23}$, etc.  The terminal nodes have 3 indexes $A_{ijk}$.
   $v_i$ is the value passed up edge $i$, etc..  Show the sequence of
   steps, by giving the $ab$ values on the way down, and the $v$ values
   on the way up.
+
+\begin{figure}[h]
+\centering
+\scalebox{1}
+{%
+\begin{forest}
+[$\nabla$
+    [$\triangle$
+        [$\nabla$
+            [5]
+            [7]
+        ]
+        [$\nabla$
+            [-4]
+            [-3]
+        ]
+        [$\nabla$
+            [8]
+            [9]
+        ]
+    ]
+    [$\triangle$
+        [$\nabla$
+            [-7]
+            [-1]
+        ]
+        [$\nabla$
+            [-6]
+            [2]
+        ]
+        [$\nabla$
+            [3]
+            [6]
+        ]
+    ]
+    [$\triangle$
+        [$\nabla$
+            [-8]
+            [-5]
+        ]
+        [$\nabla$
+            [1]
+            [-9]
+        ]
+        [$\nabla$
+            [4]
+            [-2]
+        ]
+    ]
+]
+\end{forest}
+}
+\end{figure}
 
 \end{enumerate}
 
