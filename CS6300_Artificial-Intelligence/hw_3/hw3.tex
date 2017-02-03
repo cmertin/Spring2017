@@ -1,0 +1,269 @@
+\documentclass[12pt]{article}
+
+\usepackage{times}
+\usepackage{notes}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{forest}
+
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{8.9in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\topmargin}{0.05in}
+\setlength{\headheight}{-0.05in}
+\setlength{\headsep}{0.0in}
+
+\usetikzlibrary{decorations.markings}
+
+\newsavebox\mybox
+\savebox\mybox{%
+  \tikz{
+    \draw[ultra thick,red] (-4pt,-4pt) -- (4pt,4pt);
+    \draw[ultra thick,red] (-4pt,4pt) -- (4pt,-4pt);
+  }%
+}  
+
+\tikzset{
+myedge/.style={
+  decoration={
+   markings,
+   mark=at position 0.5 with \node {\usebox\mybox};
+  },
+  postaction=decorate
+  }
+}
+
+\begin{document}
+
+\begin{center}
+{\bf CS 6300} \hfill {\large\bf HW03: Expectimax and Probability} \hfill {\bf Due February 7, 2017}
+\end{center}
+
+Please use the \LaTeX\ template to produce your writeups. See the
+Homework Assignments page on the class website for details.  Hand in
+at: \url{https://webhandin.eng.utah.edu/index.php}.
+
+\section{Expectimax}
+
+Consider this modified form of blackjack in Utah's only casino: this
+CS 6300 Artificial Intelligence class!  By playing this game, you
+can add (or subtract) points to your course grade.
+
+\begin{itemize}
+
+\item There are three card values in an infinite deck: 5, 10, and 11.
+  They are equally probable.
+
+\item There are two actions available: hit (draw a card), or stay
+  (game ends).
+
+\item The total value of cards must be less than or equal to 21.  If
+  the value is more than 21, the player is bust and the game ends.
+
+\item The player must stay if the value is 21.
+
+\item The payoff schedule is:
+
+      \begin{center}
+      \begin{tabular}{c|c}\hline
+        Hand value & Payoff \\ \hline
+        0-14       & 0      \\
+        15-19      & 3      \\
+        20         & 9      \\
+        21         & 12     \\
+        Bust       & -6     \\ \hline
+      \end{tabular}
+      \end{center}
+
+\end{itemize}
+
+\begin{enumerate}
+
+\item Suppose the player's first card is an 11.  Draw the expectimax
+  tree using a drawing program.  Show chance, max, and terminal nodes,
+  and work out their values.  What is the optimal strategy?
+
+\begin{figure}[h]
+\centering
+\scalebox{1}
+{%
+\begin{forest}
+[-1
+    [-3, edge={myedge}
+        [7, edge={myedge}
+            [5, edge={myedge}]
+            [7]
+        ]
+        [-3
+            [-4, edge={myedge}]
+            [-3]
+        ]
+        [9, edge={myedge}
+            [8, edge={myedge}]
+            [9]
+        ]
+    ]
+    [-1
+        [-1
+            [-7, edge={myedge}]
+            [-1]
+        ]
+        [2, edge={myedge}
+            [-6, edge={myedge}]
+            [2]
+        ]
+        [6, edge={myedge}
+            [3, edge={myedge}]
+            [6]
+        ]
+    ]
+    [-5, edge={myedge}
+        [-5
+            [-8, edge={myedge}]
+            [-5]
+        ]
+        [1, edge={myedge}
+            [1]
+            [-9, edge={myedge}]
+        ]
+        [4, edge={myedge}
+            [4]
+            [-2, edge={myedge}]
+        ]
+    ]
+]
+\end{forest}
+}
+\end{figure}
+
+\item Unfortunately, you are playing with an unscrupulous dealer (one
+  of the TAs) who after a fair first card then gives you the worst
+  possible card thereafter.  Draw the expectimax tree, and work out
+  values for the nodes.  What is the optimal strategy?
+
+\item Unforunately, interest in AI blackjack is decreasing, and the
+  instructor asks for your help in reworking the game by increasing
+  the payoff for a value of 21 (currently $x=12$).  Suppose a player
+  has a hand value of 16.  What should the smallest value of $x$ be
+  (an integer) so that it is advantageous to hit rather than stay?
+
+\end{enumerate}
+
+\clearpage
+
+\section{Probability}
+
+Marijuana legalization has been in the news, and one of the states is
+having a gubernatorial election.  The Libertarian candidate (random
+variable $L$) is more likely to legalize marijuana (random variable
+$M$) than the other candidates, but legalization may happen if any
+candidate is elected.  The probabilities are modeled below.
+
+\begin{center}
+\begin{tabular}{c@{\hspace*{0.5in}}c}
+\begin{tabular}{|c|c|c|} \hline
+       & $+l$  & $-l$ \\ \hline
+$P(L)$ & 0.1   & 0.9  \\ \hline
+\end{tabular} &
+\begin{tabular}{|c|c|c|} \hline
+     & $P(+m | L)$ & $P(-m | L)$ \\ \hline
+$+l$ & 0.667       & 0.333     \\ \hline
+$-l$ & 0.25        & 0.75      \\ \hline
+\end{tabular} \\
+Libertarian governor elected & Marijuana legalized
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+
+\item What is $P(+m)$?
+
+\begin{align*}
+P(+m) &= P(+m|+l)P(+l) + P(+m|-l)P(-l)\\
+      &= 2/3 \cdot 1/10 + 1/4 \cdot 9/10 = 7/24
+\end{align*}
+\item What is $P(+l | +m)$?
+
+\begin{align*}
+P(+l|+m) &= \frac{P(+m|+l)P(+l)}{P(+m|+l)P(+m)}\\
+         &= \frac{2/3 \cdot 1/10}{7/24} = 8/35
+\end{align*}
+
+\item Fill in the joint distribution table below.
+
+\begin{center}
+\begin{tabular}{|c|c||c|} \hline
+$L$  & $M$   & $P(L, M)$ \\ \hline \hline
+$+l$ & $+m$  & 1/15   \\ \hline
+$+l$ & $-m$  & 1/30 \\ \hline
+$-l$ & $+m$  & 9/40  \\ \hline
+$-l$ & $-m$  & 27/40 \\ \hline
+\end{tabular}
+\end{center}
+
+\item More information is provided with new random variables $B$
+  (balanced budget) and $A$ (workplace absenteeism).
+
+\begin{center}
+\begin{tabular}{c@{\hspace*{0.5in}}c}
+\begin{tabular}{|c|c|c|} \hline
+     & $P(+b | M)$ & $P(-b | M)$ \\ \hline
+$+m$ & 0.4         & 0.6         \\ \hline
+$-m$ & 0.2         & 0.8         \\ \hline
+\end{tabular} &
+\begin{tabular}{|c|c|c|} \hline
+     & $P(+a | M)$ & $P(-a | M)$ \\ \hline
+$+m$ & 0.75        & 0.25        \\ \hline
+$-m$ & 0.5         & 0.5         \\ \hline
+\end{tabular} \\
+Balanced Budget & Absenteeism
+\end{tabular}
+\end{center}
+
+Fill in the joint distribution table below.
+
+\begin{center}
+\begin{tabular}{cc}
+\begin{tabular}{|c|c|c|c||c|} \hline
+$L$  & $M$   & $B$  & $A$  & $P(L, M, B, A)$ \\ \hline \hline
+$+l$ & $+m$  & $+b$ & $+a$ &                 \\ \hline
+$+l$ & $+m$  & $+b$ & $-a$ &                 \\ \hline
+$+l$ & $+m$  & $-b$ & $+a$ &                 \\ \hline
+$+l$ & $+m$  & $-b$ & $-a$ &                 \\ \hline
+$+l$ & $-m$  & $+b$ & $+a$ &                 \\ \hline
+$+l$ & $-m$  & $+b$ & $-a$ &                 \\ \hline
+$+l$ & $-m$  & $-b$ & $+a$ &                 \\ \hline
+$+l$ & $-m$  & $-b$ & $-a$ &                 \\ \hline
+\end{tabular} &
+\begin{tabular}{|c|c|c|c||c|} \hline
+$L$  & $M$   & $B$  & $A$  & $P(L, M, B, A)$ \\ \hline \hline
+$-l$ & $+m$  & $+b$ & $+a$ &                 \\ \hline
+$-l$ & $+m$  & $+b$ & $-a$ &                 \\ \hline
+$-l$ & $+m$  & $-b$ & $+a$ &                 \\ \hline
+$-l$ & $+m$  & $-b$ & $-a$ &                 \\ \hline
+$-l$ & $-m$  & $+b$ & $+a$ &                 \\ \hline
+$-l$ & $-m$  & $+b$ & $-a$ &                 \\ \hline
+$-l$ & $-m$  & $-b$ & $+a$ &                 \\ \hline
+$-l$ & $-m$  & $-b$ & $-a$ &                 \\ \hline
+\end{tabular}
+\end{tabular}
+\end{center}
+
+\item Compute the following.
+
+      \begin{enumerate}
+
+      \item $P(+b | +m) = 4/10$ (directly from conditional probability)
+
+      \item $P(+b | +m, +l) = 4/10$ (from conditional probability since $+l$ is independent)
+
+      \item $P(+b)$
+
+      \item $P(+a | +b)$
+
+      \end{enumerate}
+
+\end{enumerate}
+
+\end{document}
