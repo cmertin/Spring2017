@@ -6,7 +6,8 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{forest}
-
+\usepackage{xcolor}
+\usepackage{float}
 \setlength{\textwidth}{6.5in}
 \setlength{\textheight}{8.9in}
 \setlength{\oddsidemargin}{0.0in}
@@ -37,7 +38,7 @@ myedge/.style={
 \begin{document}
 
 \begin{center}
-{\bf CS 6300} \hfill {\large\bf HW03: Expectimax and Probability} \hfill {\bf Due February 7, 2017}
+{\bf CS 6300} \hfill {\large\bf HW3: Expectimax and Probability} \hfill {\bf Due February 7, 2017}
 \end{center}
 
 Please use the \LaTeX\ template to produce your writeups. See the
@@ -89,47 +90,55 @@ can add (or subtract) points to your course grade.
 \scalebox{1}
 {%
 \begin{forest}
-[-1
-    [-3, edge={myedge}
-        [7, edge={myedge}
-            [5, edge={myedge}]
-            [7]
+[11
+    [5 (16) {\color{blue}{+3}}
+        [5 (21) {\color{green}{+12}}
         ]
-        [-3
-            [-4, edge={myedge}]
-            [-3]
+        [10 (26) {\color{red}{-6}}
         ]
-        [9, edge={myedge}
-            [8, edge={myedge}]
-            [9]
+        [11 (27) {\color{red}{-6}}
         ]
     ]
-    [-1
-        [-1
-            [-7, edge={myedge}]
-            [-1]
-        ]
-        [2, edge={myedge}
-            [-6, edge={myedge}]
-            [2]
-        ]
-        [6, edge={myedge}
-            [3, edge={myedge}]
-            [6]
+    [10 (21) {\color{green}{+12}}
+    ]
+    [11 (22) {\color{red}{-6}}
+    ]
+]
+\end{forest}
+}
+\end{figure}
+The optimal strategy would be to only draw one card and then stay. It has a 1/3 chance of going bust, but 2/3 chance of some payout. The average ``winnings'' of the 2nd level is zero after drawing 5. Stoping after the first gives an average winning of 11/2.
+
+\item Unfortunately, you are playing with an unscrupulous dealer (one
+  of the TAs) who after a fair first card then gives you the worst
+  possible card thereafter.  Draw the expectimax tree, and work out
+  values for the nodes.  What is the optimal strategy?
+
+
+\begin{figure}[H]
+\centering
+\scalebox{1}
+{%
+\begin{forest}
+[0
+    [5 (5) {\color{blue}{+0}}
+        [5 (10) {\color{blue}{+0}}
+            [5 (15) {\color{blue}{+3}}
+                [10 (25) {\color{red}{-6}}]
+                [11 (26) {\color{red}{-6}}]
+            ]
         ]
     ]
-    [-5, edge={myedge}
-        [-5
-            [-8, edge={myedge}]
-            [-5]
+    [10 (10) {\color{blue}{+0}}
+        [5 (15) {\color{blue}{+3}}
+            [10 (25) {\color{red}{-6}}]
+            [11 (26) {\color{red}{-6}}]
         ]
-        [1, edge={myedge}
-            [1]
-            [-9, edge={myedge}]
-        ]
-        [4, edge={myedge}
-            [4]
-            [-2, edge={myedge}]
+    ]
+    [11 (11) {\color{blue}{+0}}
+        [5 (16) {\color{blue}{+3}}
+            [10 (26) {\color{red}{-6}}]
+            [11 (27) {\color{red}{-6}}]
         ]
     ]
 ]
@@ -137,16 +146,33 @@ can add (or subtract) points to your course grade.
 }
 \end{figure}
 
-\item Unfortunately, you are playing with an unscrupulous dealer (one
-  of the TAs) who after a fair first card then gives you the worst
-  possible card thereafter.  Draw the expectimax tree, and work out
-  values for the nodes.  What is the optimal strategy?
+The optimal play strategy is to top at the second dealt card if given a 10 or an 11, but to go one card after after the second 5. This guarenttees a win of +3.
 
 \item Unforunately, interest in AI blackjack is decreasing, and the
   instructor asks for your help in reworking the game by increasing
   the payoff for a value of 21 (currently $x=12$).  Suppose a player
   has a hand value of 16.  What should the smallest value of $x$ be
   (an integer) so that it is advantageous to hit rather than stay?
+
+
+\begin{figure}[h]
+\centering
+\scalebox{1}
+{%
+\begin{forest}
+[16 {\color{blue}{+3}}
+    [5 (21) {\color{green}{+12}}
+    ]
+    [10 (26) {\color{red}{-6}}
+    ]
+    [11 (27) {\color{red}{-6}}
+    ]
+]
+\end{forest}
+}
+\end{figure}
+
+The average in the above figure is 0 gain from ``hitting'' with a 16 in hand. Therefore, the smallest that it would have to be is +15. This will have an average of +1 overall in playing.
 
 \end{enumerate}
 
