@@ -9,6 +9,10 @@
 \usepackage{amsmath,amsthm,amssymb,mathtools}
 \usepackage{float}
 \usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{bm}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -53,9 +57,20 @@ CS6966: Theory of Machine Learning} %if necessary, replace with your course titl
 \includegraphics[width=.25\textwidth]{hw1_fig1.png}
 \end{figure}
 
+\begin{align*}
+Area_{circle} &= \pi r^{2}\\
+Area_{slice} &= \cancel{\pi} r^{2} \frac{\theta}{2\cancel{\pi}} = \frac{\theta r^{2}}{2}\\
+\intertext{For a unit circle, the failure percentage for something {\em completey} random would be}
+\mathcal{L}_{\mathcal{D}}(h) &= \frac{\theta r^{2}}{\pi r^{2}} = \frac{\theta}{\pi}
+\end{align*}
+
 \item Suppose we obtain $1/\theta$ (whcih is given to be an integer $\geq 2$) training samples ({\em i.e.}, samples from $\mathcal{D}$, along with their true labels). What is the probability that we find a point whose label is ``inconsistent'' with $h$? Can you bound this probability by a constant independent of $\theta$?
 
 \item Give an example of a distribution $\mathcal{D}$ under which $h$ has risk zero.
+
+\begin{align*}
+\text{Distribution} &= \left\{\begin{array}{ll}y = \phantom{-}1 \quad x\geq 0\\ y = -1 \quad x < 0\end{array}\right.
+\end{align*}
 \end{enumerate}
 
 \item Suppose $A_{1}, A_{2}, \ldots, A_{n}$ are events in a probability space.
@@ -63,12 +78,36 @@ CS6966: Theory of Machine Learning} %if necessary, replace with your course titl
 \begin{enumerate}
 \item Suppose $\Pr{A_{i}} = \frac{1}{2n}$ for all $i$. Then, show that the probability that none of the $A_{i}$'s occur is at least $1/2$.
 
+\begin{align*}
+P(A_{i}) &= \frac{1}{2n}
+\intertext{If independent, the probability of choosing all of them is}
+P(A_{all}) &= \left( \frac{1}{2n}\right)\left( \frac{1}{2n}\right)\cdots \left( \frac{1}{2n}\right)\\
+P(A_{all})          &= \prod_{i=1}^{n}\left( \frac{1}{2n}\right) = \left( \frac{1}{2n}\right)^{n}\\
+\intertext{Therefore, the probability of not choosing any}
+P(A_{none}) &= 1 - \left( \frac{1}{2n}\right)^{n}\\
+\intertext{We can place a lower bound for $n = 1$}
+P(A_{1}) &= 1 - \frac{1}{2} = \frac{1}{2}
+\intertext{Therefore, the probability of not being chosen for a given $n$}
+P(A_{i}) &= 1 - \left( \frac{1}{2n}\right)^{n} \geq \frac{1}{2}
+\end{align*}
+
 \item Give a concrete example of events $A_{i}$ for which $\Pr{A_{i}} = \frac{1}{n-1}$ for all $i$, and the probability that none of them occur is zero.
 
+Probability of not choosing an integer at random on the infinite domain.
+
 \item Suppose $n \geq 3$, and $\Pr{A_{i}} = \frac{1}{n-1}$, but the events are all {\em independent}. Show that the probability that none of them occur is $\geq 1/8$.
+
+\begin{align*}
+\intertext{Probability of not choosing one}
+P(A_{i}) &= \left( 1 - \frac{1}{n-1}\right)\\
+\intertext{probability of not choosing $n$ independent}
+P(A_{1}, A_{2}, \ldots, A_{n}) &= \left( 1 - \frac{1}{n-1}\right)^{n} = \left( - \frac{2-n}{n-1}\right)^{n}\\
+\intertext{We can bound it by using $n = 3$, which gives}
+P(A_{1}, A_{2}, A_{3}) &= \frac{1}{8}
+\end{align*}
 \end{enumerate}
 
-\item In our proof of the no-free lunch theorem, we assumed the algorithm $A$ to be deterministic. Let us now see how to allow randomized algorithms. Let $A$ be a randomized map from set $X$ to set $Y$. Formally, this means that for every $x \in X$, $A(x)$ is a random variabl, that takes values in $Y$. Suppose $\abs{X} < c\abs{Y}$, for some constant $c < 1$. 
+\item In our proof of the no-free lunch theorem, we assumed the algorithm $A$ to be deterministic. Let us now see how to allow randomized algorithms. Let $A$ be a randomized map from set $X$ to set $Y$. Formally, this means that for every $x \in X$, $A(x)$ is a random variable, that takes values in $Y$. Suppose $\abs{X} < c\abs{Y}$, for some constant $c < 1$. 
 
 \begin{enumerate}
 \item Show that there exists $y \in Y$ such that $\max_{x\in X}\Pr{A(x) = y} \leq c$.
@@ -80,9 +119,97 @@ CS6966: Theory of Machine Learning} %if necessary, replace with your course titl
 \begin{enumerate}
 \item Consider the task of classifying points on a 2D plane, and let $\mathcal{H}$ be the class of axis parallel rectangles (points inside the rectangle are ``$+$'' and the poitns outside are ``$-$''). Prove that the VC dimension of $\mathcal{H}$ is 4.
 
+In order to prove VC dimension, we need to prove two things
+
+\begin{enumerate}
+\item There exists $(d = 4)$ points which can be shattered
+
+\begin{tikzpicture}[scale=1]
+  \coordinate (y) at (0,4);
+  \coordinate (x) at (4,0);
+  \draw[<->] (y) node[above] {$y$} -- (0,0) -- (x) node[right] {$x$};
+  \node[text width=1em] at (2,1) {\color{red}{$+$}};
+  \node[text width=1em] at (2,3) {\color{red}{$+$}};
+  \node[text width=1em] at (3,2) {$-$};
+  \node[text width=1em] at (1,2) {$-$};
+  \draw [red, thick, dashed] (1.45,0.5) rectangle (2.5,3.5);
+
+  \begin{scope}[xshift=4.5cm]
+    \coordinate (y) at (0,4);
+    \coordinate (x) at (4,0);
+    \draw[<->] (y) node[above] {$y$} -- (0,0) -- (x) node[right] {$x$};
+    \node[text width=1em] at (2,1) {\color{red}{$+$}};
+    \node[text width=1em] at (2,3) {$-$};
+    \node[text width=1em] at (3,2) {\color{red}{$+$}};
+    \node[text width=1em] at (1,2) {$-$};
+    \draw [red, thick, dashed] (1.35,0.5) rectangle (3.5,2.5);
+  \end{scope}
+
+  \begin{scope}[xshift=9cm]
+    \coordinate (y) at (0,4);
+    \coordinate (x) at (4,0);
+    \draw[<->] (y) node[above] {$y$} -- (0,0) -- (x) node[right] {$x$};
+    \node[text width=1em] at (2,1) {\color{red}{$+$}};
+    \node[text width=1em] at (2,3) {$-$};
+    \node[text width=1em] at (3,2) {\color{red}{$+$}};
+    \node[text width=1em] at (1,2) {\color{red}{$+$}};
+    \draw [red, thick, dashed] (0.5,0.5) rectangle (3.5,2.5);
+  \end{scope}
+\end{tikzpicture}
+
+With the last case of all 4 being postive being trivial. These are also trivially applicable when flipping between {\color{red}{$+$}}'s and $-$'s.
+
+\item No set of 5 points can be shattered
+
+The minimum enclosing rectangle is defined where 1 point is each edge
+
+\begin{tikzpicture}
+  \begin{scope}
+    \coordinate (y) at (0,4);
+    \coordinate (x) at (4,0);
+    \draw[<->] (y) node[above] {$y$} -- (0,0) -- (x) node[right] {$x$};
+    \draw [red, thick, dashed] (1,1) rectangle (3,3);
+    \node[text width=1em] at (2,1.1) {\color{red}{$\bm{+}$}};
+    \node[text width=1em] at (2,2.9) {\color{red}{$+$}};
+    \node[text width=1em] at (2.9,2) {\color{red}{$+$}};
+    \node[text width=1em] at (1.1,2) {\color{red}{$+$}};
+    \node[text width=1em] at (2,2) {$-$};
+  \end{scope}
+\end{tikzpicture}
+
+Therefore, the 5$^{th}$ point must lie on the edge or inside of the rectangle.
+
+\end{enumerate}
+
 \item This time, let $\chi = \mathbb{R}^{d}\backslash \{0\}$ (origin excluded), and let $\mathcal{H}$ be the set of all hyperplanes through the origin (points on one side are ``$+$'' and the other side are ``$-$''). Prove that the VC dimension of $\mathcal{H}$ is $\leq d$.
 
 {\em Hint:} Consider {\em any} set of $d + 1$ points. They need to be linearly dependent. Now, could it happen that $u$, $v$ are ``$+$'', but $\alpha u + \beta v$ is ``$-$'' for $\alpha,\ \beta\geq 0$? Can you generalize this?
+
+Consider $d$ unit base vectors in $\mathbb{R}^{d}$
+\[
+  (1,0,\ldots,0)(0,1,0,\ldots,0),\ldots,(0,\ldots,0,1)
+\]
+
+It is trivially seen that this set can be defined by $d$ hyper planes through the origin. We can now show that there are no $d+1$ vectors in $\mathbb{R}^{d}$ that can be shattered by hyperplanes through the origin. We can do this by {\em proof by contradiction}.
+
+Suppose that $u_{1},\ldots,u_{d+1}$ can be shattered. This implies that there exists $2^{d+1}$ vectors $a_{i} \in \mathbb{R}^{d}, i = \{1,\ldots,2^{d+1}\}$ such that the matrix of inner products, denoted by $z_{i,j} = u_{i}^{T}a_{j}$ has columns with all possible combination of signs. Therefore, we have the matrix inner products of
+
+\[
+  A = \left( \begin{array}{c c c c c}z_{1,1} & & \cdots & & z_{1,2^{d+1}}\\
+                          \vdots &  & \ddots & & \vdots\\
+                          z_{(d+1),1} & & \cdots & & z_{(d+1),2^{d+1}}\end{array}\right)
+\]
+
+which has all $2^{d+1}$ possible combinations of signs.
+
+\[
+   \text{sign}(A) = \left(\begin{array}{c c c c c}- & - & \cdots & - & +\\
+                          - & \cdot & \cdots & \cdot & +\\
+                          \vdots & \vdots & \ddots & \vdots & \vdots\\
+                          - & + & \cdots & \cdot & +\end{array}\right)
+\]
+
+Then, the rows of $A$ are linearly independent as there are no constants $c$ such that $\sum_{i=1}^{d+1}c_{i}z_{i,\forall} = 0$ as for any value of $c_{i}$ there is a column with the same sign, which makes it always non-zero. This implies that $d+1$ vectors in $\mathbb{R}^{d}$ are linearly independent but it is a false statement. This contradiction proves there are no $d+1$ vectors in $\mathbb{R}^{d}$ that can be shattered by hyperplaces through the origin. Thus, the VC dimension is $d$
 
 \item {\bf (BONUS)} Let $\chi$ be the points on the real line, and let $\mathcal{H}$ be the class of hypotheses of the form $\sign{p(x)}$, where $p(x)$ is a polynomial of degree at most $d$ (for convenience, define $\sign{0} = +1$). Prove that the VC dimension of this class is $d+1$. 
 
