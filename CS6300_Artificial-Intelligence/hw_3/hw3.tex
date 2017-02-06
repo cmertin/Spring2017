@@ -208,6 +208,7 @@ Libertarian governor elected & Marijuana legalized
 \begin{align*}
 P(+m) &= P(+m|+l)P(+l) + P(+m|-l)P(-l)\\
       &= 2/3 \cdot 1/10 + 1/4 \cdot 9/10 = 7/24
+P(-m) &= 1 - P(+m) = 17/24
 \end{align*}
 \item What is $P(+l | +m)$?
 
@@ -215,6 +216,14 @@ P(+m) &= P(+m|+l)P(+l) + P(+m|-l)P(-l)\\
 P(+l|+m) &= \frac{P(+m|+l)P(+l)}{P(+m|+l)P(+m)}\\
          &= \frac{2/3 \cdot 1/10}{7/24} = 8/35
 \end{align*}
+
+\begin{center}
+\begin{tabular}{|c|c|c|} \hline
+     & $P(+l | M)$ & $P(-l | M)$ \\ \hline
+$+m$ & 8/35       & 27/35   \\ \hline
+$-m$ & 12/85        & 73/85 \\ \hline
+\end{tabular}
+\end{center}
 
 \item Fill in the joint distribution table below.
 
@@ -253,28 +262,37 @@ Fill in the joint distribution table below.
 \begin{tabular}{cc}
 \begin{tabular}{|c|c|c|c||c|} \hline
 $L$  & $M$   & $B$  & $A$  & $P(L, M, B, A)$ \\ \hline \hline
-$+l$ & $+m$  & $+b$ & $+a$ &                 \\ \hline
-$+l$ & $+m$  & $+b$ & $-a$ &                 \\ \hline
-$+l$ & $+m$  & $-b$ & $+a$ &                 \\ \hline
-$+l$ & $+m$  & $-b$ & $-a$ &                 \\ \hline
-$+l$ & $-m$  & $+b$ & $+a$ &                 \\ \hline
-$+l$ & $-m$  & $+b$ & $-a$ &                 \\ \hline
-$+l$ & $-m$  & $-b$ & $+a$ &                 \\ \hline
-$+l$ & $-m$  & $-b$ & $-a$ &                 \\ \hline
+$+l$ & $+m$  & $+b$ & $+a$ & 1/50  \\ \hline
+$+l$ & $+m$  & $+b$ & $-a$ &   \\ \hline
+$+l$ & $+m$  & $-b$ & $+a$ &   \\ \hline
+$+l$ & $+m$  & $-b$ & $-a$ &   \\ \hline
+$+l$ & $-m$  & $+b$ & $+a$ &   \\ \hline
+$+l$ & $-m$  & $+b$ & $-a$ &   \\ \hline
+$+l$ & $-m$  & $-b$ & $+a$ &   \\ \hline
+$+l$ & $-m$  & $-b$ & $-a$ &   \\ \hline
 \end{tabular} &
 \begin{tabular}{|c|c|c|c||c|} \hline
 $L$  & $M$   & $B$  & $A$  & $P(L, M, B, A)$ \\ \hline \hline
-$-l$ & $+m$  & $+b$ & $+a$ &                 \\ \hline
-$-l$ & $+m$  & $+b$ & $-a$ &                 \\ \hline
-$-l$ & $+m$  & $-b$ & $+a$ &                 \\ \hline
-$-l$ & $+m$  & $-b$ & $-a$ &                 \\ \hline
-$-l$ & $-m$  & $+b$ & $+a$ &                 \\ \hline
-$-l$ & $-m$  & $+b$ & $-a$ &                 \\ \hline
-$-l$ & $-m$  & $-b$ & $+a$ &                 \\ \hline
-$-l$ & $-m$  & $-b$ & $-a$ &                 \\ \hline
+$-l$ & $+m$  & $+b$ & $+a$ &   \\ \hline
+$-l$ & $+m$  & $+b$ & $-a$ &   \\ \hline
+$-l$ & $+m$  & $-b$ & $+a$ &   \\ \hline
+$-l$ & $+m$  & $-b$ & $-a$ &   \\ \hline
+$-l$ & $-m$  & $+b$ & $+a$ &   \\ \hline
+$-l$ & $-m$  & $+b$ & $-a$ &   \\ \hline
+$-l$ & $-m$  & $-b$ & $+a$ &   \\ \hline
+$-l$ & $-m$  & $-b$ & $-a$ &   \\ \hline
 \end{tabular}
 \end{tabular}
 \end{center}
+
+\begin{align*}
+\intertext{The work for the first one is provided, while the others are left out. This is because the work is similar using Bayes' Nets.}
+P(L,M,B,A) &= P(L|B,A,M)P(B|A,M)P(A|M)P(M)
+\intertext{Where we can reduce this to the dependent variables, giving}
+P(+l, +m, +b, +a) &= P(+l|+m)P(+b|+m)P(+a|+m)P(+m)
+\intertext{Which is possible as the given conditional probabilities are only dependent upon $M$, and no the other conditions. Plugging in the values gives}
+P(+l, +m, +b, +a) &= \left( \frac{8}{35} \right) \cdot \left( \frac{4}{10} \right) \cdot \left( \frac{3}{4} \right) \cdot \left( \frac{7}{24} \right) = \frac{1}{50}
+\end{align*}
 
 \item Compute the following.
 
