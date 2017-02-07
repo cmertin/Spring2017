@@ -1,0 +1,108 @@
+\documentclass[11pt]{article}
+
+\usepackage[normalem]{ulem}
+\usepackage{classDM17}
+\usepackage{hyperref}
+
+\newcommand{\JS}{\ensuremath{\textsf{\small JS}}}
+\newcommand{\Ham}{\ensuremath{\textsf{\small Ham}}}
+\newcommand{\Andb}{\ensuremath{\textsf{\small Andb}}}
+\newcommand{\Dice}{\ensuremath{\textsf{\small S-Dice}}}
+
+\title{Asignment 2: Document Similarity and Hashing}
+\author{Christopher Mertin/\verb~u1010077~\\\url{cmertin@cs.utah.edu}}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Overview}
+
+In this assignment you will explore the use of $k$-grams, Jaccard distance, min hashing, and LSH in the context of document similarity.  
+
+You will use four text documents for this assignment:
+\begin{itemize} \denselist
+\item \href{http://www.cs.utah.edu/~jeffp/teaching/cs5140/A2/D1.txt}{\texttt{http://www.cs.utah.edu/\~{}jeffp/teaching/cs5140/A2/D1.txt}}
+\item \href{http://www.cs.utah.edu/~jeffp/teaching/cs5140/A2/D2.txt}{\texttt{http://www.cs.utah.edu/\~{}jeffp/teaching/cs5140/A2/D2.txt}}
+\item \href{http://www.cs.utah.edu/~jeffp/teaching/cs5140/A2/D3.txt}{\texttt{http://www.cs.utah.edu/\~{}jeffp/teaching/cs5140/A2/D3.txt}}
+\item \href{http://www.cs.utah.edu/~jeffp/teaching/cs5140/A2/D4.txt}{\texttt{http://www.cs.utah.edu/\~{}jeffp/teaching/cs5140/A2/D4.txt}}
+\end{itemize}
+
+\vspace{.1in}
+
+\emph{As usual, it is highly recommended that you use LaTeX for this assignment.  If you do not, you may lose points if your assignment is difficult to read or hard to follow.  Find a sample form in this directory:
+\url{http://www.cs.utah.edu/~jeffp/teaching/latex/}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Creating $k$-Grams (40 points)}
+
+You will construct several types of $k$-grams for all documents.  All documents only have at most 27 characters: all lower case letters and space.    \emph{Yes, the space counts as a character in character k-grams.}
+\begin{itemize} \denselist
+\item[\s{[G1]}] Construct $2$-grams based on characters, for all documents.  
+\item[\s{[G2]}] Construct $3$-grams based on characters, for all documents.
+\item[\s{[G3]}] Construct $2$-grams based on words, for all documents.  
+\end{itemize}
+Remember, that you should only store each $k$-gram once, duplicates are ignored.  
+
+\paragraph{A: (20 points)}  How many distinct $k$-grams are there for each document with each type of $k$-gram?    You should report $4 \times 3 = 12$ different numbers.  
+
+\paragraph{B: (20 points)}  Compute the Jaccard similarity between all pairs of documents for each type of $k$-gram.  You should report $3 \times 6 = 18$ different numbers.  
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Min Hashing (30 points)}
+
+We will consider a hash family $\Eu{H}$ so that any hash function $h \in \Eu{H}$ maps from $h : \{\s{$k$-grams}\} \to [m]$ for $m$ large enough (To be extra cautious, I suggest over $m \geq 10{,}000$).   
+
+\paragraph{A: (25 points)}  Using grams \s{G2}, build a min-hash signature for document \texttt{D1} and \texttt{D2}  using $t = \{20, 60, 150, 300, 600\}$ hash functions.  For each value of $t$ report the approximate Jaccard similarity between the pair of documents \texttt{D1} and \texttt{D2}, estimating the Jaccard similarity:  
+\[
+\hat \JS_t(a,b) =  \frac{1}{t} \sum_{i=1}^t \begin{cases} 1 & \textsf{if } a_i = b_i \\ 0 & \textsf{if } a_i \neq b_i. \end{cases}
+\]
+You should report $5$ numbers.  
+
+\paragraph{B: (5 point)}  What seems to be a good value for $t$?  You may run more experiments.  Justify your answer in terms of both accuracy and time.  
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{LSH (30 points)}
+
+Consider computing an LSH using $t = 160$ hash functions.  We want to find all documents pairs which have Jaccard similarity above $\tau = .4$.  
+
+\paragraph{A: (8 points)} 
+Use the trick mentioned in class and the notes to estimate the best values of hash functions $b$ within each of $r$ bands to provide the S-curve 
+\[
+f(s) = 1- (1-s^b)^r
+\]
+with good separation at $\tau$.  Report these values.  
+
+\paragraph{B: (24 points)}
+Using your choice of $r$ and $b$ and $f(\cdot)$, what is the probability of each pair of the four documents (using \s{[G2]}) for being estimated to having similarity greater that $\tau$?  
+Report $6$ numbers.  
+\emph{(Show your work.)}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Bonus (3 points)}
+
+Describe a scheme like Min-Hashing for the \emph{Andberg Similarity}, defined $\Andb(A,B) = \frac{|A \cap B|}{|A \cup B| + |A \triangle B|}$.  So given two sets $A$ and $B$ and family of hash functions, then $\Pr_{h \in \Eu{H}}[h(A) = h(B)] = \Andb(A,B)$.  Note the only randomness is in the choice of hash function $h$ from the set $\Eu{H}$, and $h \in \Eu{H}$ represents the process of choosing a hash function (randomly) from $\Eu{H}$.  The point of this question is to design this process, and show that it has the required property.  
+
+Or show that such a process cannot be done.  
+
+\end{document}
