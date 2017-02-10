@@ -4,7 +4,9 @@ import numpy as np
 def ReadFile(filename):
     lines = [line.rstrip('\n') for line in open(filename)]
     words = []
+    string = None
     for line in lines:
+        string = line
         for word in line.split():
             word.replace(',', '')
             word.replace('.', '')
@@ -18,7 +20,6 @@ def ReadFile(filename):
 
     # Instead of using just the normal string, this reduces the white space to 1
     # character instead of multiple characters
-    string = " ".join(words)
     
     return words, string
 
@@ -152,7 +153,7 @@ for file in files:
     word2_list.append(grams)
 
 # Prints out the table in LaTeX format for the k2-grmas and k3-gram
-#Print_KGram_Table(files, char2_list, char3_list, word2_list)
+Print_KGram_Table(files, char2_list, char3_list, word2_list)
 
 js_matrix = JacardSimilarities(files, char2_list)
 
