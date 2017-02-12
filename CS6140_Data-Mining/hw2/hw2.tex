@@ -20,9 +20,6 @@
 \maketitle
 
 
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,7 +75,7 @@ Remember, that you should only store each $k$-gram once, duplicates are ignored.
 \begin{table}[H]
 \centering
 \caption{$k_{2}$-Character Jacard Similarities}
-\begin{tabular}{l|ccrc}
+\begin{tabular}{l|cccr}
 \hline\hline
 & {\tt D1.txt} &{\tt D2.txt} &{\tt D3.txt} &{\tt D4.txt} \\
 \hline
@@ -94,7 +91,7 @@ Remember, that you should only store each $k$-gram once, duplicates are ignored.
 \begin{table}[H]
 \centering
 \caption{$k_{3}$-Character Jacard Similarities}
-\begin{tabular}{l|ccrc}
+\begin{tabular}{l|cccr}
 \hline\hline
 & {\tt D1.txt} &{\tt D2.txt} &{\tt D3.txt} &{\tt D4.txt} \\
 \hline
@@ -110,7 +107,7 @@ Remember, that you should only store each $k$-gram once, duplicates are ignored.
 \begin{table}[H]
 \centering
 \caption{$k_{2}$-Word Jacard Similarities}
-\begin{tabular}{l|ccrc}
+\begin{tabular}{l|cccr}
 \hline\hline
 & {\tt D1.txt} &{\tt D2.txt} &{\tt D3.txt} &{\tt D4.txt} \\
 \hline
@@ -137,7 +134,44 @@ We will consider a hash family $\Eu{H}$ so that any hash function $h \in \Eu{H}$
 \]
 You should report $5$ numbers.  
 
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\hline\hline
+$t$ & $J_{S}$\\
+\hline
+20 & 0.750\\
+60 & 0.667\\
+150 & 0.633\\
+300 & 0.640\\
+600 & 0.612\\
+\hline
+\end{tabular}
+\end{table}
+
+
 \paragraph{B: (5 point)}  What seems to be a good value for $t$?  You may run more experiments.  Justify your answer in terms of both accuracy and time.  
+
+From the direct calculation, we know that the Jacard Estimate between documents 1 and 2 using 3-grams is $0.639$. Looking at the estimated Jacard Similarities above $t = 150$ seems to be the best bet. To check, the value of $t$ was increased up to $1900$ to check the variation of the Jacard Similarity Estimate. As the table below shows, there was limited variation in the values.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\hline\hline
+$t$ & $J_{S}$\\
+\hline
+500 & 0.642\\
+700 & 0.639\\
+900 & 0.651\\
+1100 & 0.638\\
+1300 & 0.632\\
+1500 & 0.629\\
+1700 & 0.668\\
+1900 & 0.635\\
+\hline
+\end{tabular}
+\end{table}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -145,7 +179,7 @@ You should report $5$ numbers.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{LSH (30 points)}
 
-Consider computing an LSH using $t = 160$ hash functions.  We want to find all documents pairs which have Jaccard similarity above $\tau = .4$.  
+Consider computing an LSH using $t = 160$ hash functions.  We want to find all documents pairs which have Jaccard similarity above $\tau = 0.4$.  
 
 \paragraph{A: (8 points)} 
 Use the trick mentioned in class and the notes to estimate the best values of hash functions $b$ within each of $r$ bands to provide the S-curve 
@@ -154,10 +188,35 @@ f(s) = 1- (1-s^b)^r
 \]
 with good separation at $\tau$.  Report these values.  
 
+The function $f(s) = 1 - \left( 1 - s^{b}\right)^{r}$ is steepest at the point of inflection $\tau = (1/r)^{1/b}$. If we want to use $s$ as our cut where $\tau = s = \alpha = 1-\beta$ we can substitute and get $\tau = (b/t)^{1/b}$ which can be approximated as $b \approx -\log_{\tau}(t)$. Therefore, with $t = 160$ and $\tau = 0.4$, we have $b = 5.539 = -\log_{\tau}(t) = -\frac{\log_{10}(t)}{\log_{10}(\tau)}$. From $b = t/r$ we have $r = t/b = 160/5.539 = 28.886$. Therefore, the $S$-curve is given by
+
+\[
+    f(s) = 1 - \left( 1 - s^{5.539}\right)^{28.886}
+\]
+
 \paragraph{B: (24 points)}
 Using your choice of $r$ and $b$ and $f(\cdot)$, what is the probability of each pair of the four documents (using \s{[G2]}) for being estimated to having similarity greater that $\tau$?  
 Report $6$ numbers.  
-\emph{(Show your work.)}
+
+The probability of documents being estimated for using 3-grams have a similarity greater than $\tau = 0.4$ is given by the above equation, where $s$ is the Jacard Similarity between the two documents.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\hline\hline
+$f(D_{i}, D_{j})$ & Probability$/100$\\
+\hline
+$f(${\tt D1.txt}$,$ {\tt D2.txt}$)$ & 0.999\\
+$f(${\tt D1.txt}$,$ {\tt D3.txt}$)$ & 0.334\\
+$f(${\tt D1.txt}$,$ {\tt D4.txt}$)$ & 0.022\\
+$f(${\tt D2.txt}$,$ {\tt D3.txt}$)$ & 0.141\\
+$f(${\tt D2.txt}$,$ {\tt D4.txt}$)$ & 0.036\\
+$f(${\tt D3.txt}$,$ {\tt D4.txt}$)$ & 0.040\\
+\hline
+\end{tabular}
+\end{table}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
