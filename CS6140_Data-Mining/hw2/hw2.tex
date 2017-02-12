@@ -228,4 +228,16 @@ Describe a scheme like Min-Hashing for the \emph{Andberg Similarity}, defined $\
 
 Or show that such a process cannot be done.  
 
+The similarity is also known as $S$-Dice Similarity and the equation can be simplified as $S_{D}(A,B) = 2\frac{| A \cap B |}{|A| + |B|}$. This can be used to get a fairly accurate approximation using a similar algorithm to the min hashing algorithm. The two differences are that $(i)$ the Jacard Similarity and the $S$-Dice Similarity we must address the multiplication of $2$, and $(ii)$ the larger denominator in the $S$-Dice Similiarity requires $|A \cap B| \leq |A| + |B|$ as elements may exist in one set but not the other. The inequality is larger the more similar the sets are, and the adapted algorithm for $S$-Dice account for the duplicate values given a large enough number of iterations.
+
+In the min hashing algorithm, there are three types of rows $(i)$ $x$ rows with $1$ in both columns, $(ii)$ there are $y$ rows with a 1 in one column and a 0 in the other, and $(iii)$ there are zeros in both. The Jacard Similarity is $J_{s}(A,B) = x/(x+y)$ while the $S$-Dice similarity is $S_{D}(A,B) = 2x/(2x+y)$.
+
+\begin{enumerate}
+  \item Build a matrix as described in the min hash algorithm where the $i^{th}$ and $j^{th}$ columsn is 1 if the element $s_{i,j}$ is in a set $S_{j}$ and 0 otherwise. {\em In addition}, when building the matrix, if both $s_{i,j} = s_{i,m} \in S_{j}$ and $S_{m}$, then add other duplicate row for the element $s_{i,j}$. We can then randomly permute the columns of this matrix.
+    \item For each column, find the value fo the map function $M(S)$ which is equal to the value of the element which appears earliest in the rows, {\em i.e.} $M(S_{j}) = s_{i,j}$ such that $\min_{i}(x_{i,j} \neq 0)$ for $s_{i,j} \in S_{j}$ and $x_{i,j}$ equal the values at index $(i,j)$.
+      \item Estimate the $S$-Dice similarity as $S_{D}(S_{j},S_{m}) = \left\{ \begin{array}{ll}1 & M(S_{j}) = M(S_{M})\\0 & \text{else}\end{array}\right.$
+\end{enumerate}
+
+The above works because there are a total of $2x + y + z$ and therefore row $r$ is of the type where both columsn are 1 with probability $2x/(2x + y)$ since we can ignore the large $z$ number of rows. With $k$ random permutations, we get a set $\{m_{1}, m_{2}, \ldots, m_{k}\}$ and $k$ random variables $\{ X_{1}, X_{2}, \ldots, X_{k}\}$ and we can estimate $S_{D}(S_{j}, S_{m})$ as $S_{D}(S_{j}, S_{m}) = \frac{1}{k}\sum_{\ell = 1}^{k}X_{\ell}$
+
 \end{document}
