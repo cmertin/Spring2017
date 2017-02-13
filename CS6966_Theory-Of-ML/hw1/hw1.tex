@@ -50,7 +50,7 @@ CS6966: Theory of Machine Learning} %if necessary, replace with your course titl
 \item Consider the problem of classifying points in the two-dimensional plane, {\em i.e.}, $\chi = \mathbb{R}^{2}$. Suppose that the (unknown) true label of a point $(x,y)$ is given by $\sign{x}$ (we define $\sign{0} = \pm 1$ for convenience). Suppose the input distribution $\mathcal{D}$ is the uniform distribution over the unit circle centered at the origin.
 
 \begin{enumerate}
-\item Consider the hypothesis $h$ as shown in the figure below ($h$ classifies all the points on the right of the line as $+1$ and all the points to the left as $-1$). Compyte the risk $L_{\mathcal{D}}(h)$, as a function of $\theta$ (which is, as is standard, given in radians). 
+\item Consider the hypothesis $h$ as shown in the figure below ($h$ classifies all the points on the right of the line as $+1$ and all the points to the left as $-1$). Compute the risk $L_{\mathcal{D}}(h)$, as a function of $\theta$ (which is, as is standard, given in radians). 
 
 \begin{figure}[H]
 \centering
@@ -62,20 +62,28 @@ CS6966: Theory of Machine Learning} %if necessary, replace with your course titl
 \begin{align*}
 Area_{circle} &= \pi r^{2}\\
 Area_{slice} &= \cancel{\pi} r^{2} \frac{\theta}{2\cancel{\pi}} = \frac{\theta }{2}r^{2}\\
-\intertext{For a unit circle, the failure percentage for something {\em completey} random on the unit circle $(r = 1)$ would be}
+\intertext{For a unit circle, the failure percentage for some uniform random distribution on the unit circle $(r = 1)$ would be for two slices}
 \mathcal{L}_{\mathcal{D}}(h) &= \frac{\theta r^{2}}{\pi r^{2}} = \frac{\theta}{\pi}
 \end{align*}
 
-\item Suppose we obtain $1/\theta$ (whcih is given to be an integer $\geq 2$) training samples ({\em i.e.}, samples from $\mathcal{D}$, along with their true labels). What is the probability that we find a point whose label is ``inconsistent'' with $h$? Can you bound this probability by a constant independent of $\theta$?
+\item Suppose we obtain $1/\theta$ (which is given to be an integer $\geq 2$) training samples ({\em i.e.}, samples from $\mathcal{D}$, along with their true labels). What is the probability that we find a point whose label is ``inconsistent'' with $h$? Can you bound this probability by a constant independent of $\theta$?
 
 {\bf Solution:}
+
+We can set $k = 1/\theta$, which is the number of points that we're chosing. As each choice is independent, we can sum the independent probabilities such that get get the probability of a point being classified wrong after $k$ points. This gives
+
+\begin{align*}
+  \sum_{i=1}^{k}\frac{\theta}{\pi} &= \left( \frac{\theta}{\pi}\right)k = \frac{1}{\pi}
+\end{align*}
 
 \item Give an example of a distribution $\mathcal{D}$ under which $h$ has risk zero.
 
 {\bf Solution:}
 
 \begin{align*}
-\text{Distribution} &= \left\{\begin{array}{ll}y = \phantom{-}1 \quad x\geq 0\\ y = -1 \quad x < 0\end{array}\right.
+\text{Distribution} &= \left\{\begin{array}{ll}
+    y = \left(\sin\left(3\pi/2 + \theta\right), \sin\left(\pi/2 + \theta\right)\right) \quad x\geq 0\\ 
+    y = \left(\sin\left(\pi/2 + \theta\right), \sin\left(3\pi/2 + \theta\right)\right) \quad x < 0\end{array}\right.
 \end{align*}
 \end{enumerate}
 
@@ -126,13 +134,23 @@ P(A_{1}, A_{2}, A_{3}) &= \frac{1}{8}
 
 {\bf Solution:}
 
-\item Show that this implies that for any distribution $\mathcal{D}$ over $X$, $\text{Pr}_{x\sim \mathcal{D}}(A(x) = y) \leq c$.
+\item Show that this implies that for any distribution $\mathcal{D}$ over $X$, $\text{Pr}_{x\sim \mathcal{D}}[A(x) = y] \leq c$.
 
 {\bf Solution:}
 
+This problem is asking the probability that for an $x$ in our distribution that our classifier is able to classify it correctly. In other words
+
+\begin{align*}
+  P(A(x) = y | x) &= \frac{p(A(x) = y \cap x)}{p(x)}
+\intertext{Where $x$ is bounded by $|Y|$. The entire set of $X$ is bounded by $c|Y|$, but each independent value of $x$ can map to anything in $Y$. Therefore, we have the domain as being}
+  P(A(x) = y | x) &= \frac{c/|Y|}{1/|Y|} = c
+\end{align*}
+
+This is an upper bound on the probability, which does not account for repetition.
+
 \end{enumerate}
 
-\item Recall that the VC dimension of a hypothesis class $\mathcal{H}$ is the size fo the largest set that it can ``shatter.''
+\item Recall that the VC dimension of a hypothesis class $\mathcal{H}$ is the size of the largest set that it can ``shatter.''
 
 \begin{enumerate}
 \item Consider the task of classifying points on a 2D plane, and let $\mathcal{H}$ be the class of axis parallel rectangles (points inside the rectangle are ``$+$'' and the poitns outside are ``$-$''). Prove that the VC dimension of $\mathcal{H}$ is 4.
