@@ -57,16 +57,22 @@ CS6966: Theory of Machine Learning} %if necessary, replace with your course titl
 \includegraphics[width=.25\textwidth]{hw1_fig1.png}
 \end{figure}
 
+{\bf Solution:}
+
 \begin{align*}
 Area_{circle} &= \pi r^{2}\\
-Area_{slice} &= \cancel{\pi} r^{2} \frac{\theta}{2\cancel{\pi}} = \frac{\theta r^{2}}{2}\\
-\intertext{For a unit circle, the failure percentage for something {\em completey} random would be}
+Area_{slice} &= \cancel{\pi} r^{2} \frac{\theta}{2\cancel{\pi}} = \frac{\theta }{2}r^{2}\\
+\intertext{For a unit circle, the failure percentage for something {\em completey} random on the unit circle $(r = 1)$ would be}
 \mathcal{L}_{\mathcal{D}}(h) &= \frac{\theta r^{2}}{\pi r^{2}} = \frac{\theta}{\pi}
 \end{align*}
 
 \item Suppose we obtain $1/\theta$ (whcih is given to be an integer $\geq 2$) training samples ({\em i.e.}, samples from $\mathcal{D}$, along with their true labels). What is the probability that we find a point whose label is ``inconsistent'' with $h$? Can you bound this probability by a constant independent of $\theta$?
 
+{\bf Solution:}
+
 \item Give an example of a distribution $\mathcal{D}$ under which $h$ has risk zero.
+
+{\bf Solution:}
 
 \begin{align*}
 \text{Distribution} &= \left\{\begin{array}{ll}y = \phantom{-}1 \quad x\geq 0\\ y = -1 \quad x < 0\end{array}\right.
@@ -77,6 +83,8 @@ Area_{slice} &= \cancel{\pi} r^{2} \frac{\theta}{2\cancel{\pi}} = \frac{\theta r
 
 \begin{enumerate}
 \item Suppose $\Pr{A_{i}} = \frac{1}{2n}$ for all $i$. Then, show that the probability that none of the $A_{i}$'s occur is at least $1/2$.
+
+{\bf Solution:}
 
 \begin{align*}
 P(A_{i}) &= \frac{1}{2n}
@@ -93,9 +101,13 @@ P(A_{i}) &= 1 - \left( \frac{1}{2n}\right)^{n} \geq \frac{1}{2}
 
 \item Give a concrete example of events $A_{i}$ for which $\Pr{A_{i}} = \frac{1}{n-1}$ for all $i$, and the probability that none of them occur is zero.
 
+{\bf Solution:}
+
 Probability of not choosing an integer at random on the infinite domain.
 
 \item Suppose $n \geq 3$, and $\Pr{A_{i}} = \frac{1}{n-1}$, but the events are all {\em independent}. Show that the probability that none of them occur is $\geq 1/8$.
+
+{\bf Solution:}
 
 \begin{align*}
 \intertext{Probability of not choosing one}
@@ -111,7 +123,13 @@ P(A_{1}, A_{2}, A_{3}) &= \frac{1}{8}
 
 \begin{enumerate}
 \item Show that there exists $y \in Y$ such that $\max_{x\in X}\Pr{A(x) = y} \leq c$.
+
+{\bf Solution:}
+
 \item Show that this implies that for any distribution $\mathcal{D}$ over $X$, $\text{Pr}_{x\sim \mathcal{D}}(A(x) = y) \leq c$.
+
+{\bf Solution:}
+
 \end{enumerate}
 
 \item Recall that the VC dimension of a hypothesis class $\mathcal{H}$ is the size fo the largest set that it can ``shatter.''
@@ -123,6 +141,8 @@ In order to prove VC dimension, we need to prove two things
 
 \begin{enumerate}
 \item There exists $(d = 4)$ points which can be shattered
+
+{\bf Solution:}
 
 \begin{tikzpicture}[scale=1]
   \coordinate (y) at (0,4);
@@ -161,6 +181,8 @@ With the last case of all 4 being postive being trivial. These are also triviall
 
 \item No set of 5 points can be shattered
 
+{\bf Solution:}
+
 The minimum enclosing rectangle is defined where 1 point is each edge
 
 \begin{tikzpicture}
@@ -184,6 +206,8 @@ Therefore, the 5$^{th}$ point must lie on the edge or inside of the rectangle.
 \item This time, let $\chi = \mathbb{R}^{d}\backslash \{0\}$ (origin excluded), and let $\mathcal{H}$ be the set of all hyperplanes through the origin (points on one side are ``$+$'' and the other side are ``$-$''). Prove that the VC dimension of $\mathcal{H}$ is $\leq d$.
 
 {\em Hint:} Consider {\em any} set of $d + 1$ points. They need to be linearly dependent. Now, could it happen that $u$, $v$ are ``$+$'', but $\alpha u + \beta v$ is ``$-$'' for $\alpha,\ \beta\geq 0$? Can you generalize this?
+
+{\bf Solution:}
 
 Consider $d$ unit base vectors in $\mathbb{R}^{d}$
 \[
@@ -219,6 +243,8 @@ Then, the rows of $A$ are linearly independent as there are no constants $c$ suc
 \item In the examples above (and in general), a good rule of thumb for VC dimension of a function class is the {\em number of parameters} involved in defining a function in that class. However, this is not universally true, as illustrated in this problem: Let $\chi$ be the points on the real line, and define $\mathcal{H}$ to be the class of functions of the form $h_{\theta} \coloneqq \sign{\sin(\theta x)}$, for $\theta \in \mathbb{R}$. Note that each hypothesis is defined by the single parameter $\theta$.
 
 Prove that the VC dimension of $\mathcal{H}$ is infinity.
+
+{\bf Solution:}
 
 So where does the ``complexity'' of the function class come from? {\bf (BONUS)} Prove that if we restrict $\theta$ to be a rational number whose numerator and denominator have at most $n$ bits, then the VC dimension is $\BigO{n}$.
 \end{enumerate}
