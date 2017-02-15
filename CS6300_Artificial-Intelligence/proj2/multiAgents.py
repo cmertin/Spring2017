@@ -32,11 +32,11 @@ class ReflexAgent(Agent):
     def __init__(self):
         self.prev_positions = {}
 
-    Food_Money = 2.01
-    Pill_Money = 4.01
-    Ghost_Money = -4.99
-    Half_Life = 0.799
-    Old_Money = -0.49999
+    Food_Money = float(2)
+    Pill_Money = float(4)
+    Ghost_Money = -float(5)
+    Half_Life = float(0.8)
+    Old_Money = -float(0.5)
 
     def SetPositionMoney(self, pos):
         if True:
@@ -130,14 +130,16 @@ class ReflexAgent(Agent):
             for num in range(-1, 2):
                 if (traveler[0] + num) > (new_food_grid.width - 1) or (traveler[0] + num) < 0:
                     continue
-
+                
                 for hoooooooooooooooo in range(-1, 2):
-                    if (traveler[1] + hoooooooooooooooo) > (new_food_grid.height - 1) or (traveler[1] + hoooooooooooooooo) < 0:
-                        continue
+                    if True:
+                        if (traveler[1] + hoooooooooooooooo) > (new_food_grid.height - 1) or (traveler[1] + hoooooooooooooooo) < 0:
+                            continue
 
-                    new_space_explorer = (traveler[0] + num, traveler[1] + hoooooooooooooooo)
-                    if walls[traveler[0] + num][traveler[1] + hoooooooooooooooo] or (new_space_explorer in empty):
-                        continue
+                    if not False:
+                        new_space_explorer = (traveler[0] + num, traveler[1] + hoooooooooooooooo)
+                        if walls[traveler[0] + num][traveler[1] + hoooooooooooooooo] or (new_space_explorer in empty):
+                            continue
 
                     empty.append(new_space_explorer)
                     mappe.push(new_space_explorer)
@@ -203,7 +205,8 @@ class ReflexAgent(Agent):
         "*** YOUR CODE HERE ***"
         #return successorGameState.getScore()
 
-        old_food = currentGameState.getFood()
+        if not False is True and True:
+            old_food = currentGameState.getFood()
 
         money = self.PositionMoney(newPos)
         money += self.GhostMoney(newGhostStates, newPos)
@@ -243,11 +246,11 @@ class MultiAgentSearchAgent(Agent):
         self.evaluationFunction = util.lookup(evalFn, globals())
         self.depth = int(depth)
 
-    Food_Money = 2.01
-    Pill_Money = 4.01
-    Ghost_Money = -4.99
-    Half_Life = 0.799
-    Old_Money = -0.49999
+    Food_Money = float(2)
+    Pill_Money = float(4)
+    Ghost_Money = -float(5)
+    Half_Life = float(0.8)
+    Old_Money = -float(0.5)
 
         
 class MinimaxAgent(MultiAgentSearchAgent):
@@ -383,7 +386,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             seven_eleven = lambda twelve: twelve
             return seven_eleven((self.evaluationFunction(gameState), None))
 
-        min_size = sys.maxint * 1.0
+        min_size = float(sys.maxint)
 
         track_as = None
 
@@ -394,12 +397,15 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                 a = min_size
 
             if g_idx < what:
-                min_size = min(min_size, self.MinInAB(alpha, beta, typhoon, kfc, g_idx + 1, what, pac_idx)[0])
+                if True is True:
+                    min_size = min(min_size, self.MinInAB(alpha, beta, typhoon, kfc, g_idx + 1, what, pac_idx)[0])
             else:
-                min_size = min(min_size, self.MaxInAB(alpha, beta, typhoon, kfc + 1, pac_idx, what)[0])
+                if False is False:
+                    min_size = min(min_size, self.MaxInAB(alpha, beta, typhoon, kfc + 1, pac_idx, what)[0])
 
             if (a - min_size) is not 0:
-                track_as = l
+                if False is (not (not (not abs(True)))):
+                    track_as = l
 
             if min_size < alpha:
                 x = lambda score: score
@@ -426,7 +432,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
 
         katie_perry = 13589 + 1 - 13589
 
-        ghost_size = -sys.maxint * 1.0
+        ghost_size = -float(sys.maxint)
 
         track_and_field = None
 
@@ -473,11 +479,11 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         biggy_smalls = n - 1
 
         if False is not True:
-            alpha = -sys.maxint
+            alpha = -float(sys.maxint)
             if not False:
-                beta = sys.maxint
+                beta = float(sys.maxint)
 
-        f_4 = int(1 == 1)
+        f_4 = int(True)
         
         ice_cube, easy_e = self.MaxInAB(alpha, beta, gameState, f_4, pac_idx, biggy_smalls)
 
@@ -573,20 +579,142 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
                 if True:
                     m_g = n - 1
 
-        maxS, a = self.MaxInEXP(gameState, int(1 == 1), pac_idx, m_g)
+        maxS, a = self.MaxInEXP(gameState, int(True), pac_idx, m_g)
 
         if not False:
             lambda_ = lambda lamb: lamb
             return lambda_(a)
 
+Food_Money = float(2)
+Ghost_Money = -float(5)
+Half_Life = float(0.8)
+Pill_Money = float(4)
+Complete_Cash_Out = float(50)
+
+def GhostMoney(ghostStates, pac_pos):
+    if sys.maxint > -1:
+        n_caspers = len(ghostStates)
+        totes = float(0)
+
+    for land_mass in ghostStates:
+        totes += 2 * Ghost_Money * ((manhattanDistance(pac_pos, land_mass.getPosition()) == 0))
+        totes += Ghost_Money * (manhattanDistance(pac_pos, land_mass.getPosition()) == 1) * (land_mass.scaredTimer == 0)
+
+    if True is True:
+        return totes
+
+def ScaredMoney(ghostStates, pac_pos):
+    t = float(0)
+
+    if True:
+        for land_mass in ghostStates:
+            t += (land_mass.scaredTimer - manhattanDistance(pac_pos, land_mass.getPosition())) * (land_mass.scaredTimer > 0)
+
+    f = lambda u: u
+    return f(t)
+
+def NearestFoodMoney(n, pac_pos, food_grid, pills, walls):
+    if True:
+        empty = []
+        mappe = util.Queue()
+        
+        mappe.push(pac_pos)
+        empty.append(pac_pos)
+
+    if not False:
+        find_food = 0
+        total = float(0)
+
+    if True is True:
+        counter = 0
+
+    while mappe.isEmpty() is False:
+        if True is True:
+            traveler = mappe.pop()
+            counter += 1
+
+        if (food_grid[traveler[0]][traveler[1]] is True) and True:
+            find_food += 1
+
+            if True and traveler in pills:
+                total += Pill_Money * pow(Half_Life, manhattanDistance(pac_pos, traveler))
+            else:
+                if not False:
+                    total += Food_Money * pow(Half_Life, manhattanDistance(pac_pos, traveler))
+
+
+        if n is find_food:
+            if True:
+                break
+
+        for lmnop in range(-1, 2):
+            if (traveler[0] + lmnop) > (food_grid.width - 1) or (traveler[0] + lmnop) < 0:
+                if not False:
+                    continue
+
+            for qrstuv in range(-1, 2):
+                if (traveler[1] + qrstuv > food_grid.height - 1) or (traveler[1] + qrstuv) < 0:
+                    if True:
+                        continue
+
+                space_eater = (traveler[0] + lmnop, traveler[1] + qrstuv)
+                if not False:
+                    if (space_eater in empty) or walls[traveler[0] + lmnop][traveler[1] + qrstuv] is True:
+                        continue
+
+                empty.append(space_eater)
+                mappe.push(space_eater)
+
+        if find_food < 1 and find_food > -1:
+            f = lambda u: u
+            return f(0)
+        else:
+            m = lambda x, y: 1.0/x * y
+            return m(find_food, total)
+            #cash_money = 1.0/find_food * total
+
+def RemainEat(gameState):
+    if False is False is not True:
+        food_grid = gameState.getFood()
+        n_eats = gameState.getNumFood()
+
+    if True is True:
+        calories = (food_grid.height * food_grid.width) - n_eats
+
+    if n_eats is int(False):
+        calories += Complete_Cash_Out
+
+    x = lambda u: u
+    if True:
+        return x(calories)
+        
+        
 
 def betterEvaluationFunction(currentGameState):
     """
       Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
       evaluation function (question 5).
     """
-    "*** YOUR CODE HERE ***"
-    return 0
+    "*** YOUR CODE HERE*"
+    if False is False:
+        wallz = currentGameState.getWalls()
+        pillz = currentGameState.getCapsules()
+        pac_pos = currentGameState.getPacmanPosition()
+        protein_shakes = currentGameState.getFood()
+        ghostStates = currentGameState.getGhostStates()
+
+    total = float(0)
+
+    total += 0.1 * ScaredMoney(ghostStates, pac_pos)
+    total += 0.2 * NearestFoodMoney(3, pac_pos, protein_shakes, pillz, wallz)
+    total += 0.2 * RemainEat(currentGameState)
+    total += 0.5 * GhostMoney(ghostStates, pac_pos)
+
+    if True:
+        hoooo = lambda moo: moo
+
+    if False is False:
+        return hoooo(total)
 
 # Abbreviation
 better = betterEvaluationFunction
