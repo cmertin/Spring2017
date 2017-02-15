@@ -85,11 +85,7 @@ We can set $k = 1/\theta$, which is the number of points that we're chosing. As 
 
 {\bf Solution:}
 
-\begin{align*}
-\text{Distribution} &= \left\{\begin{array}{ll}
-    y = \left(\sin\left(3\pi/2 + \theta\right), \sin\left(\pi/2 + \theta\right)\right) \quad x\geq 0\\ 
-    y = \left(\sin\left(\pi/2 + \theta\right), \sin\left(3\pi/2 + \theta\right)\right) \quad x < 0\end{array}\right.
-\end{align*}
+The distribution can be a uniform distribution along a line $ax + b$ with $a$ and $b$ being positive constants. This will separate the data such that the classifier would split the data as positive and negative based on the values of $x$ and not allow the classifier to fail, as there would be room to offset the bias.
 \end{enumerate}
 
 \item Suppose $A_{1}, A_{2}, \ldots, A_{n}$ are events in a probability space.
@@ -139,6 +135,14 @@ P(A_{1}, A_{2}, A_{3}) &= \frac{1}{8}
 
 {\bf Solution:}
 
+Assuming that $A$ is a function randomly maps $x$ to some unique value in $Y$, we can say that the probability of a single mapping is $\frac{1}{|Y|}$. To be unique, as $x$ is assigned, it is lost from the set, so the total probability over the {\em entire} set is $\frac{1}{|Y|} + \frac{1}{|Y|-1} + \cdots + \frac{1}{|Y| - c|Y|}$, however the probability that they're all the same is $\frac{1}{|Y|}$. Therefore, the probability that all of the $x$ values map to the same value in $Y$ can be represented as
+
+\begin{align*}
+  \max_{x\in X}\Pr{A(x) = y} &\leq \sum_{i=1}^{c|Y|} \frac{1}{|Y|}\\
+                           &\leq c|Y|\frac{1}{|Y|} = c
+\end{align*}
+
+
 \item Show that this implies that for any distribution $\mathcal{D}$ over $X$, $\text{Pr}_{x\sim \mathcal{D}}[A(x) = y] \leq c$.
 
 {\bf Solution:}
@@ -148,7 +152,7 @@ This problem is asking the probability that for an $x$ in our distribution that 
 \begin{align*}
   P(A(x) = y | x) &= \frac{p(A(x) = y \cap x)}{p(x)}
 \intertext{Where $x$ is bounded by $|Y|$. The entire set of $X$ is bounded by $c|Y|$, but each independent value of $x$ can map to anything in $Y$. Therefore, we have the domain as being}
-  P(A(x) = y | x) &= \frac{c/|Y|}{1/|Y|} = c
+  P(A(x) = y | x) &= \frac{c|Y|}{|Y|} = c
 \end{align*}
 
 This is an upper bound on the probability, which does not account for repetition.
