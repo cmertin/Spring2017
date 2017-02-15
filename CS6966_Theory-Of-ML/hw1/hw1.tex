@@ -4,7 +4,7 @@
 % --------------------------------------------------------------
  
 \documentclass[12pt]{article}
- 
+ \listfiles
 \usepackage[margin=1in]{geometry} 
 \usepackage{amsmath,amsthm,amssymb,mathtools}
 \usepackage{float}
@@ -13,6 +13,11 @@
 \usepackage{tikz}
 \usepackage{xcolor}
 \usepackage{bm}
+
+\usepackage{pgfplots}
+%\pgfplotsset{compat=1.10}
+\usetikzlibrary{intersections}
+%\usepgfplotslibrary{fillbetween}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -264,7 +269,73 @@ Prove that the VC dimension of $\mathcal{H}$ is infinity.
 
 {\bf Solution:}
 
-So where does the ``complexity'' of the function class come from? {\bf (BONUS)} Prove that if we restrict $\theta$ to be a rational number whose numerator and denominator have at most $n$ bits, then the VC dimension is $\BigO{n}$.
+To prove that it's infinite dimensional, we can do so with an example. Suppose we have the following points, where {\color{red}{red}} is the positive and {\color{blue}{blue}} is the negative. These points are on the infinite domain and are spaced out every $\pi$ increments starting at $\pi/2$. This function $\sin(x)$ would correctly classify the infinite number of points on the infinite domain if they keep this structure. 
+
+  \begin{tikzpicture}
+    \begin{axis}[
+     clip=false,
+     xmin=0,xmax=2.5*pi,
+     xlabel= $x$,
+     ylabel=$f(x)$,
+     ymin=-1.5,ymax=1.5,
+     axis lines=middle,
+     %axis x line=middle,
+     %axis y line=left,
+%     axis x line=middle,
+     xtick={0,1.57,3.14,4.71,6.28},
+     xticklabels={$0$, $\frac{\pi}{2}$,$\pi\,$,$\,\,\,\frac{3}{2}\pi$,$\,\,\,2\pi$},
+scatter/classes={%
+    a={mark=*,draw=red,fill=red},
+    b={mark=*,draw=blue,fill=blue}}
+     %xticklabel style={anchor=north west}
+     ]
+      \addplot[name path=p1,domain=0:2*pi,samples=200,red]{sin(deg(x))}
+                                node[right,pos=0.9,font=\footnotesize]{$f(x)=\sin (x)$};
+      \addplot[scatter, scatter src=explicit symbolic] table[meta=label]{
+        x y label
+        1.57 0 a
+        4.71 0 b
+        };
+      %\addplot[domain=0:2*pi,samples=200,blue]{cos(deg(x))}
+     %                           node[right,pos=1,font=\footnotesize]{$f(x)=\cos x$};
+    \end{axis}
+  \end{tikzpicture}
+
+Suppose now we half the distance between the points so that they're separated by $\pi/2$ but start at $\pi/4$. Well, the function $\sin(\theta x)$ still holds in classifying the entire domain of points. This can be seen in the plot below, as it would take $\sin (2x)$ to classify the points.
+
+ \begin{tikzpicture}
+    \begin{axis}[
+     clip=false,
+     xmin=0,xmax=2.5*pi,
+     xlabel= $x$,
+     ylabel=$f(x)$,
+     ymin=-1.5,ymax=1.5,
+     axis lines=middle,
+     %axis x line=middle,
+     %axis y line=left,
+%     axis x line=middle,
+     xtick={0,1.57,3.14,4.71,6.28},
+     xticklabels={$0$, $\frac{\pi}{2}$,$\pi\,$,$\,\,\,\frac{3}{2}\pi$,$\,\,\,2\pi$},
+scatter/classes={%
+    a={mark=*,draw=red,fill=red},
+    b={mark=*,draw=blue,fill=blue}}
+     %xticklabel style={anchor=north west}
+     ]
+      \addplot[name path=p1,domain=0:2*pi,samples=200,red]{sin(deg(2*x))}
+                                node[right,pos=0.9,font=\footnotesize]{$f(x)=\sin (2 x)$};
+      \addplot[scatter, scatter src=explicit symbolic] table[meta=label]{
+        x y label
+        0.785 0 a
+        3.925 0 a
+        2.355 0 b
+        5.495 0 b
+        };
+      %\addplot[domain=0:2*pi,samples=200,blue]{cos(deg(x))}
+     %                           node[right,pos=1,font=\footnotesize]{$f(x)=\cos x$};
+    \end{axis}
+  \end{tikzpicture}
+
+This can be repeated ad infinitum such that if the points are even closer together, we can simply increase our value of $\theta$ such that it will classify the infinite number of points on the enitre domain.
 \end{enumerate}
  
 \end{document}
