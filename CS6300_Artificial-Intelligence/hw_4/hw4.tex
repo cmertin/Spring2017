@@ -3,6 +3,10 @@
 \usepackage{times}
 \usepackage{url}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{automata, arrows, positioning, calc}
+\usepackage{color}
 
 \setlength{\textwidth}{6.5in}
 \setlength{\textheight}{8.9in}
@@ -14,7 +18,7 @@
 \begin{document}
 
 \begin{center}
-{\bf CS 6300} \hfill {\large\bf HW04: Value Iteration} \hfill {\bf Due February 21, 2017}
+{\bf CS 6300} \hfill {\large\bf HW4: Value Iteration} \hfill {\bf Due February 21, 2017}
 \end{center}
 
 \noindent
@@ -64,6 +68,28 @@ Transition Model & Rewards
 \end{tabular}
 \end{center}
 
+\begin{center}
+\begin{tikzpicture}[->, >=stealth', auto, semithick, node distance=3cm]
+\tikzstyle{every state}=[fill=white,draw=black,thick,text=black,scale=1]
+\node[state]    (PH)                     {$PH$};
+\node[state]    (PF)[above right of=PH]   {$PF$};
+\node[state]    (RH)[below right of=PH]   {$RH$};
+\node[state]    (RF)[below right of=PF]   {$RF$};
+\path
+(PH) edge[loop left, red]     node{$0.8$}         (PH)
+     edge[loop right, blue]   node{$0.8$}         (PH)
+     edge[bend left, red]     node{$0.2$}         (PF)
+     edge[bend right, blue]     node[below left]{$0.2$}       (RH)
+(PF) edge[loop below, blue]    node{$0.5$}         (PF)
+     edge[bend left, blue]    node{$0.5$}        (RF)
+(RH) edge[loop above, red]    node{$0.2$}        (RH)
+     edge[bend right, red]     node[below right]{$0.8$}        (RF);
+\end{tikzpicture}
+
+Where {\color{red}{red}} denotes the action to {\color{red}{Eat}} and {\color{blue}{blue}} denotes {\color{blue}{Play}}.
+\end{center}
+
+\newpage
 \begin{enumerate}
 
 \item Complete the table for the first 3 iterations of Value
@@ -72,15 +98,19 @@ Transition Model & Rewards
 \begin{center}
 \begin{tabular}{|l|c|c|c|c|} \hline
 State      & $i=0$ & $i=1$ & $i=2$ & $i=3$ \\ \hline \hline
-PoorHungry & 0     &       &       &       \\ \hline
-PoorFull   & 0     &       &       &       \\ \hline
-RichHungry & 0     &       &       &       \\ \hline
+PoorHungry & 0     & {\color{red}{$1.0$}}&{\color{red}{$1.0$}}&{\color{red}{$1.0$}}\\ \hline
+PoorFull   & 0     & {\color{blue}{$3.0$}}&{\color{blue}{$2.0$}}&{\color{blue}{$2.0$}}\\ \hline
+RichHungry & 0     & {\color{red}{$4.0$}}&{\color{red}{$2.4$}}&{\color{red}{$2.4$}}\\ \hline
 RichFull   & 0     & 0     & 0     & 0     \\ \hline
 \end{tabular}
 \end{center}
 
+Color denotes action taken, as defined in the above chart.
+
 \item Assuming that we are acting for three time steps, what is the
   optimal action to take from the starting state? Justify your answer.
+
+The optimal solution would be to {\color{blue}{Play}} until reaching the state {\em RichHungry} as it has the higher expected value of return. It converges to a value of 2.4 while {\color{red}{Eat}} action and heading to {\em PoorFull} has an expected value of 2.0.
 
 \end{enumerate}
 
