@@ -98,9 +98,9 @@ Where {\color{red}{red}} denotes the action to {\color{red}{Eat}} and {\color{bl
 \begin{center}
 \begin{tabular}{|l|c|c|c|c|} \hline
 State      & $i=0$ & $i=1$ & $i=2$ & $i=3$ \\ \hline \hline
-PoorHungry & 0     & {\color{red}{$1.0$}}&{\color{red}{$1.0$}}&{\color{red}{$1.0$}}\\ \hline
-PoorFull   & 0     & {\color{blue}{$3.0$}}&{\color{blue}{$2.0$}}&{\color{blue}{$2.0$}}\\ \hline
-RichHungry & 0     & {\color{red}{$4.0$}}&{\color{red}{$2.4$}}&{\color{red}{$2.4$}}\\ \hline
+PoorHungry & 0     &$-0.6$&$-1.2$&$-1.8$\\ \hline
+PoorFull   & 0     &$\phantom{-}3.0$&$\phantom{-}2.4$&$\phantom{-}1.8$\\ \hline
+RichHungry & 0     &$\phantom{-}4.0$&$\phantom{-}3.4$&$\phantom{-}2.8$\\ \hline
 RichFull   & 0     & 0     & 0     & 0     \\ \hline
 \end{tabular}
 \end{center}
@@ -110,7 +110,7 @@ Color denotes action taken, as defined in the above chart.
 \item Assuming that we are acting for three time steps, what is the
   optimal action to take from the starting state? Justify your answer.
 
-The optimal solution would be to {\color{blue}{Play}} until reaching the state {\em RichHungry} as it has the higher expected value of return. It converges to a value of 2.4 while {\color{red}{Eat}} action and heading to {\em PoorFull} has an expected value of 2.0.
+The optimal solution would be to {\color{blue}{Play}} until reaching the state {\em RichHungry} as it has the higher expected value of return. It converges to a value of 2.8 while {\color{red}{Eat}} action and heading to {\em PoorFull} has an expected value of 1.8.
 
 \end{enumerate}
 
