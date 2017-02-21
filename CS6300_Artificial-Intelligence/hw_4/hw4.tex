@@ -98,20 +98,31 @@ Where {\color{red}{red}} denotes the action to {\color{red}{Eat}} and {\color{bl
 \begin{center}
 \begin{tabular}{|l|c|c|c|c|} \hline
 State      & $i=0$ & $i=1$ & $i=2$ & $i=3$ \\ \hline \hline
-PoorHungry & 0     &$-0.6$&$-1.2$&$-1.8$\\ \hline
-PoorFull   & 0     &$\phantom{-}3.0$&$\phantom{-}2.4$&$\phantom{-}1.8$\\ \hline
-RichHungry & 0     &$\phantom{-}4.0$&$\phantom{-}3.4$&$\phantom{-}2.8$\\ \hline
-RichFull   & 0     & 0     & 0     & 0     \\ \hline
+PoorHungry &$\phantom{-}0.00$&$-1.00$&$-1.60$&$-1.98$\\ \hline
+PoorFull   &$\phantom{-}0.00$&$\phantom{-}1.00$&$\phantom{-}1.50$&$\phantom{-}1.75$\\ \hline
+RichHungry &$\phantom{-}0.00$&$\phantom{-}0.00$&$\phantom{-}0.00$&$\phantom{-}0.00$\\ \hline
+RichFull   &$\phantom{-}0.00$&$\phantom{-}0.00$&$\phantom{-}0.00$&$\phantom{-}0.00$\\ \hline
 \end{tabular}
 \end{center}
 
-Color denotes action taken, as defined in the above chart.
+The values of {\em PoorHungry} ($PH$) is calculated for two iterations to show the steps.
+
+\begin{align*}
+ V_{1}(PH) &= R(PH) + \gamma\max_{a}\left\{\begin{array}{l}T(PH,\ play,\ PH)V_{0}(PH) + T(PH,\ play,\ RH)V_{0}(RH)\\ T(PH,\ eat,\ PH)V_{0}(PH) + T(PH,\ eat,\ PF)V_{0}(PF)\\\end{array}\right.\\
+V_{1}(PH) &= -1.0 + (\gamma = 1)\max_{a}\left\{\begin{array}{l}0.8(-1) + 0.2(0)\\ 0.8(-1) + 0.2(0)\\\end{array}\right.\\
+V_{1}(PH) &= -1.0
+\end{align*}
+
+\begin{align*}
+ V_{2}(PH) &= R(PH) + \gamma\max_{a}\left\{\begin{array}{l}T(PH,\ play,\ PH)V_{1}(PH) + T(PH,\ play,\ RH)V_{1}(RH)\\ T(PH,\ eat,\ PH)V_{1}(PH) + T(PH,\ eat,\ PF)V_{1}(PF)\\\end{array}\right.\\
+V_{2}(PH) &= -1.0 + (\gamma = 1)\max_{a}\left\{\begin{array}{l}0.8(-1) + 0.2(0)\\ 0.8(-1) + 0.2(1.0)\\\end{array}\right.\\
+V_{2}(PH) &= -1.6
+\end{align*}
 
 \item Assuming that we are acting for three time steps, what is the
   optimal action to take from the starting state? Justify your answer.
 
-The optimal solution would be to {\color{blue}{Play}} until reaching the state {\em RichHungry} as it has the higher expected value of return. It converges to a value of 2.8 while {\color{red}{Eat}} action and heading to {\em PoorFull} has an expected value of 1.8.
-
+The convergence of the system is $PH = -3.00$, $PF = 2.00$, and $RH = 0.00$, so the optimal strategy would be to eat first as it's the highest value. The same is true if we just consider 3 iterations, however the values are different but the resulting importance is the same.
 \end{enumerate}
 
 \end{document}
