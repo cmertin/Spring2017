@@ -7,6 +7,33 @@
 \usepackage{tikz}
 \usetikzlibrary{automata, arrows, positioning, calc}
 \usepackage{color}
+\usepackage{listings}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
 
 \setlength{\textwidth}{6.5in}
 \setlength{\textheight}{8.9in}
@@ -125,7 +152,46 @@ After 3 iterations, the Q-values have converged enough to where we can make a re
 
 This is expected as we can get ``more'' by taking $PF$, as there is a reward on reaching that state, even if looping back, compared to $R(RH) = 0$. 
 
-As the number of iterations approaches infinity, the system converges such that $Q_{\infty}(PH) = 3.0$, $Q_{\infty}(PF) = 6.0$, and $Q_{\infty}(RH) = 5.0$. 
+As the number of iterations approaches infinity, the system converges such that $Q_{\infty}(PH) = 3.0$, $Q_{\infty}(PF) = 6.0$, and $Q_{\infty}(RH) = 5.0$. The source code used to calculate this can be found on the next page.
+
+\newpage
+
+\begin{lstlisting}[language=Python]
+from __future__ import print_function, division
+
+r_PH = -1
+r_PF = 1
+r_RH = 0
+r_RF = 5
+
+PH = 0
+PF = 0
+RH = 0
+RF = 0
+
+PH_old = 0
+PF_old = 0
+RH_old = 0
+RF_old = 0
+
+for itr in range(3):
+    PF = .5 * (r_RF + RF_old) + .5 * (r_PF + PF_old)
+    RH = .8 * (r_RF + RF_old) + .2 * (r_RH + RH_old)
+    PH = .8 * (r_PH + PH_old) + .2 * max(r_PF + PF_old, r_RH + RH_old)
+
+    PH_str = "%.3f" % PH
+    PF_str = "%.3f" % PF
+    RH_str = "%.3f" % RH
+
+    print("itr = " + str(itr+1) + ": ", PH_str, PF_str, RH_str)
+    
+    PH_old = PH
+    PF_old = PF
+    RH_old = RH
+
+\end{lstlisting}
+
+
 \end{enumerate}
 
 \end{document}
