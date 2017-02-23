@@ -1,0 +1,132 @@
+\documentclass[12pt]{article}
+
+\usepackage{times}
+\usepackage{url}
+\usepackage{graphicx}
+
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{8.9in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\topmargin}{0.05in}
+\setlength{\headheight}{-0.05in}
+\setlength{\headsep}{0.0in}
+
+\begin{document}
+
+\begin{center}
+{\bf CS 6300} \hfill {\large\bf HW05: Policy Iteration and TD Learning} \hfill {\bf Due February 28, 2017}
+\end{center}
+
+\noindent
+Please use the \LaTeX\ template to produce your writeups. See the
+Homework Assignments page on the class website for details.  Hand in
+at: \url{https://webhandin.eng.utah.edu/index.php}.
+
+\section{Policy Iteration (30pts)}
+
+The card game of high-low is played with an infinite deck whose only
+cards are 2, 3, and 4 in equal proportion.  You start with one of the
+cards showing, and say either {\it high} or {\it low}.  Then a new
+card is flipped, and you compare the value of the new card to that of
+the old card.
+
+\begin{itemize}
+
+\item If you are right, you get the value of the new card.
+
+\item If the new card has the same value, you don't get any points.
+
+\item If you are wrong, the game is done.
+
+\end{itemize}
+
+\noindent
+If you are not done, the new card then becomes the reference card for
+drawing the next new card.  You accumulate points as above until you
+are wrong and the game ends.
+
+\begin{enumerate}
+
+\item Formulate high-low as an MDP, by listing the states, actions,
+  transition rewards, and transition probabilities.  
+
+\item You will be doing one iteration of policy iteration.  Assume the
+  initial policy $\pi_0(s) = high$.
+
+  \begin{enumerate}
+
+ \item Perform policy evaluation to solve for the utility values
+  $V^{\pi_0}(s)$ for the appropriate states $s$.  Please solve these
+  equations analytically.
+
+  \item Perform policy improvement to find the next policy $\pi_1(s)$.
+
+  \end{enumerate}
+
+\end{enumerate}
+
+\clearpage
+
+\section{Life as a Student}
+
+Jennifer is currently finishing up in college and is trying to decide
+what she wants to do with the rest of her life.  She sketches her
+options as a known MDP:
+
+\begin{center}
+\includegraphics[width=4.5in]{student_life.png}
+\end{center}
+
+At each point in her life she can choose to either continue in school
+(action $x$) or try to get a job (action $y$).  Her three states are
+{\bf C}ollege, {\bf G}rad School and {\bf J}ob.  {\bf J} is a terminal
+state.  Transition probabilities $t$ and immediate rewards $r$ are
+shown on the arcs as $t,r$.  The discount $\gamma = 0.5$.
+
+\begin{enumerate}
+
+\item Using value iteration, compute values for each state.  Add or
+  remove extra lines for iteration as needed.
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|} \hline
+$i$ & $V_i^*(C)$ & $V_i^*(G)$ \\ \hline
+0   &            &           \\ \hline
+1   &            &           \\ \hline
+2   &            &           \\ \hline
+3   &            &           \\ \hline
+4   &            &           \\ \hline
+\end{tabular}
+\end{center}
+
+\item Suppose Jennifer didn't actually know the values of the MDP.
+  Instead, she watched three of her older siblings go through life.
+  They exhibited the following trajectories:
+
+\begin{center}
+\begin{tabular}{|l|l|l|} \hline
+{\bf Sibling 1} & {\bf Sibling 2} & {\bf Sibling 3} \\ \hline
+    C, x, -200 & C, x, -400 & C, x, -400 \\
+    C, x, -200 & G, x,  100 & G, x,  100 \\
+    C, y,  400 & G, x,  100 & G, x,  100 \\
+    J          & G, y, 1000 & G, x,  200 \\
+               & J          & J          \\ \hline
+\end{tabular}
+\end{center}
+
+  \begin{enumerate}
+
+  \item According to direct estimation, what are the transition
+    probabilities $T(C,x,C)$, $T(C,x,G)$ and $T(C,y,J)$?
+
+  \item According to direct estimation, what are the rewards
+    $R(C,x,C)$, $R(C,x,G)$ and $R(C,y,J)$?
+
+  \item Use TD Learning instead to find estimates of the value
+    function $V^{\pi}(s)$, assuming $\alpha=0.5$.
+
+  \end{enumerate}
+
+\end{enumerate}
+
+\end{document}
