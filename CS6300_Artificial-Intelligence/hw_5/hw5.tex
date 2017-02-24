@@ -3,6 +3,11 @@
 \usepackage{times}
 \usepackage{url}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{positioning,angles,quotes}
+
+\usepackage{color}
 
 \setlength{\textwidth}{6.5in}
 \setlength{\textheight}{8.9in}
@@ -71,7 +76,7 @@ $4$ & $low$  & $equal$ & $1/3$ \\ \hline
 \end{tabular} &
 \begin{tabular}{|l|l|}\hline
 $s'$       & $R(s')$ \\ \hline
-$win$ & $new\ card$ \\  \hline
+$win$ & $\{2, 3, 4\}$ \\  \hline
 $equal$  &  $0$ \\ \hline
 $lose$ & $-\infty$  \\ \hline
 \end{tabular} \\
@@ -92,7 +97,24 @@ Transition Model & Rewards
     V^{\pi_{0}}(s) = \sum_{s^{\prime}}T(s, \pi_{0}, s^{\prime})\left[ R(s, \pi_{0}(s), s^{\prime}) + \gamma V^{\pi_{0}}(s^{\prime}) \right]
   \]
 
+We can also calculate the expected value of drawing a new card by taking the average of the values since they're all equally likely. Therefore, we get $\text{{\tt avg}}\left( \{2, 3, 4\}\right) = \frac{2 + 3 + 4}{3} = 3$. Using this gives us
+
+\begin{align*}
+  V^{\pi_{0}}(2) &= \frac{2}{3}\left[ \{2, 3, 4\} + 0\right] + \frac{1}{3}\left[ 0 + 0\right]\\
+               &= \frac{2}{3}(3) = 2\\
+  V^{\pi_{0}}(3) &= \frac{1}{3}\left[ 4 + 0 \right] + \frac{1}{3}\left[ 0 + 0\right] + \frac{1}{3}\left[ -\infty + 0\right]\\
+               &= \frac{4}{3} - \frac{1}{3}\infty\\
+  V^{\pi_{0}}(4) &= \frac{1}{3}\left[ 0 + 0\right] + \frac{2}{3}\left[ -\infty + 0\right]\\
+               &= -\frac{2}{3}\infty
+\end{align*}
+
   \item Perform policy improvement to find the next policy $\pi_1(s)$.
+
+\begin{align*}
+  V^{\pi_{1}}(2) &= 5\\
+  V^{\pi_{1}}(3) &= 5\\
+  V^{\pi_{1}}(4) &= 5\\
+\end{align*}
 
   \end{enumerate}
 
@@ -107,11 +129,28 @@ what she wants to do with the rest of her life.  She sketches her
 options as a known MDP:
 
 \begin{center}
-\includegraphics[width=4.5in]{student_life.png}
+\begin{tikzpicture}[auto,node distance=8mm,>=latex,font=\small]
+
+\tikzstyle{round}=[thick,draw=black,circle]
+
+    \node[round] (C) {$College$};
+    \node[round,right=40mm of C, align=center] (G) {$Grad$\\ $School$};
+    \node[round,right=40mm of G, align=center] (J) {$Job$};
+
+\path
+    (C) edge[loop above, red] node{$0.4,-200$}  (C)
+    (C) edge[->, bend left, red] node[above]{$0.6,-400$}  (G)
+    (C) edge[->, bend right, blue, out=-45, in=-135] node[below]{$0.4,400$} (J)
+    (C) edge[->, bend right, blue, out=-90, in=-90] node[below]{$0.6,100$} (J)
+    (G) edge[->, loop above, red] node[above]{$0.8, 100$} (G)
+    (G) edge[->, bend left, red] node[above]{$0.2, 200$} (J)
+    (G) edge[->, bend right, blue] node[above]{$1.0, 1000$} (J);
+\end{tikzpicture}
 \end{center}
 
+\vspace{-2.5em}
 At each point in her life she can choose to either continue in school
-(action $x$) or try to get a job (action $y$).  Her three states are
+(action {\color{red}{$x$}}) or try to get a job (action {\color{blue}{$y$}}).  Her three states are
 {\bf C}ollege, {\bf G}rad School and {\bf J}ob.  {\bf J} is a terminal
 state.  Transition probabilities $t$ and immediate rewards $r$ are
 shown on the arcs as $t,r$.  The discount $\gamma = 0.5$.
@@ -122,15 +161,34 @@ shown on the arcs as $t,r$.  The discount $\gamma = 0.5$.
   remove extra lines for iteration as needed.
 
 \begin{center}
-\begin{tabular}{|l|c|c|c|} \hline
+\begin{tabular}{|l|r|r|} \hline
 $i$ & $V_i^*(C)$ & $V_i^*(G)$ \\ \hline
-0   &            &           \\ \hline
-1   &            &           \\ \hline
-2   &            &           \\ \hline
-3   &            &           \\ \hline
-4   &            &           \\ \hline
+$0$ &$0.0$ &$0.0$ \\ \hline
+$1$ & $220.0$ & $1500.0$\\ \hline
+$2$ & $330.0$ & $1375.0$\\ \hline
+$3$ & $302.5$ & $1171.9$\\ \hline
+$4$ & $257.8$ & $1073.2$\\ \hline
 \end{tabular}
 \end{center}
+
+The non-linear equation for {\em Value Iteration} is defined as
+
+\[
+  V^{*}_{k+1}(s) = \max_{a}\sum_{s^{\prime}}T(s, a, s^{\prime})\left[ R(s, a, s^{\prime}) + \gamma V^{*}_{k}(s^{\prime})\right]
+\]
+
+We can calculate the value of $V$ for two iterations of $College$.
+
+\begin{align*}
+V_{1}^{*}(C) &= \max_{a}\left\{ \begin{array}{lcr@{}}
+                                  0.4(-200 + 0) + 0.6(-400 + 0) & = -320 & ({\color{red}{x}})\\
+                                  0.4(400 + 0) + 0.6(100 + 0) & = \phantom{-}220 & ({\color{blue}{y}})\\
+                                \end{array}\right.\\
+V_{2}^{*}(C) &= \max_{a}\left\{ \begin{array}{lcr@{}}
+                                  0.4(-200 + 0.5(-320)) + 0.6(-400 + 0.5(-320)) & = -480& ({\color{red}{x}})\\
+                                  0.4(400 + 0.5(220)) + 0.6(100 + 0.5(220)) & = \phantom{-}330 & ({\color{blue}{y}})\\
+                                \end{array}\right.
+\end{align*}
 
 \item Suppose Jennifer didn't actually know the values of the MDP.
   Instead, she watched three of her older siblings go through life.
@@ -139,21 +197,21 @@ $i$ & $V_i^*(C)$ & $V_i^*(G)$ \\ \hline
 \begin{center}
 \begin{tabular}{|l|l|l|} \hline
 {\bf Sibling 1} & {\bf Sibling 2} & {\bf Sibling 3} \\ \hline
-    C, x, -200 & C, x, -400 & C, x, -400 \\
-    C, x, -200 & G, x,  100 & G, x,  100 \\
-    C, y,  400 & G, x,  100 & G, x,  100 \\
-    J          & G, y, 1000 & G, x,  200 \\
-               & J          & J          \\ \hline
+$C, {\color{red}{x}}, -200$ & $C, {\color{red}{x}}, -400$ & $C, {\color{red}{x}}, -400$ \\
+$C, {\color{red}{x}}, -200$ & $G, {\color{red}{x}},  \phantom{-}100$ & $G, {\color{red}{x}},  \phantom{-}100$ \\
+$C, {\color{blue}{y}}, \phantom{-}400$ & $G, {\color{red}{x}},  \phantom{-}100$ & $G, {\color{red}{x}},  \phantom{-}100$ \\
+$J$          & $G, {\color{blue}{y}}, \phantom{-}1000$ & $G, {\color{red}{x}},  \phantom{-}200$ \\
+             & $J$          & $J$          \\ \hline
 \end{tabular}
 \end{center}
 
   \begin{enumerate}
 
   \item According to direct estimation, what are the transition
-    probabilities $T(C,x,C)$, $T(C,x,G)$ and $T(C,y,J)$?
+    probabilities $T(C,{\color{red}{x}},C)$, $T(C,{\color{red}{x}},G)$ and $T(C,{\color{blue}{y}},J)$?
 
   \item According to direct estimation, what are the rewards
-    $R(C,x,C)$, $R(C,x,G)$ and $R(C,y,J)$?
+    $R(C,{\color{red}{x}},C)$, $R(C,{\color{red}{x}},G)$ and $R(C,{\color{blue}{y}},J)$?
 
   \item Use TD Learning instead to find estimates of the value
     function $V^{\pi}(s)$, assuming $\alpha=0.5$.
