@@ -159,6 +159,7 @@ $(11.797, 49.467)$ & $(110.981, 88.871)$ & $(67.941, 19.630)$\\
 \begin{tabular}{c c c}
 \hline\hline
 $c_{1}$ & $c_{2}$ & $c_{3}$\\
+\hline
 $106.725$ & $114.176$ & $81.528$\\
 \hline
 \end{tabular}
@@ -170,6 +171,7 @@ $106.725$ & $114.176$ & $81.528$\\
 \begin{tabular}{c c c}
 \hline\hline
 $c_{1}$ & $c_{2}$ & $c_{3}$\\
+\hline
 $1889.118$ & $7749.613$ & $2737.042$\\
 \hline
 \end{tabular}
@@ -186,7 +188,63 @@ Recall that Lloyd's algorithm for $k$-means clustering starts with a set of $k$ 
 
 \begin{itemize}
 \item  Run Lloyds Algorithm with $C$ initially with points indexed $\{\texttt{1,2,3}\}$.  Report the final subset and the $3$-means cost.  
+
+\begin{table}[H]
+\centering
+\caption{$3$-Means Cost}
+\begin{tabular}{c c c}
+\hline\hline
+$c_{1}$ & $c_{2}$ & $c_{3}$\\
+\hline
+$1456.310$ & $2283.676$ & $2426.06$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Centroid Locations}
+\begin{tabular}{c | r r}
+\hline\hline
+  & $x_{1}$ & $x_{2}$ \\
+\hline
+$c_{1}$ & $29.027$ & $64.334$\\
+$c_{2}$ & $58.485$ & $19.850$\\
+$c_{3}$ & $63.158$ & $20.778$\\
+\hline
+\end{tabular}
+\end{table}
+
 \item  Run Lloyds Algorithm with $C$ initially as the output of \textsf{Gonzalez} above.  Report the final subset and the $3$-means cost.  
+
+\begin{table}[H]
+\centering
+\caption{$3$-Means Cost}
+\begin{tabular}{c c c}
+\hline\hline
+$c_{1}$ & $c_{2}$ & $c_{3}$\\
+\hline
+$1994.695$ & $2180.608$ & $2332.941$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Centroid Locations}
+\begin{tabular}{c | r r}
+\hline\hline
+  & $x_{1}$ & $x_{2}$\\
+\hline
+$c_{1}$ & $9.997$ & $50.069$\\
+$c_{2}$ & $50.217$ & $80.101$\\
+$c_{3}$ & $59.947$ & $19.973$\\
+\hline
+\end{tabular}
+\end{table}
+
+
+
 \item  Run Lloyds Algorithm with $C$ initially as the output of each run of \textsf{k-Means++} above.  Plot a \emph{cumulative density function} of the $3$-means cost.  Also report the fraction of the trials that the subsets are the same as the input (where the input is the result of \textsf{k-Means++}).  
 
 
