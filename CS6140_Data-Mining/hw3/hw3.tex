@@ -65,6 +65,15 @@ It may be useful to do this pictorially.
 Which variant did the best job, and which was the easiest to compute (think if the data was much larger)?  
 Explain your answers.  
 
+
+\begin{itemize}
+  \item {\bf Complete-Link:} The worst case time complexity is $\BigO{n^{2}\log(n)}$. This comes about from updating the distance metric in $\BigO{n}$ after each merge iteration. We then pick the next pair to merge by finding the smallest distance that is still eligible for merging. If this is done by traversing the $n$ sorted lists of distances, then we have done $n^{2}$ traversal steps by the end of clustering. Adding these up gives $\BigO{n^{2}\log(n)}$.
+    \item {\bf Single-Link:} Complexity is $\BigO{n^{2}}$. We first compute all distances which is $\BigO{n^{2}}$. While doing this, we also find the smallest distance for each data point and keep them in teh next-best-merge array. In each of the $n-1$ merging steps, we then find the smallest distance in the next-best-merge array. We merge the two identified clusters, and update the distance matrix in $\BigO{n}$. Finally, we update the next-best-merge array in $\BigO{n}$ in each step. This can be done in $\BigO{n}$ because if the best merge partner for $k$ before merging $i$ and $j$ was either $i$ or $j$, then after merging $i$ and $j$, the best marge partner for $k$ is the merger of $i$ and $j$.
+    \item {\bf Mean-Link:} Complexity is $\BigO{n^{2}\log(n)}$. We first compute all $n^{2}$ similarities bfor the singleton clusters, and sort them for each cluster $\left[\text{time: }\BigO{n^{2}\log(n)}\right]$. In each of the $\BigO{n}$ merge iterations, we identify the pair of clusters with the highest cohesion in $\BigO{n}$, merge the pair, and update the cluster centroids, $\phi$, and cohesions of the $\BigO{n}$ possible mergers of the just created cluster with the remaining clusters. For each cluster, we also update the sorted list of merge candidates by deleting the two just merged clusters and inserting its cohesion with the just created cluster. Each iteration thus takes $\BigO{n\log(n)}$. Overall, time complexity is then $\BigO{n^{2}\log(n)}$.
+\end{itemize}
+
+Based on the above complexities, the best algorithm for {\em large} data sets is {\em Single-Link} as it's complexity is only $\BigO{n^{2}}$ compared to the other two which are bounded by $\BigO{n^{2}\log(n)}$. The resulting dendrograms of the 3 cluster variants can be seen below. The numbers $\{0, 1, 2, 3\}$ denote the cluster that the number belongs to.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=.75\textwidth]{Single-Link_dendro.pdf}
@@ -182,6 +191,8 @@ $1889.118$ & $7749.613$ & $2737.042$\\
 \includegraphics[width=.75\textwidth]{cdf.pdf}
 \caption{ $3$-Mean Cost of {\tt K-Means++}}
 \end{figure}
+
+
 
 \paragraph{B: (20 points)}
 Recall that Lloyd's algorithm for $k$-means clustering starts with a set of $k$ centers $C$ and runs as described in Algorithm 10.1.1.  
@@ -340,6 +351,10 @@ Your score will be based on how small a $\textsf{Cost}_1(P,C)$ you can find.   Y
 
 Very briefly describe how you found the centers.  
 
+To implement this algorithm, the above cost function was implemented to be minimized with Lloyd's algorithm. Lloyd's algorithm requires some initial cluster points, so 4 points were chosen at random from the given set. As there is no way to guarenttee that the points chosen at random were the {\em best}, this was run for 1000 epochs, with the centroids giving the best cost being saved.
+
+Below, the CDF of the mean cost for each cluster can be found as well for the trials. 
+
 
 \begin{table}[H]
 \centering
@@ -347,6 +362,7 @@ Very briefly describe how you found the centers.
 \begin{tabular}{c | r r r r r}
 \hline\hline
  & $x_{1}$ & $x_{2}$ & $x_{3}$ & $x_{4}$ & $x_{5}$\\
+\hline
 $c_{1}$ & $0.188$ & $0.845$ & $0.141$ & $0.132$ & $0.037$\\
 $c_{2}$ & $1.007$ & $0.120$ & $-0.164$ & $0.085$ & $0.190$\\
 $c_{3}$ & $-0.035$ & $0.106$ & $0.945$ & $0.044$ & $-0.134$\\
@@ -383,6 +399,7 @@ Run your algorithm again for the $5$-medians problem on dataset \texttt{C3.txt}.
 \begin{tabular}{c | r r r r r}
 \hline\hline
  & $x_{1}$ & $x_{2}$ & $x_{3}$ & $x_{4}$ & $x_{5}$\\
+\hline
 $c_{1}$ & $-0.016$ & $0.075$ & $1.180$ & $-0.050$ & $-0.113$\\
 $c_{2}$ & $0.008$ & $-0.096$ & $0.633$ & $0.135$ & $0.034$\\
 $c_{3}$ & $-0.087$ & $-0.306$ & $0.053$ & $0.848$ & $0.222$\\
