@@ -26,12 +26,12 @@ j_old = 0
 gamma = 0.5
 
 for i in range(10):
-    c1 = r_x_ccp * (r_x_cc + gamma**i * c_old) + r_x_cgp * (r_x_cg + gamma**i * c_old)
-    c2 = r_y_cj1p * (r_y_cj1 + gamma**i * c_old) + r_y_cj2p * (r_y_cj2 + gamma**i * c_old)
+    c1 = r_x_ccp * (r_x_cc + gamma**i * c_old) + r_x_cgp * (r_x_cg + gamma**i * g_old)
+    c2 = r_y_cj1p * (r_y_cj1 + gamma**i * j_old) + r_y_cj2p * (r_y_cj2 + gamma**i * j_old)
     c = max(c1, c2)
 
-    g1 = r_x_ggp * (r_x_gg + gamma**i * g_old) + r_x_gjp * (r_x_gj + gamma**i * g_old)
-    g2 = r_y_gjp * (r_y_gj + gamma**i * g_old)
+    g1 = r_x_ggp * (r_x_gg + gamma**i * g_old) + r_x_gjp * (r_x_gj + gamma**i * j_old)
+    g2 = r_y_gjp * (r_y_gj + gamma**i * j_old)
     g = max(g1, g2)
     c_str = "%.1f" % c
     g_str = "%.1f" % g

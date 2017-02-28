@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{float}
 \usetikzlibrary{positioning,angles,quotes}
 
 \usepackage{color}
@@ -163,11 +164,10 @@ shown on the arcs as $t,r$.  The discount $\gamma = 0.5$.
 \begin{center}
 \begin{tabular}{|l|r|r|} \hline
 $i$ & $V_i^*(C)$ & $V_i^*(G)$ \\ \hline
-$0$ &$0.0$ &$0.0$ \\ \hline
-$1$ & $220.0$ & $1500.0$\\ \hline
-$2$ & $330.0$ & $1375.0$\\ \hline
-$3$ & $302.5$ & $1171.9$\\ \hline
-$4$ & $257.8$ & $1073.2$\\ \hline
+$0$ &$0.0$ &$0.0$ \\ 
+$1$ & $220.0$ & $1000.0$\\ 
+$2$ & $220.0$ & $1000.0$\\ 
+\hline
 \end{tabular}
 \end{center}
 
@@ -185,8 +185,8 @@ V_{1}^{*}(C) &= \max_{a}\left\{ \begin{array}{lcr@{}}
                                   0.4(400 + 0) + 0.6(100 + 0) & = \phantom{-}220 & ({\color{blue}{y}})\\
                                 \end{array}\right.\\
 V_{2}^{*}(C) &= \max_{a}\left\{ \begin{array}{lcr@{}}
-                                  0.4(-200 + 0.5(-320)) + 0.6(-400 + 0.5(-320)) & = -480& ({\color{red}{x}})\\
-                                  0.4(400 + 0.5(220)) + 0.6(100 + 0.5(220)) & = \phantom{-}330 & ({\color{blue}{y}})\\
+                                  0.4(-200 + 0.5(220)) + 0.6(-400 + 0.5(220)) & = -210& ({\color{red}{x}})\\
+                                  0.4(400 + 0.5(220)) + 0.6(100 + 0.5(220)) & = \phantom{-}220 & ({\color{blue}{y}})\\
                                 \end{array}\right.
 \end{align*}
 
@@ -210,11 +210,41 @@ $J$          & $G, {\color{blue}{y}}, \phantom{-}1000$ & $G, {\color{red}{x}},  
   \item According to direct estimation, what are the transition
     probabilities $T(C,{\color{red}{x}},C)$, $T(C,{\color{red}{x}},G)$ and $T(C,{\color{blue}{y}},J)$?
 
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{c c c}
+        \hline\hline
+        $T(C,{\color{red}{x}},C)$ & $T(C,{\color{red}{x}},G)$ & $T(C,{\color{blue}{y}},J)$\\
+        \hline
+        $4/9$ & $5/9$ & $1/1$\\
+        \hline
+       \end{tabular}
+      \end{table}
+
   \item According to direct estimation, what are the rewards
     $R(C,{\color{red}{x}},C)$, $R(C,{\color{red}{x}},G)$ and $R(C,{\color{blue}{y}},J)$?
 
+
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{c c c}
+        \hline\hline
+        $R(C,{\color{red}{x}},C)$ & $R(C,{\color{red}{x}},G)$ & $R(C,{\color{blue}{y}},J)$\\
+        \hline
+        $-300$ & $120$ & $400$\\
+        \hline
+       \end{tabular}
+      \end{table}
+
+
   \item Use TD Learning instead to find estimates of the value
     function $V^{\pi}(s)$, assuming $\alpha=0.5$.
+
+    The equation for Temporal Difference Learning is
+
+    \begin{align*}
+      V^{\pi}(s) &\leftarrow (1 - \alpha)V^{\pi}(s) + \alpha\left[R(s,\pi,s^{\prime}) + \gamma V^{\pi}(s^{\prime})\right]
+    \end{align*}
 
   \end{enumerate}
 
