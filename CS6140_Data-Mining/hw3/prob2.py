@@ -92,19 +92,26 @@ print(cost)
 
 costs2 = [[] for x in range(n_clusters)]
 
-
+same_count = 0
 costs = [[] for x in range(n_clusters)]
 
 for i in range(200):
+    is_same = False
+    is_same_g = False
     k_means = KMeans(n_clusters = n_clusters, init="random", algorithm="full", n_init=1, copy_x=True).fit(data)
     cost = MeanCost(data, k_means.cluster_centers_)
+    old_clusters = np.asarray(k_means.cluster_centers_)
+    old_clusters = old_clusters.copy()
     k_means2 = KMeans(n_clusters = n_clusters, init=k_means.cluster_centers_, copy_x=True, algorithm="full").fit(data)
+    new_clusters = np.asarray(k_means2.cluster_centers_)
+    is_same = np.array_equal(old_clusters, new_clusters)
+    if is_same is True:
+        same_count += 1
     cost2 = MeanCost(data, k_means2.cluster_centers_)
     for j in range(len(cost)):
         costs[j].append(cost[j])
         costs2[j].append(cost2[j])
 
-        
 plt.clf()        
 for idx, cost in enumerate(costs):
     c1 = np.sort(cost)
@@ -175,3 +182,5 @@ plt.ylabel("%")
 plt.title("K-Means Lloyd's Algorithm with K-Means++ Initializer")
 plt.savefig("kmeanspp_lloyds.pdf", bbox_inches="tight")
 #plt.show()
+
+print("Numbuer of times the same: " + str(same_count))

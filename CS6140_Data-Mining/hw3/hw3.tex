@@ -132,6 +132,8 @@ Report the centers and the subsets (as pictures) for \textsf{Gonzalez}.  Report:
 For \textsf{k-Means++}, the algorithm is randomized, so you will need to report the variation in this algorithm.  Run it several trials (at least $20$) and plot the \emph{cumulative density function} of the $3$-means cost.  
 Also report what fraction of the time the subsets are the same as the result from \textsf{Gonzalez}.  
 
+Out of all of the 200 iterations, there was never a point where {\tt K-Means++} resulted in any centers that were the same as \textsf{Gonzalez}.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=.75\textwidth]{gonzalez.pdf}
@@ -257,6 +259,8 @@ $c_{3}$ & $59.947$ & $19.973$\\
 
 
 \item  Run Lloyds Algorithm with $C$ initially as the output of each run of \textsf{k-Means++} above.  Plot a \emph{cumulative density function} of the $3$-means cost.  Also report the fraction of the trials that the subsets are the same as the input (where the input is the result of \textsf{k-Means++}).  
+
+On average, the number of trials where the resulting centers were the same as the input was $150/200$ or about $75\%$ of the time.
 
 
 \begin{figure}[H]
