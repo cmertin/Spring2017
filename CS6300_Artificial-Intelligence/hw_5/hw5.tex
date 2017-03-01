@@ -231,14 +231,20 @@ $J$          & $G, {\color{blue}{y}}, \phantom{-}1000$ & $G, {\color{red}{x}},  
 
     \begin{table}[H]
       \centering
-      \begin{tabular}{c c c}
+      \begin{tabular}{c | c | c}
         \hline\hline
         $T(C,{\color{red}{x}},C)$ & $T(C,{\color{red}{x}},G)$ & $T(C,{\color{blue}{y}},J)$\\
         \hline
-        $4/9$ & $5/9$ & $1/2$\\
+        $1/2$ & $1/2$ & $1/1$\\
         \hline
+        $T(G, {\color{red}{x}}, G)$ & $T(G,{\color{blue}{y}},J)$ & $T(G,{\color{red}{x}},J)$\\
+        \hline
+        $4/5$ & $1/2$ & $1/5$\\
+        \hline\hline
        \end{tabular}
       \end{table}
+
+      These can be calculated simply by taking the probability of the previous state transitioning to the next state.
 
   \item According to direct estimation, what are the rewards
     $R(C,{\color{red}{x}},C)$, $R(C,{\color{red}{x}},G)$ and $R(C,{\color{blue}{y}},J)$?
@@ -246,14 +252,20 @@ $J$          & $G, {\color{blue}{y}}, \phantom{-}1000$ & $G, {\color{red}{x}},  
 
     \begin{table}[H]
       \centering
-      \begin{tabular}{c c c}
+      \begin{tabular}{c | c | c}
         \hline\hline
         $R(C,{\color{red}{x}},C)$ & $R(C,{\color{red}{x}},G)$ & $R(C,{\color{blue}{y}},J)$\\
         \hline
         $-300$ & $120$ & $400$\\
         \hline
+        $R(G,{\color{red}{x}},G)$ & $R(G,{\color{red}{x}},J)$ & $R(G,{\color{blue}{y}},J)$\\
+        \hline
+        $750$ & $1000$ & $200$\\
+        \hline\hline
        \end{tabular}
       \end{table}
+
+      These are simply calculated by taking the sum of the values from {\em that starting state} to the {\em goal state $J$} and applying the previous probabilities to them. For example, $R(C,{\color{red}{x}},G)_{\pi(s_{3})} = 0$ since the total sum is zero, however $R(C,{\color{red}{x}},G)_{\pi(s_{2})} = 800$ and with the transition state being $1/2$ we get $400$.
 
 
   \item Use TD Learning instead to find estimates of the value
@@ -262,7 +274,21 @@ $J$          & $G, {\color{blue}{y}}, \phantom{-}1000$ & $G, {\color{red}{x}},  
     The equation for Temporal Difference Learning is
 
     \begin{align*}
-      V^{\pi}(s) &\leftarrow (1 - \alpha)V^{\pi}(s) + \alpha\left[R(s,\pi,s^{\prime}) + \gamma V^{\pi}(s^{\prime}) - V^{\pi}(s)\right]
+      V^{\pi}(s) &\leftarrow (1 - \alpha)V^{\pi}(s) + \alpha\left[R(s,\pi,s^{\prime}) + \gamma V^{\pi}(s^{\prime})\right]\\
+      \intertext{Which we can use to compute the values, for sibling 1 as}
+      V_{1}^{\pi(s_{1})}(C) &= 0.5(0) + 0.5(100 + 0.5(0)) = 50.00\\
+      V_{2}^{\pi(s_{1})}(C) &= 0.5(50) + 0.5(100 + 0.5(50)) = 87.50\\
+      V_{3}^{\pi(s_{1})}(C) &= 0.5(87.50) + 0.5(400 + 0.5(0)) = 243.75\\
+      \intertext{For sibling 2 we get}
+      V_{4}^{\pi(s_{2})}(C) &= 0.5(243.75) + 0.5(400 + 0.5(0)) = 321.88\\
+      V_{5}^{\pi(s_{2})}(G) &= 0.5(321.88) + 0.5(750 + 0.5(321.88)) = 616.41\\
+      V_{6}^{\pi(s_{2})}(G) &= 0.5(616.41) + 0.5(750 + 0.5(616.41)) = 837.31\\
+      V_{7}^{\pi(s_{2})}(G) &= 0.5(837.31) + 0.5(1000 + 0.5(0)) = 918.66\\
+      \intertext{And finally, sibling 3}
+      V_{8}^{\pi(s_{3})} &= 0.5(321.88) + 0.5(400 + 0.5(918.66)) = 590.61\\
+      V_{9}^{\pi(s_{3})} &= 0.5(918.66) + 0.5(750 + 0.5(918.66)) = 1063.99\\
+      V_{10}^{\pi(s_{3})} &= 0.5(1063.99) + 0.5(750 + 0.5(1063.99)) = 1172.99\\
+      V_{11}^{\pi(s_{3})} &= 0.5(1172.99) + 0.5(200 + 0.5(0)) = 686.50
     \end{align*}
 
   \end{enumerate}
