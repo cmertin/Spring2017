@@ -95,6 +95,10 @@ The $Q$-values can be found by the learning updates with the equation
 
 \begin{align*}
 Q(s,a) &= (1-\alpha)Q(s,a) + \alpha\left[ R(s,a,s^{\prime}) + \gamma\max_{a^{\prime}}Q(s^{\prime},a^{\prime})\right]
+\intertext{We can do this for a given example. For example $Q((3,2),N)$}
+Q((3,2),N) &= 0.5(0) + 0.5\left[ 100 + 0.5(0)\right]\\
+\intertext{This comes about as the reward is given as the transition, so the remaining states in $\max_{a^{\prime}}$ are $0$. This gives}
+Q((3,2),N) &= 50
 \end{align*}
 
 \item Consider a feature based representation of the Q-value function:
@@ -126,7 +130,11 @@ Q(s,a) &= (1-\alpha)Q(s,a) + \alpha\left[ R(s,a,s^{\prime}) + \gamma\max_{a^{\pr
     w_{i} &= w_{i} + \alpha\left[R(s,a,s^{\prime}) + \gamma\max_{a^{\prime}}Q(s^{\prime},a^{\prime}) - Q(s,a)\right]f_{i}(s,a)
     \end{align*}
 
-    which when plugging in the values, the only instance for which we get a non-zero reward on the first episode is for $-100$.
+    which when plugging in the values, the first instance for which we get a non-zero reward on the first episode is for $-100$. $w_{1}$ is done as an example below
+
+\begin{align*}
+  w_{1} &= 0 + 0.5\left[ -100 + \gamma (0) - 0\right]2 = -100
+\end{align*}
 
   \item Assume the weight vector $w$ is equal to $(1, 1, 1)$.  What is
   the action prescribed by the Q-function in state $(2,2)$ ?
