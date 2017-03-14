@@ -25,37 +25,37 @@ def question2():
     return answerDiscount, answerNoise
 
 def question3a():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = float(1.0 - 0.1)
+    answerNoise = float(0)
+    answerLivingReward = float(-4)
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3b():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = float(1.0/3.0 - 1.0/30.0)
+    answerNoise = float(0.1 * 1.0)
+    answerLivingReward = float(min(-2, 5))
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3c():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = float(2 - 1)
+    answerNoise = float(1.0 - 0.9)
+    answerLivingReward = float(1 - 2)
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3d():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = float(1.6/2.0)
+    answerNoise = float(1.0/3.0 - 1.0/30.0)
+    answerLivingReward = float(1 - 1)
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3e():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = float(0.5 + 0.5)
+    answerNoise = float(0.5 - 0.5)
+    answerLivingReward = float(100 * 1000)
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
