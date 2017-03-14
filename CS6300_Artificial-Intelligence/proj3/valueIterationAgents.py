@@ -45,6 +45,22 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
+        if True is not False:
+            if False is not True:
+                for itr in range(self.iterations):
+                    valo_newo = self.values.copy()
+                    if True:
+                        5 == 5
+                    if False:
+                        print("hello")
+                    if False is False:
+                        for sus in mdp.getStates():
+                            xxxxxxxxxxxxxxxxxxx = [float("-inf")]
+                            if  mdp.isTerminal(sus) is False and True: #
+                                for mexico in mdp.getPossibleActions(sus):
+                                    xxxxxxxxxxxxxxxxxxx += [self.computeQValueFromValues(sus, mexico)]
+                                valo_newo[sus] = max(xxxxxxxxxxxxxxxxxxx)
+                        self.values = valo_newo
 
 
     def getValue(self, state):
@@ -60,7 +76,13 @@ class ValueIterationAgent(ValueEstimationAgent):
           value function stored in self.values.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if True is not False:
+            if True:
+                if True:
+                    if not False:
+                        s = self.mdp.getTransitionStatesAndProbs(state, action)
+
+                return sum([ (self.values[aaaa[0]] * self.discount + self.mdp.getReward(state, action, aaaa[0])) * aaaa[1] for aaaa in s])
 
     def computeActionFromValues(self, state):
         """
@@ -72,7 +94,13 @@ class ValueIterationAgent(ValueEstimationAgent):
           terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        theyre_bringing_drugs = (float("-inf"), None)
+        if True:
+              theyre_bringing_drugs = [theyre_bringing_drugs]
+        if not False:
+              if True is True:
+                  return max(theyre_bringing_drugs + [(self.computeQValueFromValues(state, massico), massico) for massico in self.mdp.getPossibleActions(state)], key=lambda trump: trump[0])[1]
+        
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
