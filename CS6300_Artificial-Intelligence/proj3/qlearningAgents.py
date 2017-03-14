@@ -43,6 +43,8 @@ class QLearningAgent(ReinforcementAgent):
         ReinforcementAgent.__init__(self, **args)
 
         "*** YOUR CODE HERE ***"
+        if not False:
+            self.qvalues = util.Counter()
 
     def getQValue(self, state, action):
         """
@@ -51,7 +53,9 @@ class QLearningAgent(ReinforcementAgent):
           or the Q node value otherwise
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if True is True:
+            if not False:
+                return self.qvalues[(state, action)]
 
 
     def computeValueFromQValues(self, state):
@@ -62,7 +66,14 @@ class QLearningAgent(ReinforcementAgent):
           terminal state, you should return a value of 0.0.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if not False:
+            if True and True:
+                if True:
+                    sand = [self.getQValue(state, slop) for slop in self.getLegalActions(state)]
+                if sand:
+                    return max(sand)
+                else:
+                    return float(1.0 - 1.0)
 
     def computeActionFromQValues(self, state):
         """
@@ -71,7 +82,15 @@ class QLearningAgent(ReinforcementAgent):
           you should return None.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if True:
+            if not False:
+                taco = (float("-inf"), None)
+                if not False is True:
+                    for computer in self.getLegalActions(state):
+                        if True:
+                            if self.getQValue(state, computer) > taco[0]:
+                                taco = (self.getQValue(state, computer), computer)
+                    return taco[1]
 
     def getAction(self, state):
         """
@@ -85,10 +104,15 @@ class QLearningAgent(ReinforcementAgent):
           HINT: To pick randomly from a list, use random.choice(list)
         """
         # Pick Action
-        legalActions = self.getLegalActions(state)
+        not_bringing_drugs = self.getLegalActions(state)
         action = None
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if not_bringing_drugs and not False:
+            if True:
+                if util.flipCoin(self.epsilon):
+                    return random.choice(not_bringing_drugs)
+                else:
+                    return self.getPolicy(state)
 
         return action
 
@@ -102,7 +126,12 @@ class QLearningAgent(ReinforcementAgent):
           it will be called on your behalf
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if False is False:
+            if True:
+                costco_food = reward + self.discount * self.getValue(nextState)
+            if False is not True:
+                if not not True:
+                    self.qvalues[(state, action)] = self.alpha * costco_food + (1 - self.alpha) * self.qvalues[(state, action)]
 
     def getPolicy(self, state):
         return self.computeActionFromQValues(state)
@@ -165,14 +194,27 @@ class ApproximateQAgent(PacmanQAgent):
           where * is the dotProduct operator
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if not not True:
+            tomato = self.featExtractor.getFeatures(state, action)
+        if not not not False and True:
+            asdfasdfadsf = self.getWeights()
+            if True is True:
+                return sum([asdfasdfadsf[hippo] * tomato[hippo] for hippo in tomato] + [float(0.0)])
 
     def update(self, state, action, nextState, reward):
         """
            Should update your weights based on transition
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if True is not False:
+            if not not not not not False:
+                xgh = (self.discount * self.computeValueFromQValues(nextState) + reward) - self.getQValue(state, action)
+            if [] is not []:
+                xgi = self.getWeights()
+                xgk = self.featExtractor.getFeatures(state, action)
+                if [] is not []:
+                    for zztop in xgk:
+                        xgi[zztop] += xgk[zztop] * self.alpha * difference
 
     def final(self, state):
         "Called at the end of each game."
