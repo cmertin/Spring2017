@@ -1,0 +1,145 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ \listfiles
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{bm}
+
+\usepackage{pgfplots}
+%\pgfplotsset{compat=1.10}
+\usetikzlibrary{intersections}
+%\usepgfplotslibrary{fillbetween}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\sign}[1]{\text{sign}(#1)}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\BigO}[1]{\mathcal{O}\left( #1 \right)}
+\renewcommand{\Pr}[1]{\text{Pr}[ #1 ]}
+\newcommand{\norm}[1]{\left|\left| #1 \right|\right|}
+\newcommand{\inner}[2]{\left< #1 , #2\right>}
+\newcommand{\R}{\mathbb{R}}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Homework 2}%replace X with the appropriate number
+\author{Christopher Mertin\\ %replace with your name
+CS6966: Theory of Machine Learning} %if necessary, replace with your course title
+ 
+\maketitle
+
+\begin{enumerate}
+  \setcounter{enumi}{5}
+\item (Convexity basics) For this problem, let $f$ be a convex function defined over a convex set $K$, and suppose the diameter of $K$ is $1$.
+  \begin{enumerate}
+    \item Let $x \in K$, and suppose $f(x) = 2$ and $\norm{\nabla f(x)} = 1$. Give a lower bound on $\min_{z\in K}f(z)$.
+
+      {\bf Solution:}
+      
+    \item Let $x^{*}$ be the minimizer of $f$ over $K$ (suppose it is unique), and let $x$ be any other point. The intuition behind gradient descent is that the fector: $-\nabla f(x)$ points {\em towards} $x^{*}$. Prove that this is indeed true, in the sense that $\inner{\nabla f(x)}{x - x^{*}} > 0$ ({\em i.e.}, the negative gradient makes an acute angle with the line to the optimum).
+
+      {\bf Solution:}
+
+
+    \item Suppose now that the fucntion $f$ is {\em strictly convex}, {\em i.e.}, $f(\lambda x + (1 - \lambda)y) < \lambda f(x) + (1 - \lambda) f(y)$ (strictly), for all $x \neq y$, and $0 < \lambda < 1$. 
+
+Prove that all the {\em maximizers} of $f$ over $K$ lie on the boundary of $K$. 
+
+[{\em Hint:} You may want to use the definition that a point $x$ is not on the boundary iff there exists points $y,z \in K$ such that $x = (y+z)/2$]
+
+      {\bf Solution:}
+  \end{enumerate}
+
+\item (Gradient Descent Basics)
+
+\begin{enumerate}
+  \item Give an example of a function defined over $\R$, for which for {\em any} step-size $\eta > 0$ (no matter how small), gradient descent with step size $\eta$ oscillates around the optimum point ({\em i.e.,} never gets to distance $< \eta / 4$ to it), for some starting point $x \in \R$.
+
+      {\bf Solution:}
+
+\item Consider the function $f(x,y) = x^{2} + y^{2}/4$, and suppose we run gradient descent with starting point $(1,1)$, and $\eta = 1/4$. Do we get arbitrarily close to the minimum? Experimentally, find the {\em threshold} for $\eta$, beyond which gradient descent starts to oscillate.
+
+      {\bf Solution:}
+
+\item Why is the behavior similar to that in part $(a)$ (oscillation for {\em every} $\eta$) not happening in part $(b)$?
+
+      {\bf Solution:}
+
+\end{enumerate}
+
+\item (Stochastic Gradient Descent) Suppose we have points $\{ (a_{1}, b_{1}), (a_{2}, b_{2}), \ldots, (a_{n}, b_{n})\}$ in the plane, and suppose that $\abs{a_{i}} \leq 1$, and $\abs{b_{i}} \leq 1$ for all $i$. Let $f(x,y) = \frac{1}{n}\sum_{i=1}^{n}f_{i}(x,y)$, where $f_{i}(x,y) = (x - a_{i})^{2} + (y - b_{i})^{2}$.
+
+\begin{enumerate}
+  \item What is the point $(x,y)$ that minimizes $f(x,y)$?
+
+      {\bf Solution:}
+   
+  \item Suppose we perform gradient descent (on $f$) with step size $0 < \eta < 1$. Give a geometric interpretation for one iteration.
+
+      {\bf Solution:}
+
+\item Now suppose we perform stochastic gradient descent with fixed step size $0 < \eta < 1$, and by picking $i$ at random in $\{ 1, 2, \ldots, n\}$, and moving along the gradient of $f_{i}$ (as in SGD seen in class). After $T$ steps, for $T$ large enough, can we say that we get arbitrarily close to the optimum? (Provide a clear explanation)
+
+[{\em Hint:} Remeber $\eta$ is fixed]
+
+      {\bf Solution:}
+
+\item Pick $n = 100$ random points in $[-1, 1]^{2}$ (uniformly), and run SGD for fixed $\eta = 1/2$, as above. Write down what the distance to optimum is, after $T = \{ 10, 100, 1000\}$ iterations (if you want to be careful, you should average over $5$ random choices for the initialization). Now consider dropping the step size $\eta_{t} = 1/t$, and write down the result for $T$ as above.
+
+      {\bf Solution:}
+
+\end{enumerate}
+
+\item (Numeric accuracy in MW updates) Consider the randomized experts setting we saw in class (we maintain a distribution over experts at each time, and the loss of the algorithm at that time is the expected loss over the distribution). Consider the simple setting where the experts predict $0/1$, and the loss is either $0$ or $1$ for each expert. We saw how to update the probabilities (multiply by $e^{-\eta}$ if an expert makes a mistake, keep unchanged otherwise, and renormalize). One of the common problems here is that numeric errors in such computations tend to compound if not done carefully.
+
+Suppose we have $N$ experts, and we start with a uniform distribution overa ll of them. Let $p_{t}^{(i)}$ denote the probability of expert $i$ at time $t$, for the ``True'' (infinite precision) multiplicative weight algorithm, and let $q_{t}^{(i)}$ denote the probabilities that the ``real life'' algorithm uses (due to precision limitations).
+
+\begin{enumerate}
+  \item Consider one simple suggestion: Say we zero out weights that are ``too small,'' specifically, suppose we set $q_{t}^{(i)} = 0$ if $q_{t}^{(i)}/\max_{j}q_{t}^{(j)} < \epsilon$, for some precision parameter $\epsilon$ (such changes frequently occure due to roundoff). Other than this, suppose that the $q_{t}^{(i)}$ are updated accurately. Prove that in this case, we cannot hope to achieve any non-trivial regret bound. Specifically, for large enough $T$, the algorithm can have error $T(1 - \BigO{1})$, while the best expert may have error $\BigO{T}$.
+
+[{\em Hint:} In this case, we are ``losing'' all information about an expert]
+
+      {\bf Solution:}
+
+\item A simple way to avoid this (in this setting) is to avoid storing probabilities, but instead maintaining only the number of mistakes $m_{t}^{(i)}$. Prove how this suffices to recover the probabilities $p_{t}^{(i)}$ (assuming infinite precision arithmetic).
+
+      {\bf Solution:}
+
+\item Suppse we use the idea in part $(b)$ to construct a distribution $q_{t}$ that differs from $p_{t}$ by $< \epsilon$ in the $\ell_{1}$ norm, {\em i.e.}, $\sum_{i}\abs{p_{t}^{(i)} - q_{t}^{(i)}} < \epsilon$. Then, assuming we construct such a $q_{t}$ at time $t$ to sample, show that the expected number of mistakes of the algorithm is bounded by $(1 + \eta)\min_{i}m_{T}^{(i)} + \BigO{\log(N)/\eta} + \epsilon T$.
+
+      {\bf Solution:}
+
+\item The bound above is not great if there is an expert who makes very small number of mistakes (compared to $T$). Noting that we are dealing with binary predictions, can you come up with a way to run the algorithm, so as to obtain a mistake bound of $\left( 1 + \eta + 2\epsilon\right)\min_{i}m_{T}^{(i)} + \BigO{\log(N)/\eta}$?
+
+      {\bf Solution:}
+
+\end{enumerate}
+\end{enumerate}
+ 
+\end{document}
