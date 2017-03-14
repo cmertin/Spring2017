@@ -127,7 +127,20 @@ CS6966: Theory of Machine Learning} %if necessary, replace with your course titl
 
       {\bf Solution:}
 
+      To be a convex function/set, the following has to hold true
 
+      \begin{align*}
+        f(y) - f(x) &\geq \inner{y - x}{\grad f(x)}\\
+        \intertext{We can use this to get a minimum bound on $z$}
+        f(z) &\geq f(x) + \inner{ z - x}{\grad f(x)}\\
+        \intertext{For $z$ close to $x$, we can approximate $z = x + h$, giving}
+        f(z) &\geq f(x) + \inner{ x + h - x}{\grad f(x)}\\
+        \intertext{where we can set $h = -\eta \grad f(x)$, giving}
+        f(z) &\geq f(x) + \inner{ -\eta\grad f(x)}{\grad f(x)}\\
+        f(z) &\geq f(x) - \eta \norm{\grad f(x)}\\
+        \intertext{plugging in the known values gives}
+        f(z) &\geq 2 - \eta
+        \end{align*}
       
     \item Let $x^{*}$ be the minimizer of $f$ over $K$ (suppose it is unique), and let $x$ be any other point. The intuition behind gradient descent is that the vector: $-\nabla f(x)$ points {\em towards} $x^{*}$. Prove that this is indeed true, in the sense that $\inner{\nabla f(x)}{x - x^{*}} > 0$ ({\em i.e.}, the negative gradient makes an acute angle with the line to the optimum).
 
@@ -155,10 +168,19 @@ Prove that all the {\em maximizers} of $f$ over $K$ lie on the boundary of $K$.
 
       {\bf Solution:}
 
-\begin{align*}
-f\P{\lambda x + (1-\lambda)y} &\leq \lambda f(x) + (1-\lambda)f(y)\quad \forall\ x\neq y
-\end{align*}
-  \end{enumerate}
+If the set is {\em strictly convex}, then no lines can be contained on the boundary. It also has to follow the following three properties:
+
+\begin{enumerate}
+  \item The function $f$ is twice continuously differentable everywhere in its domain
+  \item $f^{\prime}(x)$ is increasing on any subinterval
+  \item $f^{\prime\prime}(x)$ is nonnegative on the interval and never constantly zero on any subinterval
+\end{enumerate}
+
+From this we can say that since the function is strictly convex you can ``walk along the path'' with the largest gradient. As the gradient would be positive, the value of the function would thus be increasing. You can continue to ``walk'' along this function until you reach the maximum point by following the gradient. As the function is {\em strictly convex}, you will only ever be increasing on the domain, meaning the largest point will be reached when you reach the boundary. On top of which, since no lines can be contained on the boundary, there must be a single point that is the maximum value, which {\em has} to be achieved by following the path of steepest ascent. 
+
+\end{enumerate}
+
+\newpage
 
 \item (Gradient Descent Basics)
 
@@ -170,14 +192,13 @@ f\P{\lambda x + (1-\lambda)y} &\leq \lambda f(x) + (1-\lambda)f(y)\quad \forall\
 The example function chosen is $f(x) = \abs{x}$ as the derivative is not defined. The plots of $f(x)$ and $f^{\prime}(x)$ can be seen below.
 
 \hspace{-2.5em}
-\begin{tikzpicture}[scale=.95]
+\begin{tikzpicture}[scale=.9]
 \begin{axis}[
     axis lines = left,
     xlabel = $x$,
     ylabel = {$f(x)$},
     legend style={at={(0.79,0.08)},anchor=center},
 ]
-%Below the red parabola is defined
 \addplot [
     domain=-2:2, 
     samples=100, 
@@ -190,14 +211,13 @@ The example function chosen is $f(x) = \abs{x}$ as the derivative is not defined
 \hspace{-2.5em}
 { %pgfplot scope
 \pgfplotsset{ymin=-1.25, ymax=1.25}
-\begin{tikzpicture}[scale=.95]
+\begin{tikzpicture}[scale=.9]
 \begin{axis}[
     axis lines = left,
     xlabel = $x$,
     ylabel = {$f^{\prime}(x)$},
     legend style={at={(0.79,0.08)},anchor=center},
 ]
-%Below the red parabola is defined
 \addplot [
     domain=-2:2, 
     samples=100, 
@@ -222,9 +242,9 @@ f(x,y) &= x^{2} + \frac{y^{2}}{4}\\
 \intertext{We need to take the gradients with respect to each variable and minimize each resulting function. In doing so gives}
 f_{x}(x,y) &= 2x\\
 f_{y}(x,y) &= \frac{y}{2}\\
-\intertext{From the above equations, it's easy to see that they minimize at the point $(0, 0)$. We can do a few iterations of gradient descent to see how it performs.} 
+\intertext{From the above equations, it's easy to see that they minimize at the point $(0, 0)$. We can do a few iterations of gradient descent to see how it performs. This is done below} 
 \end{align*}
-\vspace{-4em}
+%\vspace{-4em}
 \begin{align*}
 \intertext{$\underline{\bm{i = 1}}$}
 f_{1}(1,1) &= \B{1 - \frac{1}{4}\cdot 2 (1),\ \frac{1}{4} - \frac{1}{4}\P{\frac{1}{2}}}\\
@@ -333,11 +353,11 @@ If $\eta$ is set to the above, and the objective function is $\rho$-Lipschitz, t
 
 For example, in the given equation, $\grad f(x,y)$ is minimized by the averages $(\bar{a}, \bar{b})$. In SGD, you ``choose'' a random point to ``learn with'' for each iteration in $\{ T \}$. Using the given $f(x,y)$, this can be shown that fixed values of $\eta$ are not guarenteed to covnerge. Consider $m$ points with values $\{ (1,0), (0,1), (-1,0), (0,-1), \ldots \}$. In other words, the first 4 points are unique, and the rest are repeated. There's an even number of each point in the domain. 
 
-With a fixed value for $\eta$, the given function will be ``bouncing around'' as the data is shuffled and it won't be able to ``learn'' as it iterates over the values. However, with a decreasing value for $\eta$, it would be able to. This can be seen in the following figures
+With a fixed value for $\eta$, the given function will be ``bouncing around'' as the data is shuffled and it won't be able to ``learn'' as it iterates over the values. However, with a decreasing value for $\eta$, it would be able to. This can be seen in the following figures.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=.75\linewidth]{Decreasing.pdf}
+\includegraphics[width=.7\linewidth]{Decreasing.pdf}
 \caption{Decreasing value of $\eta$}
 \label{fig:dec}
 \end{figure}
@@ -345,7 +365,7 @@ With a fixed value for $\eta$, the given function will be ``bouncing around'' as
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=.75\linewidth]{Fixed.pdf}
+\includegraphics[width=.7\linewidth]{Fixed.pdf}
 \caption{Fixed value of $\eta$}
 \label{fig:fix}
 \end{figure}
