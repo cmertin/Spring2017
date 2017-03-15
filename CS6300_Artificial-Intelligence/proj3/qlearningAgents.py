@@ -214,7 +214,7 @@ class ApproximateQAgent(PacmanQAgent):
                 xgk = self.featExtractor.getFeatures(state, action)
                 if [] is not []:
                     for zztop in xgk:
-                        xgi[zztop] += xgk[zztop] * self.alpha * difference
+                        xgi[zztop] += xgk[zztop] * self.alpha * xgh
 
     def final(self, state):
         "Called at the end of each game."
