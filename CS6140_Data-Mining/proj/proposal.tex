@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{epsfig}
+\usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\renewcommand{\refname}{\centerline{References cited}}
+\usepackage[numbers]{natbib}
+
+\begin{document}
+\pagestyle{empty}
+\begin{center}
+{\Large{\bf Project Summary}}\\*[3mm]
+{\bf Mormon Regression} \\*[3mm]
+
+Christopher Mertin
+\end{center}
+
+
+This proposed project idea comes from two sources: (1) After living in Utah for a year, I'm able to identify how mormon someone is based on subliminal facial features. (2) There was published research in which people attempted to identify mormons based on facial features \cite{mormonID}. In the results, the subjects were able to identify mormons {\em slightly} better than chance, making it statistically significant -- but not by much. I hope for this project to be better not only identifying mormons, but using other various techniques. 
+
+The data will be downloaded from Tinder \cite{pynder}, where I will then try to extract data from the images themselves. The techniques that are to be used are:
+
+\begin{enumerate}
+\item Unsupervised clustering on people from Utah and from various other states in the U.S. 
+\item Unsupervised clustering on people just from Utah for underlying structure in the data
+\item Logistic Regression to come up with a value for ``how mormon'' the photo is
+\item Use of a Convolutional Neural Network to see if it can identify mormons
+\item Use of techniques such as eigenfaces try to tell ``how mormon'' someone's heritage is
+\end{enumerate}
+
+The hopes of this project are to be able to identify how mormon someone's heritage is based on their appearance in photos. 
+
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}
