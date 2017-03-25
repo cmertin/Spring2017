@@ -30,6 +30,7 @@
 \newcommand{\sign}[1]{\text{sign}(#1)}
 \newcommand{\abs}[1]{\left| #1 \right|}
 \newcommand{\BigO}[1]{\mathcal{O}\left( #1 \right)}
+\newcommand{\LittleO}[1]{\mathcal{o}\left( #1 \right)}
 \renewcommand{\Pr}[1]{\text{Pr}[ #1 ]}
 \newcommand{\norm}[1]{\left|\left| #1 \right|\right|}
 \newcommand{\inner}[2]{\left< #1 , #2\right>}
@@ -445,15 +446,67 @@ Suppose we have $N$ experts, and we start with a uniform distribution over all o
 
       {\bf Solution:}
 
+To prove this bound we can set up the following example. We know that the equation for regret is as follows
+
+\[
+\text{Regret} = \text{total loss of algorithm} - \min_{i=1, \ldots, N}\sum_{t=1}^{T}\ell_{i,t}
+\]
+
+where $\ell_{i,t}$ is the loss of each expert for a given time step, so the values are $[0, 1]$. In our proof, we can assume that there is an adversary that makes it such that each prediction is wrong. As each expert is chosen with a given probability, there's no way for the adversary to know which expert is going to be chosen, but for large enough $T$ it can be made such that {\em most} of the experts have been zeroed out. This can be seen in the equation to calculate the probabilities
+
+\[
+    p_{t}^{(i)} = \frac{q_{t}^{(i)}}{\sum_{i=1}^{N_{t}} q_{t}^{(i)}}
+\]
+
+
+Where $N_{t}$ represents the number of experts at time $t$. As can be seen here, with experts being zeroed out, it allows for the adversary to force the chosen adversary to fail as each expert has a larger probability of being chosen -- as there are less experts.
+
+With a large enough $T$, we can bound the best expert by $\BigO{T/N}$ as more and more experts are ``lost,'' the adversary can better predict to make the expert lose.
+
+This makes our regret bound become $R = T - T/N$ as the algorithm has $\BigO{T}$ losses (for large enough $T$), and the best expert has an error bound of $\BigO{T}$. For $T \gg N$, we can change the expert to have error $\BigO{T}$ and the regret bound to be $T(1 - \BigO{1})$.
+
 \item A simple way to avoid this (in this setting) is to avoid storing probabilities, but instead maintaining only the number of mistakes $m_{t}^{(i)}$. Prove how this suffices to recover the probabilities $p_{t}^{(i)}$ (assuming infinite precision arithmetic).
 
       {\bf Solution:}
+
+By storing the number of mistakes, we get the following equation for the update at time $t$ as
+
+\begin{align*}
+w_{t}^{(i)} &= w_{1}^{(i)}e^{-\eta m_{t}^{(i)}}
+\intertext{Where $w_{1}$ is the initial value of the weight. By calculating it in this format, we don't impose numerical errors in the calculation. This leaves the probabiltiy as being}
+p_{t}^{(i)} &= \frac{w_{1}^{(i)} e^{-\eta m_{t}^{(i)}}}{\sum_{i=1}^{N}w_{1}^{(i)}e^{-\eta m_{t}^{(i)}}}
+\end{align*}
+
+which removes the above problem in $(a)$ of causing experts to zero below some $\epsilon$, for infinite precision. 
+
 
 \item Suppse we use the idea in part $(b)$ to construct a distribution $q_{t}$ that differs from $p_{t}$ by $< \epsilon$ in the $\ell_{1}$ norm, {\em i.e.}, $\sum_{i}\abs{p_{t}^{(i)} - q_{t}^{(i)}} < \epsilon$. Then, assuming we construct such a $q_{t}$ at time $t$ to sample, show that the expected number of mistakes of the algorithm is bounded by $(1 + \eta)\min_{i}m_{T}^{(i)} + \BigO{\log(N)/\eta} + \epsilon T$.
 
       {\bf Solution:}
 
-\item The bound above is not great if there is an expert who makes very small number of mistakes (compared to $T$). Noting that we are dealing with binary predictions, can you come up with a way to run the algorithm, so as to obtain a mistake bound of $\left( 1 + \eta + 2\epsilon\right)\min_{i}m_{T}^{(i)} + \BigO{\log(N)/\eta}$?
+First we can calculate the {\em total loss} on the algorithm. Before doing so, we need to define a potential function to compare time steps. Our potential function is
+
+\[
+\Phi_{t} = -\log\left(\sum_{i=1}^{N}w_{t}^{(i)} \right) 
+\]
+
+Using this, we can get the total loss of the algorithm by comparing the potential from $t=1$ and $t=T$. This is done below, where $*$ is the ``best performing expert,'' giving
+
+\begin{align*}
+  \sum_{i=1}^{T} p_{t}^{(i)}\ell_{t}^{(i)} &\leq \frac{1}{1 - e^{-\eta}} \left( \Phi_{T} - \Phi_{1} \right)\\
+  &= \frac{1}{1 - e^{-\eta}}\left[ \log(N) - \log\left( \sum_{i=1}^{N}e^{-\eta m_{t}^{(i)}}\right)\right]\\
+ &\leq \frac{1}{1 - e^{-\eta}} \left[ \log(N) - \log\left( e^{-\eta m_{t}^{*}}\right)\right]\\
+ &= \frac{1}{1 - e^{-\eta}}\left[ \log(N) + \eta m_{t}^{*} \right]\\
+ &\approx (1 + \eta)m_{t}^{*} + \frac{\log(N)}{\eta}
+\end{align*}
+
+As we want to bound the probability distribution such that the $\ell_{1}$ norm is $< \epsilon$, we also get a term of $\epsilon T$ added in to the above loss. This comes about as being the expected error from the distribution $q$ when compared to $p$, due to the fact that the best expert mistakes is bounded by $\BigO{T}$, so with changing the probabilities there are bound to be $\epsilon T$ instances where another expert is chosen rather than the ``best expert'' as you're altering the probabilities by a range of $\epsilon$.
+
+
+\item The bound above is not great if there is an expert who makes very small number of mistakes, say a constant (because we think of $\epsilon$ as a constant, and $T$ as tending to infinity). Using the hint that we are dealing with binary predictions, and say by setting $\eta = 1/10$, can you come up with a way to run the algorithm, so that it uses comptuations of ``word size'' only $\BigO{\log(NT)}$, and obtain a mistake bound of $(1 + 1/5)\min_{i} m_{T}^{(i)} + \BigO{\log(N)}$?
+
+[{\em Note}: Using word size $k$ means that every variable used is represented using $k$ bits; {\em e.g.}, the \verb~C++~ ``double'' uses 64 bits, and so if all probabilities are declared as doubles, you are using a word size of 64 bits.]
+
 
       {\bf Solution:}
 
