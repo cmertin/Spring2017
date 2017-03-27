@@ -134,13 +134,12 @@ CS6966: Theory of Machine Learning} %if necessary, replace with your course titl
         f(y) - f(x) &\geq \inner{y - x}{\grad f(x)}\\
         \intertext{We can use this to get a minimum bound on $z$}
         f(z) &\geq f(x) + \inner{ z - x}{\grad f(x)}\\
-        \intertext{For $z$ close to $x$, we can approximate $z = x + h$, giving}
-        f(z) &\geq f(x) + \inner{ x + h - x}{\grad f(x)}\\
-        \intertext{where we can set $h = -\eta \grad f(x)$, giving}
-        f(z) &\geq f(x) + \inner{ -\eta\grad f(x)}{\grad f(x)}\\
-        f(z) &\geq f(x) - \eta \norm{\grad f(x)}\\
-        \intertext{plugging in the known values gives}
-        f(z) &\geq 2 - \eta
+        f(z) &\geq f(x) + (z - x)^{T}\cdot \grad f(x)\\
+        \intertext{If the diameter of the set is $1$, then the largest potential difference of $z-x$ is ``$-1$'' in each dimension. This gives}
+        f(z) &\geq f(x) - \grad f(x)
+        \intertext{We know that the diameter of the set is 1, and we also know that $\norm{\nabla f(x)} = 1$. To get a lower bound, we can multiply the dimeter of the set and $\norm{\nabla f(x)}$ to get a lower bound. Plugging in known values gives}
+        f(z) &\geq 2 - 1\\
+        f(z) &\geq 1
         \end{align*}
       
     \item Let $x^{*}$ be the minimizer of $f$ over $K$ (suppose it is unique), and let $x$ be any other point. The intuition behind gradient descent is that the vector: $-\nabla f(x)$ points {\em towards} $x^{*}$. Prove that this is indeed true, in the sense that $\inner{\nabla f(x)}{x - x^{*}} > 0$ ({\em i.e.}, the negative gradient makes an acute angle with the line to the optimum).
@@ -169,15 +168,23 @@ Prove that all the {\em maximizers} of $f$ over $K$ lie on the boundary of $K$.
 
       {\bf Solution:}
 
-If the set is {\em strictly convex}, then no lines can be contained on the boundary. It also has to follow the following three properties:
+We can assume that there is some maximum obtained for some $x \in K$ and that there are two other points $y, z \in K$ as well. We can also place the requirement that $y, z \neq x$, meaning they are not the maximum $x$.
 
-\begin{enumerate}
-  \item The function $f$ is twice continuously differentable everywhere in its domain
-  \item $f^{\prime}(x)$ is increasing on any subinterval
-  \item $f^{\prime\prime}(x)$ is nonnegative on the interval and never constantly zero on any subinterval
-\end{enumerate}
+Using the above hint, we can state that $x$ is not on the boundary if $x = (y + z)/2$. What we want to show is that $z$ can obtain a maximal value for $f$ if $z \in \delta (K)$, and with {\em proof by contradiction} we can show that $f(x)$ is a maximum relative to the maximizer $x \in K$ iff $x \in \delta (K)$. 
 
-From this we can say that since the function is strictly convex you can ``walk along the path'' with the largest gradient. As the gradient would be positive, the value of the function would thus be increasing. You can continue to ``walk'' along this function until you reach the maximum point by following the gradient. As the function is {\em strictly convex}, you will only ever be increasing on the domain, meaning the largest point will be reached when you reach the boundary. On top of which, since no lines can be contained on the boundary, there must be a single point that is the maximum value, which {\em has} to be achieved by following the path of steepest ascent. 
+In order to prove this, we assume that $x$ is a maximizer and on the interior of $K$. In doing so, we are defining $x = (y+z)/2$, for $y,z \in K$ as well. Using the above equation for a function being strictly convex gives
+
+\begin{align*}
+  f(x) &=  f\left( \frac{y + z}{2}\right) = f(\lambda z + (1-\lambda)y)
+  \intertext{Where the above is obtained with $\lambda = 1/2$. By definition of convexity, we can bound it as}
+  f(x) &= f\left( \frac{y + z}{2}\right) < \frac{1}{2}f(z) + \frac{1}{2}f(y)\\
+  \intertext{Given that $f(x)$ is a maximizer for $f$, then it is trivially true that $f(y), f(z) < f(x)$. We can substitute this into the above equation, resulting in}
+  f(x) &< \frac{1}{2}f(z) + \frac{1}{2}f(y) < \frac{1}{2}f(x) + \frac{1}{2}f(x)
+\end{align*}
+
+The last line results in the inequality that $f(x) < f(x)$, which is a contraction. Therefore we can say $x \in \delta (K)$.
+
+
 
 \end{enumerate}
 
@@ -186,7 +193,7 @@ From this we can say that since the function is strictly convex you can ``walk a
 \item (Gradient Descent Basics)
 
 \begin{enumerate}
-  \item Give an example of a function defined over $\R$, for which for {\em any} step-size $\eta > 0$ (no matter how small), gradient descent with step size $\eta$ oscillates around the optimum point ({\em i.e.,} never gets to distance $< \eta / 4$ to it), for some starting point $x \in \R$.
+  \item Give an example of a function defined over $\R$, for which for {\em any} step-size $\eta > 0$ (no matter how small), gradient descent with step size $\eta$ oscillates around the optimum point ({\em i.e.,} never gets to distance $< \eta / 4$ to it), for some starting point $x \in \R$. 
 
       {\bf Solution:}
 
