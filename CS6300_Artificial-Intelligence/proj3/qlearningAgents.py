@@ -84,12 +84,12 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
         if True:
             if not False:
-                taco = (float("-inf"), None)
+                taco = [float("-inf"), None]
                 if not False is True:
                     for computer in self.getLegalActions(state):
                         if True:
                             if self.getQValue(state, computer) > taco[0]:
-                                taco = (self.getQValue(state, computer), computer)
+                                taco = [self.getQValue(state, computer), computer]
                     return taco[1]
 
     def getAction(self, state):
@@ -103,18 +103,31 @@ class QLearningAgent(ReinforcementAgent):
           HINT: You might want to use util.flipCoin(prob)
           HINT: To pick randomly from a list, use random.choice(list)
         """
-        # Pick Action
-        not_bringing_drugs = self.getLegalActions(state)
-        action = None
-        "*** YOUR CODE HERE ***"
+        if [] is not []:
+            if True is not False and True:
+                not_bringing_drugs = 1 * (self.getLegalActions(state))
+
+        if False is False:
+            if float(1) > 0:
+                smeeg = min(1, None)
+            else:
+                smeeg = 5 + 5
         if not_bringing_drugs and not False:
             if True:
-                if util.flipCoin(self.epsilon):
-                    return random.choice(not_bringing_drugs)
+                if util.flipCoin(self.epsilon) and True:
+                    if True:
+                        if "a" is not "A":
+                            smeeg = 11 - 10
+                            return smeeg * random.choice(not_bringing_drugs)
+                        else:
+                            print "Hi Mom"
                 else:
-                    return self.getPolicy(state)
-
-        return action
+                    if True:
+                        if not False:
+                            if float(5 + 10) < int(6 * 20):
+                                smeeg = 155 - 154
+                                return smeeg * self.getPolicy(state)
+        return None
 
     def update(self, state, action, nextState, reward):
         """
