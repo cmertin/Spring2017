@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{url}
+
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{8.9in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\topmargin}{0.05in}
+\setlength{\headheight}{-0.05in}
+\setlength{\headsep}{0.0in}
+
+\newcommand{\indep}{\perp\!\!\!\perp}
+
+\begin{document}
+
+\begin{center}
+{\bf CS 6300} \hfill {\large\bf HW07: Bayes Nets I \hfill Due April 4, 2017}
+\end{center}
+
+\noindent
+Please use the \LaTeX\ template to produce your writeups. See the
+Homework Assignments page on the class website for details.  Hand in
+at: \url{https://webhandin.eng.utah.edu/index.php}.
+
+\section{D-Separation}
+ 
+Based only on the structure of the Bayes' Net given below,
+circle whether the following conditional independence assertions are
+guaranteed to be true, guaranteed to be false, or cannot be determined
+by the structure alone.
+
+\begin{center}
+\includegraphics[height=2in]{prob1.png}
+\end{center}
+
+\begin{enumerate}
+
+\item $U \indep V$
+
+\item $U \indep V \mid W$
+
+\item $U \indep V \mid Y$
+
+\item $U \indep Z \mid W$
+
+\item $U \indep Z \mid V, Y$
+
+\item $U \indep Z \mid X, W$
+
+\item $W \indep X \mid Z$
+
+\item $V \indep Z \mid X$
+
+\end{enumerate}
+
+\clearpage
+
+\section{Inference by Enumeration}
+
+\begin{center}
+\includegraphics[width=5in]{prob2.png}
+\end{center}
+
+\begin{enumerate}
+
+\item What is the expression for $P(A,B,C,D,E,F)$ given the structure
+  of this Bayes' net and conditional probability tables?
+
+\item Perform inference by enumeration on the above network to figure
+  out $P(C)$ given $F=f$ and $D= \sim d$.  Do this by using factors.
+  Please give the details of your derivation.
+
+\end{enumerate}
+
+\end{document}
+
+
