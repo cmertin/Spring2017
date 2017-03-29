@@ -1,3 +1,4 @@
+*.ipynb_
 *.pyc
 *~
 *.aux
@@ -7,4 +8,7 @@
 *.bbl
 *.blg
 *.out
+*.toc
+*.snm
+*.nav
 \#*
