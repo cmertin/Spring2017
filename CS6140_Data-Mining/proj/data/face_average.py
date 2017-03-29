@@ -152,12 +152,12 @@ def Warp_Triangle(img1, img2, t1, t2):
     img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] += img2_rect
 
 
-city = "Seattle"
+city = "Provo"
 out_dir = city + "_Affine/"
 path = city + "_Crop/"
 
-w = 600
-h = 600
+w = 100
+h = 100
 
 points = Read_Points(path)
 images = Read_Images(path, points)
@@ -210,7 +210,7 @@ for key in sorted(points.iterkeys()):
         
     plt.clf()
     fig = plt.figure(frameon = False)
-    inches = 6
+    inches = int(max(w,h)/100)
     w_out = inches
     h_out = h/w * w_out
     fig.set_size_inches(w_out, h_out, forward=False)
@@ -270,7 +270,7 @@ ax = plt.Axes(fig, [0., 0., 1., 1.])
 ax.set_axis_off()
 fig.add_axes(ax)
 ax.imshow(output2, aspect="auto")
-plt.savefig(out_file)
+#plt.savefig(out_file)
 plt.close()
 
 cv2.imshow("Image", output)
