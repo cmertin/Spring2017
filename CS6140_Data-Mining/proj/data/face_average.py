@@ -152,12 +152,12 @@ def Warp_Triangle(img1, img2, t1, t2):
     img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] += img2_rect
 
 
-city = "Provo"
+city = "Seattle"
 out_dir = city + "_Affine/"
 path = city + "_Crop/"
 
-w = 100
-h = 100
+w = 200
+h = 200
 
 points = Read_Points(path)
 images = Read_Images(path, points)
