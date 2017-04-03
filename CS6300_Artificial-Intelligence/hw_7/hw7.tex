@@ -85,6 +85,13 @@ Guarenteed True
 \item What is the expression for $P(A,B,C,D,E,F)$ given the structure
   of this Bayes' net and conditional probability tables?
 
+This can be derived by just looking at the parents of each node, only encoding {\em local} interactions
+
+\vspace{-2em}
+\begin{align*}
+  P(A,B,C,D,E,F) &= P(A)P(C|A)P(F|C)P(B|A)P(D|B)P(E|B)
+\end{align*}
+
 \item Perform inference by enumeration on the above network to figure
   out $P(C)$ given $F=f$ and $D= \sim d$.  Do this by using factors.
   Please give the details of your derivation.
