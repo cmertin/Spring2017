@@ -1,0 +1,141 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ \listfiles
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{tikz}
+\usepackage{bm}
+\usepackage{cancel}
+\usepackage{filecontents}
+\usepackage{algorithm}
+\usepackage{algpseudocode} % loads algorithmicx
+
+\usepackage{pgfplots}
+%\pgfplotsset{compat=1.10}
+\usetikzlibrary{intersections}
+%\usepgfplotslibrary{fillbetween}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\sign}[1]{\text{sign}(#1)}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\BigO}[1]{\mathcal{O}\left( #1 \right)}
+\newcommand{\LittleO}[1]{\mathcal{o}\left( #1 \right)}
+\renewcommand{\Pr}[1]{\text{Pr}[ #1 ]}
+\newcommand{\norm}[1]{\left|\left| #1 \right|\right|}
+\newcommand{\inner}[2]{\left< #1 , #2\right>}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\grad}{\nabla}
+\renewcommand{\P}[1]{\left( #1 \right)}
+\newcommand{\B}[1]{\left[ #1 \right]}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+%\algrenewcommand{\algorithmiccomment}[1]{\hskip3em$\vartriangleright$ #1}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\Input{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\Output{\item[\algorithmicoutput]}
+
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Homework 3}%replace X with the appropriate number
+\author{Christopher Mertin\\ %replace with your name
+CS6966: Theory of Machine Learning} %if necessary, replace with your course title
+ 
+\maketitle
+
+\begin{enumerate}
+  \setcounter{enumi}{9}
+\item Consider the simple experts setting: we have $n$ experts $E_{1}, \ldots, E_{n}$, and each one makes a $0/1$ prediction each morning. Using these predictions, we need to make a prediction each morning, and at the end of the day we get a loss of $0$ if we predicted right, and $1$ if we made a mistake. This goes on for $T$ days.
+
+Consider an algorithm that at every step, goes with the prediction of the ``best'' ({\em i.e.} the one with the least mistakes so far) expert so far. Suppose that ties are broken by picking the expert with a smaller index. Given an example in whcih this strategy can be really bad -- specifically, the number of mistakes made by the algorithm is roughly a factor of $n$ worse than that of the best expert in hindsight. 
+
+{\bf Solution:}
+
+\item We saw in class a proof that the VC dimension of the class of $n$-node, $m$-edge {\em threshold} neural networks is $\BigO{(m+n)\log(n)}$. Let us give a ``counting'' proof, assuming the weights are binary $(0/1)$. (This is often the power given by VC dimension based proofs -- they can ``handle'' continuous parameters that cause problems for counting arguments).
+
+\begin{enumerate}
+  \item Specifically, how many ``network layouts'' can there be with $n$ nodes and $m$ edges? Show that ${n(n-1)/2}\choose{m}$ is an upper bound.
+
+   {\bf Solution:}
+
+   \item Given a network layout, argue that the number of ``possible networks'' is at most $2^{m}(n+1)^{n}$. 
+
+[{\em Hint:} What can you say about the potential values for the thresholds?]
+
+   {\bf Solution:}
+
+\item Use these to show that the VC dimension of the class of binary-weight, threshold neural networks is $\BigO{(m+n)\log(n)}$.
+
+   {\bf Solution:}
+
+\end{enumerate}
+
+\item (Importance of random initialization) Consider a neural network consisting of (resp.) the input layer $x$, hidden layer $y$, hidden layer $z$, followed by the output node $f$. Suppose that all the nodes in all the layers compute a ``standard'' sigmoid. Also suppose that every node in a layer is connected to every node in the next layer ({\em i.e.}, each layer is fully connected).
+
+Now suppose that all the weights are initialized to $0$, and suppose we start performing SGD using backprop, with a fixed learning rate. Show that at every time step, all the edge weights in a layer are equal.
+
+   {\bf Solution:}
+
+\item Let us consider networks in whcih each node computes a rectified linear (ReLU) function, and show how they can comptue very ``spiky'' functions of the inptue variables. For this exercise, we restrict to one-variable.
+
+   {\bf Solution:}
+
+\begin{enumerate}
+  \item Consider a single input $x$. Show how to comptue a ``triangle wave'' using one hidden layer (constant number of nodes) connected to the input, followed by one output $f$. Formally, we should have $f(x) = 0$ for $x \leq 0$, $f(x) = 2x$ for $0 \leq x \leq 1/2$, $f(x) = 2(1-x)$ for $1/2 \leq x \leq 1$, and $f(x) = 0$ for $x \geq 1$. 
+
+[{\em Hint:} Choose the thresholds for the ReLU's appropriately]
+
+   {\bf Solution:}
+
+\item What happens if you stack the network on top of itself? (Describe the function obtained). 
+
+[Formally, this means the output of the network you constructed above is fed as the input to an identical network, and we are interested in the final output function.]
+
+   {\bf Solution:}
+
+\item Prove that there is a ReLU network with one input variable $x$, $2k + \BigO{1}$ layers, all coefficients and thresholds being constants, that computes a function that has $2^{k}$ ``peaks'' in the interval $[0,1]$.
+
+[The function above can be shown to be impossible to approximate using a small depth ReLU network, without an exponential blow-up in the width.]
+
+   {\bf Solution:}
+
+\end{enumerate}
+
+\item In this exercise, we make a simple observatino that width isn't as ``necessary'' as depth. Consider a network in which each node comptues a rectified linar (ReLU) unit -- specifically the function at each node is of the form $\max \{0, a_{1}x_{1} + a_{2}x_{2} + \cdots + a_{m}x_{m} + b\}$, for a node that has inputs $\{ x_{1}, \ldots, x_{m}\}$. Note that different nodes could have different coefficients and offsets ($b$ above is called the offset).
+
+Consider a network with one input $x$, connect to $n$ nodes in a hidden layer, which are in turn connected to the output node, denoted $f$. Show that one can construct a depth $n + \BigO{1}$ network, with just 3 nodes in each layer, to compute the same $f$.
+
+[{\em Hint:} Three nodes allow you to ``carry over'' the input; ReLU's are important for this]
+
+   {\bf Solution:}
+\end{enumerate}
+ 
+\end{document}
