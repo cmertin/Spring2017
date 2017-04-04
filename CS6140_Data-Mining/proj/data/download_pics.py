@@ -13,7 +13,7 @@ def IsFile(dir_name):
         return True
 
 
-location = ["Provo"]#["Seattle", "Miami", "Tallahassee", "Raleigh", "Austin", "Los_Angeles", "Provo", "Denver", "Tampa", "SLC"]
+location = ["Seattle", "Miami", "Tallahassee", "Raleigh", "Austin", "Los_Angeles", "Provo", "Denver", "Tampa", "SLC"]
 ext = ".csv"
 delim = '*'
 
@@ -23,16 +23,16 @@ for loc in location:
     counter = 0
     mo_df = pd.read_csv(open(csv_file,'rU'), sep=delim, encoding='utf-8', engine='c')
     mo_df.drop_duplicates()
+    mo_df.dropna()
     if loc == "Provo":
-        mo_df = mo_df.loc[mo_df["Mormon"] == "True"]
+        mo_df = mo_df.loc[mo_df["Mormon"] == True]
     else:
-        mo_df = mo_df.loc[mo_df["Mormon"] == "False"]
+        mo_df = mo_df.loc[mo_df["Mormon"] == False]
     if IsFile(loc) is True:
         dir_loc = loc + '/'
         pics = mo_df["Pics_640"]
         for item in pics:
             sub = 0
-            #print(item)
             try:
                 t = item.split(',')
             except:

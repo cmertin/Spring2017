@@ -1,10 +1,11 @@
 #!/bin/bash
 
-input="Seattle"
+input="Random"
 output=$input"_Crop/"
 input=$input"/"	
 i=1
 n=`ls $input | wc -l`
+n=$(($n-1))
 
 for file in $input*.jpg; do
     out="$file ($i/$n)"

@@ -42,7 +42,7 @@ for idx, loc in enumerate(location):
 
     total_users = 0
     
-    while total_users < 500:
+    while total_users < 50:
         user_data = []
         users = session.nearby_users(limit=25)
         total_users += len(users)

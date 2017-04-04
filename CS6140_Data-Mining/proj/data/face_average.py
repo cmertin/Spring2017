@@ -152,7 +152,7 @@ def Warp_Triangle(img1, img2, t1, t2):
     img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] += img2_rect
 
 
-city = "Seattle"
+city = "Random"
 out_dir = city + "_Affine/"
 path = city + "_Crop/"
 
