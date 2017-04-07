@@ -18,54 +18,82 @@ def ReadFile(filename):
 
     return np.asarray(matrix, dtype=np.float32)
 
+def PCA(A, k=10):
+    U, s, V = svd(A, full_matrices=True)
+
+    Uk = U[:,0:k]
+    sk = s[:k]
+    Sk = np.diag(sk)
+    Vk = V[0:k,:]
+    Ak = np.dot(Uk, Sk)
+    Ak = np.dot(Ak, Vk)
+
+    return Ak#Uk, Sk, Vk, Ak
+
 def FrequentDirections(A, l):
-    assert l%2 == 0
-    
-    n, m = np.size(A)
+    n, m = np.shape(A)
 
-    B = np.zeros((l,m), dtype=np.float32)
-    ind = np.arange(l)
+    if np.floor(l/2) >= m:
+        raise ValueError("Error: \'l\' must be smaller than m*2")
+    if l >= n:
+        raise ValueError("Error: \'l\' must not be greater than n")
 
+    # Initialize output matrix B
+    B = np.zeros([l,m])
+
+    # Compute zero valued row list
+    zero_rows = np.nonzero([round(s, 7) == 0.0 for s in np.sum(B, axis = 1)])[0].tolist()
+
+    # Repeat inserting each row of matrix A
     for i in range(n):
-        zero_rows = ind[np.sum(np.abs(B) <= 1e-12, axis=1) == m]
-        if len(zero_rows) >= 1:
-            B[zero_rows[0]] = A[i]
-        else:
+        # Insert a row into matrix B
+        B[zero_rows[0], :] = A[i, :]
+
+        # Remove zero valued row from the list
+        zero_rows.remove(zero_rows[0])
+
+        # If there is no more zero valued rows
+        if len(zero_rows) == 0:
+
+            # Compute SVD of matrix B
             U, s, V = svd(B, full_matrices=False)
-            delta = s[l/2 - 1] ** 2
-            s = np.sqrt(np.maximum(s**2 - delta, 0))
-            B = np.dot(np.diag(s), V)
+
+            # Obtain squared singular value for threshold
+            sq_sv_center = s[np.floor(l/2)]**2
+
+            # Update sigma to shrink the row norms
+            sigma_tilda = [(0.0 if d < 0.0 else np.sqrt(d)) for d in (s**2 - sq_sv_center)]
+
+            # Update matrix B where at least half the rows are all zero
+            B = np.dot(np.diagflat(sigma_tilda), V)
+
+            # Update the zero valued row list
+            zero_rows = np.nonzero([round(s, 7) == 0 for s in np.sum(B, axis=1)])[0].tolist()
     return B
 
 mat_file = "A.dat"
 
 A = ReadFile(mat_file)
 
-k_list = range(1, 11)
-vals = []
+A_ = norm(A)**2
+err = A_
+l = 0
 
-for k in k_list:
-    Uk, Sk, Vk, Ak = PCA(A, k=k)
-    temp = norm(A - Ak)
-    vals.append(temp)
+while err > A_/10:
+    l += 1
+    B = FrequentDirections(A, l)
+    err = norm(np.dot(A.T, A) - np.dot(B.T, B))
 
-plt.plot(k_list, vals)
-plt.xlabel("$k$")
-plt.ylabel("$\\left\| A - A_{k} \\right\|_{2}$")
-plt.savefig("prob1a.pdf", bbox_inches="tight")
+print("Minimum l: ", l)
 
-A_10 = 0.1 * norm(A)
+Ak = PCA(A, k=2)
+A_ = norm(A - Ak)
+err = A_
+l = 0
 
-k_min = 1
-Uk, Sk, Vk, Ak = PCA(A, k=k_min)
+while err > A_/10:
+    l += 1
+    B = FrequentDirections(A, l)
+    err = norm(np.dot(A.T, A) - np.dot(B.T, B))
 
-A_ = norm(Ak - A)
-
-while A_ > A_10:
-    k_min += 1
-    Uk, Sk, Vk, Ak = PCA(A, k=k_min)
-    A_ = norm(Ak - A)
-
-print("Minimum k: ", k_min)
-
-
+print("Minimum l: ", l)
