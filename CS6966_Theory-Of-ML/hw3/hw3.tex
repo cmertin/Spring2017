@@ -79,6 +79,28 @@ Consider an algorithm that at every step, goes with the prediction of the ``best
 
 {\bf Solution:}
 
+Consider the case where there are only two experts, $\{ E_{1}, E_{2}\}$ such that $E_{1}$ predicts ``0'' on even days and ``1'' on odd, and $E_{2}$ is the opposite in such that it predicts ``1'' on even days and ``0'' on odd.
+
+Imagine we have the scenario where the ``true value'' is 1 if $t \in $ even and 0 if $t \in $ odd. For a simplified example, we can set $T=4$ and build a table of the values to visualize the iterations. In this, $L(E_{i})$ represents the {\em total loss} at that iteration for expert $i$, and $f(t)$ represents the true value.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}l c c c c | r@{}}
+\hline\hline
+$t$ & $E_{1}$ & $E_{2}$ & $L(E_{1})$ & $L(E_{2})$ & $f(t)$\\
+\hline
+1   & 1      &        & 1          &           &   0\\
+2   &        & 0      & 1          & 1         &   1\\
+3   & 1      &        & 2          & 1         &   0\\
+4   &        & 0      & 2          & 2         &   1\\
+\hline
+\end{tabular}
+\end{table}
+
+This can go on to infinity, but we can see that the total loss can be computed asd $\sum_{i}L(E_{i}) = \BigO{n \min_{i}L(E_{i})}$, meaning that for $n$ experts, we're bounded by $n$ times the ``best expert.'' This can be easily seen as each of the experts will have the same value, so with $n$ experts this goes to be $n$ times the loss of the best.
+
+The above example can be extrapolated easily into $n$ experts by simply stating that $E_{i}$ predicts the same as $E_{1}$ if $i \in $ odd and $E_{i}$ predicts the same as $E_{2}$ if $i \in $ even.
+
 \item We saw in class a proof that the VC dimension of the class of $n$-node, $m$-edge {\em threshold} neural networks is $\BigO{(m+n)\log(n)}$. Let us give a ``counting'' proof, assuming the weights are binary $(0/1)$. (This is often the power given by VC dimension based proofs -- they can ``handle'' continuous parameters that cause problems for counting arguments).
 
 \begin{enumerate}
