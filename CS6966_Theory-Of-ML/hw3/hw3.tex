@@ -38,6 +38,7 @@
 \newcommand{\grad}{\nabla}
 \renewcommand{\P}[1]{\left( #1 \right)}
 \newcommand{\B}[1]{\left[ #1 \right]}
+\def\layersep{2.5cm}
  
 \newenvironment{theorem}[2][Theorem]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
@@ -101,6 +102,8 @@ This can go on to infinity, but we can see that the total loss can be computed a
 
 The above example can be extrapolated easily into $n$ experts by simply stating that $E_{i}$ predicts the same as $E_{1}$ if $i \in $ odd and $E_{i}$ predicts the same as $E_{2}$ if $i \in $ even.
 
+\newpage
+
 \item We saw in class a proof that the VC dimension of the class of $n$-node, $m$-edge {\em threshold} neural networks is $\BigO{(m+n)\log(n)}$. Let us give a ``counting'' proof, assuming the weights are binary $(0/1)$. (This is often the power given by VC dimension based proofs -- they can ``handle'' continuous parameters that cause problems for counting arguments).
 
 \begin{enumerate}
@@ -120,18 +123,34 @@ The above example can be extrapolated easily into $n$ experts by simply stating 
 
 \end{enumerate}
 
+\newpage
+
 \item (Importance of random initialization) Consider a neural network consisting of (resp.) the input layer $x$, hidden layer $y$, hidden layer $z$, followed by the output node $f$. Suppose that all the nodes in all the layers compute a ``standard'' sigmoid. Also suppose that every node in a layer is connected to every node in the next layer ({\em i.e.}, each layer is fully connected).
 
 Now suppose that all the weights are initialized to $0$, and suppose we start performing SGD using backprop, with a fixed learning rate. Show that at every time step, all the edge weights in a layer are equal.
 
    {\bf Solution:}
 
+The equation for the sigmoid function is
+
+\begin{align*}
+  \sigma(\bm{\theta}_{i}) &= \frac{1}{1 + e^{-\bm{\theta}_{i}}}\\
+  \intertext{And we can obtain the derivative as}
+  \sigma^{\prime}(\bm{\theta}_{i}) &= \frac{1}{\left[1 + e^{\bm{\theta}_{i}} \right]\left[ 1 + e^{-\bm{\theta}_{i}}\right]}
+  \intertext{Finally, we can say that the Jacobian/Cost function for the update is defined as}
+  J_{\bm{\theta}}(\sigma) &= \text{diag}(\sigma^{\prime}(\bm{\theta}))
+\end{align*}
+
+Where the update is performed by multiplying the weight matrix by $J_{\bm{\theta}}(\sigma)$, which would obtain all of the same values in the back propogation step. There is no source of asymmetry between the neurons when they're initialized the same meaning the neural network can't learn.
+
+\newpage
+
 \item Let us consider networks in whcih each node computes a rectified linear (ReLU) function, and show how they can comptue very ``spiky'' functions of the inptue variables. For this exercise, we restrict to one-variable.
 
    {\bf Solution:}
 
 \begin{enumerate}
-  \item Consider a single input $x$. Show how to comptue a ``triangle wave'' using one hidden layer (constant number of nodes) connected to the input, followed by one output $f$. Formally, we should have $f(x) = 0$ for $x \leq 0$, $f(x) = 2x$ for $0 \leq x \leq 1/2$, $f(x) = 2(1-x)$ for $1/2 \leq x \leq 1$, and $f(x) = 0$ for $x \geq 1$. 
+  \item Consider a single input $x$. Show how to compute a ``triangle wave'' using one hidden layer (constant number of nodes) connected to the input, followed by one output $f$. Formally, we should have $f(x) = 0$ for $x \leq 0$, $f(x) = 2x$ for $0 \leq x \leq 1/2$, $f(x) = 2(1-x)$ for $1/2 \leq x \leq 1$, and $f(x) = 0$ for $x \geq 1$. 
 
 [{\em Hint:} Choose the thresholds for the ReLU's appropriately]
 
@@ -151,6 +170,8 @@ Now suppose that all the weights are initialized to $0$, and suppose we start pe
 
 \end{enumerate}
 
+\newpage
+
 \item In this exercise, we make a simple observatino that width isn't as ``necessary'' as depth. Consider a network in which each node comptues a rectified linar (ReLU) unit -- specifically the function at each node is of the form $\max \{0, a_{1}x_{1} + a_{2}x_{2} + \cdots + a_{m}x_{m} + b\}$, for a node that has inputs $\{ x_{1}, \ldots, x_{m}\}$. Note that different nodes could have different coefficients and offsets ($b$ above is called the offset).
 
 Consider a network with one input $x$, connect to $n$ nodes in a hidden layer, which are in turn connected to the output node, denoted $f$. Show that one can construct a depth $n + \BigO{1}$ network, with just 3 nodes in each layer, to compute the same $f$.
@@ -158,6 +179,120 @@ Consider a network with one input $x$, connect to $n$ nodes in a hidden layer, w
 [{\em Hint:} Three nodes allow you to ``carry over'' the input; ReLU's are important for this]
 
    {\bf Solution:}
+
+The original ``wide'' neural network is of the form
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
+    \tikzstyle{every pin edge}=[<-,shorten <=1pt]
+    \tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
+    \tikzstyle{input neuron}=[neuron, fill=green!50];
+    \tikzstyle{output neuron}=[neuron, fill=red!50];
+    \tikzstyle{hidden neuron}=[neuron, fill=blue!50];
+    \tikzstyle{annot} = [text width=4em, text centered]
+
+    % Draw the input layer nodes
+    %\foreach \name / \y in {1}%{1,...,4}
+    % This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+    \node[input neuron, pin=left:Input] (I-1) at (0,-2.5) {};
+    \node[] (H-3) at (\layersep, -2.35cm) {$\vdots$};
+
+    % Draw the hidden layer nodes
+    \path[yshift=0.5cm]node[hidden neuron] (H-1) at (\layersep, -1 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (H-2) at (\layersep, -2 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (H-4) at (\layersep, -4 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (H-5) at (\layersep, -5 cm) {};
+    
+    % Draw the output layer node
+    \node[output neuron,pin={[pin edge={->}]right:Output}, right of=H-3] (O) {};
+
+    % Connect every node in the input layer with every node in the
+    % hidden layer.
+    \foreach \source in {1}%,...,4}
+        \foreach \dest in {1,2,4,5}%{1,...,5}
+            \path (I-\source) edge (H-\dest);
+
+    % Connect every node in the hidden layer with the output layer
+    \foreach \source in {1,2,4,5}%{1,...,5}
+        \path (H-\source) edge (O);
+
+    % Annotate the layers
+    \node[annot,above of=H-1, node distance=1cm] (hl) {Hidden layer};
+    \node[annot,left of=hl] {Input layer};
+    \node[annot,right of=hl] {Output layer};
+\end{tikzpicture}
+\end{figure}
+
+This can be changed to a ``deep network'' in the following way. This was made as a depth-4 network, though for a depth $n$ network, the edges between the second and third layer can be repeated networks larger than 4.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
+    \tikzstyle{every pin edge}=[<-,shorten <=1pt]
+    \tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
+    \tikzstyle{input neuron}=[neuron, fill=green!50];
+    \tikzstyle{output neuron}=[neuron, fill=red!50];
+    \tikzstyle{hidden neuron}=[neuron, fill=blue!50];
+    \tikzstyle{annot} = [text width=4em, text centered]
+
+    % Draw the input layer nodes
+    %\foreach \name / \y in {1}%{1,...,4}
+    % This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+    \node[input neuron, pin=left:Input] (I-1) at (0,-2.5) {};
+
+    % Draw the hidden layer nodes
+    \path[yshift=0.5cm]node[hidden neuron] (A-1) at (\layersep, -2 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (A-2) at (\layersep, -3 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (A-3) at (\layersep, -4 cm) {};
+
+    \path[yshift=0.5cm]node[hidden neuron] (B-1) at (5, -2 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (B-2) at (5, -3 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (B-3) at (5, -4 cm) {};
+
+    \path[yshift=0.5cm]node[hidden neuron] (C-1) at (7.5, -2 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (C-2) at (7.5, -3 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (C-3) at (7.5, -4 cm) {};
+
+    \path[yshift=0.5cm]node[hidden neuron] (D-1) at (10, -2 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (D-2) at (10, -3 cm) {};
+    \path[yshift=0.5cm]node[hidden neuron] (D-3) at (10, -4 cm) {};
+    
+    % Draw the output layer node
+    \node[output neuron,pin={[pin edge={->}]right:Output}, right of=D-2] (O) {};
+
+    % Connect every node in the input layer with every node in the
+    % hidden layer.
+    \foreach \source in {1}%,...,4}
+        \foreach \dest in {1,...,2}%{1,...,5}
+            \path (I-\source) edge (A-\dest);
+
+    \path (A-1) edge (B-1);
+    \path (A-1) edge (B-2);
+    \path (A-2) edge (B-3);
+    \path (B-1) edge (C-1);
+    \path (B-1) edge (C-2);
+    \path (B-2) edge (C-3);
+    \path (B-3) edge (C-3);
+    \path (C-1) edge (D-2);
+    \path (C-2) edge (D-3);
+    \path (C-3) edge (D-3);
+
+    % Connect every node in the hidden layer with the output layer
+    \foreach \source in {2,...,3}%{1,...,5}
+        \path (D-\source) edge (O);
+
+    % Annotate the layers
+    \node[annot,above of=A-1, node distance=1cm] (hl) {First layer};
+    \node[annot,left of=hl] {Input layer};
+    \node[annot,right of=hl] (bl) {Second layer};
+    \node[annot,right of=bl] (cl) {Third layer};
+    \node[annot,right of=cl] (dl) {Fourth layer};
+    \node[annot,right of=dl] {Output layer};
+\end{tikzpicture}
+\end{figure}
+
+In this network, the value of $x$ is fed only into the first two nodes. The task of the first node is simply to pass the value of $x$ through the network, so it will have a weight of $1$. The second node in the layer calculates the weight for that node relative to $x$. This value is passed to the 3rd node of the {\em next layer} which stores the total sum of all the weights, so the weight for the third nodes will be $1$ as well.
 \end{enumerate}
  
 \end{document}
