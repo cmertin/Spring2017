@@ -2,6 +2,7 @@
 
 \usepackage{classDM17}
 \usepackage{hyperref}
+\usepackage{float}
 \usepackage[normalem]{ulem}
 
 \title{Assignment 5: Regression}
@@ -144,6 +145,23 @@ Solve for the coefficients \texttt{C} (or \texttt{Cs}) using Least Squares and R
 For each set of coefficients, report the error in the estimate $\hat{Y}$ of $Y$ as 
 \texttt{norm(Y - X*C,2)}.
 
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}l r@{}}
+\hline\hline
+$s$ & $\left|\left| Y - X\cdot C\right|\right|_{2}$\\
+\hline
+0.0 & 25.8245 \\
+0.1 & 25.8245 \\
+0.3 & 25.8246 \\
+0.5 & 25.8248 \\
+1.0 & 25.8289 \\
+2.0 & 25.8943 \\
+\hline
+\end{tabular}
+\end{table}
+
+
 \paragraph{B (20 points): }
 Create three row-subsets of \texttt{X} and \texttt{Y}
 \begin{itemize} \denselist
@@ -155,6 +173,57 @@ Create three row-subsets of \texttt{X} and \texttt{Y}
 Repeat the above procedure on these subsets and \emph{cross-validate} the solution on the remainder of \texttt{X} and \texttt{Y}.  Specifically, learn the coefficients \texttt{C} using, say, \texttt{X1 and Y1} and then measure \texttt{norm(Y(67:100) - X(67:100,:)*C,2)}.  
 
 Which approach works best (averaging the results from the three subsets): Least Squares, or for which value of $s$ using Ridge Regression?  
+
+\begin{table}[H]
+\centering
+\caption{$(X_{1},\ Y_{1})$}
+\begin{tabular}{@{}l r@{}}
+\hline\hline
+$s$ & $\left|\left| Y - X\cdot C\right|\right|_{2}$\\
+\hline
+0.0 & 14.7834 \\
+0.1 & 14.7815 \\
+0.3 & 14.7666 \\
+0.5 & 14.7370 \\
+1.0 & 14.6027 \\
+2.0 & 14.1411 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{$(X_{2},\ Y_{2})$}
+\begin{tabular}{@{}l r@{}}
+\hline\hline
+$s$ & $\left|\left| Y - X\cdot C\right|\right|_{2}$\\
+\hline
+0.0 & 14.5124 \\
+0.1 & 14.5129 \\
+0.3 & 14.5173 \\
+0.5 & 14.5263 \\
+1.0 & 14.5734 \\
+2.0 & 14.8370 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{$(X_{3},\ Y_{3})$}
+\begin{tabular}{@{}l r@{}}
+\hline\hline
+$s$ & $\left|\left| Y - X\cdot C\right|\right|_{2}$\\
+\hline
+0.0 & 23.1627 \\
+0.1 & 23.1633 \\
+0.3 & 23.1686 \\
+0.5 & 23.1794 \\
+1.0 & 23.2336 \\
+2.0 & 23.5070 \\
+\hline
+\end{tabular}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
