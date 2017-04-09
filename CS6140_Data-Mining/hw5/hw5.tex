@@ -5,6 +5,8 @@
 \usepackage{float}
 \usepackage[normalem]{ulem}
 
+\newcommand{\norm}[1]{\left|\left| #1 \right|\right|}
+
 \title{Assignment 5: Regression}
 \author{Christohper Mertin/\verb~u1010077~\\
         \url{cmertin@cs.utah.edu}}
@@ -115,8 +117,22 @@ We can measure the error $\max_{\|x\|=1} | \|A x\|^2 - \|B x\|^2 |$ as
 \texttt{norm(A'*A - B'*B, 2)}.  
 \begin{itemize} \denselist
 \item How large does \texttt{l} need to be for the above error to be at most $\|A\|_F^2 /10$?  
-\item How does this compare to the theoretical bound (e.g. for $k=0$).  
+
+\verb~Minimum l:  8~
+
+\item How does this compare to the theoretical bound (e.g. for $k=0$).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.75\textwidth]{prob2a.pdf}
+\end{figure}
+
+Frequent Directions shows that $\ell = 1/\epsilon$ in any direction in $\mathbb{R}^{d}$, such that the direction is preserved up to $\epsilon \norm{A}^{2}_{2}$. Therefore, as we extend this out to larger values of $\ell$, we get an error bound of $\epsilon = 1/\ell$, which for our case was $\ell = 8$. This is bounded by an order of magnitude worse than the observed result, which is close to $k = 0$ due to the magnitude of the values.
+  
 \item How large does \texttt{l} need to be for the above error to be at most $\|A - A_k\|_F^2/10$ (for $k=2$)?
+
+\verb~Minimum l:  54~
+
 \end{itemize}
 
 Note: you can calculate $\|A\|_F^2$ as \texttt{norm(A, 'fro')\^{}2}.  
@@ -238,15 +254,11 @@ $s$ & $\left|\left| Y - X\cdot C\right|\right|_{2}$\\
 \end{tabular}
 \end{table}
 
+As the above tables show, the first two instances of the data converge the best. Also, it's important to note that the best values of convergence occur for $s \ll 1$, which makes sense as this is the regularized normal equation that we're using in ridge regression. The best results occur from using ridge regression with $s = 0.1$.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{BONUS (2 points)}
-
-Consider a linear equation \texttt{W = M*S} where \texttt{M} is a measurement matrix filled with random values $\{-1, 0, +1\}$ (although now that they are there, they are no longer random), and \texttt{W} is the output of the sparse signal \texttt{S} when measured by \texttt{M}.  
-
-Use Orthogonal Matching Pursuit (as described in the notes) to recover the non-zero entries from \texttt{S}.  Record the order in which you find each entry and the residual vector after each step.  
-
 
 
 \end{document}

@@ -3,6 +3,8 @@ from numpy.linalg import norm
 from scipy.linalg import svd
 import matplotlib.pyplot as plt
 from matplotlib import rc
+from numpy.random import normal
+from sklearn import random_projection
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 ## for Palatino and other serif fonts use:
 #rc('font',**{'family':'serif','serif':['Palatino']})
@@ -78,11 +80,25 @@ A = ReadFile(mat_file)
 A_ = norm(A)**2
 err = A_
 l = 0
+l_list = []
+err_list = []
 
 while err > A_/10:
     l += 1
     B = FrequentDirections(A, l)
     err = norm(np.dot(A.T, A) - np.dot(B.T, B))
+    l_list.append(l)
+    err_list.append(err)
+
+A_10_lst = [A_/10]
+A_10_lst = A_10_lst * len(l_list)
+
+plt.plot(l_list, err_list, label="$\\left|\\left| A^{T}A - B^{T}B\\right|\\right|_{2}$")
+plt.plot(l_list, A_10_lst, label="$\\left|\\left| A\\right|\\right|_{2}^{2}/10$")
+plt.xlabel("$\ell$")
+plt.ylabel("err")
+plt.legend(loc="best")
+plt.savefig("prob2a.pdf", bbox_inches="tight")
 
 print("Minimum l: ", l)
 
@@ -97,3 +113,19 @@ while err > A_/10:
     err = norm(np.dot(A.T, A) - np.dot(B.T, B))
 
 print("Minimum l: ", l)
+
+def RandomVals(l,d):
+    return 1.0/np.sqrt(l) * np.asarray([normal() for i in range(d)])
+
+for i in range(1):
+    l = 0
+
+    A_ = norm(A)/10
+    err = norm(A)
+    while err > A_:
+        l += 1
+        S = [RandomVals(l, np.shape(A)[0]) for i in range(l)]    
+        S = np.asarray(S)
+        B = np.dot(S, A)
+        err = norm(np.dot(A.T, A) - np.dot(B.T, B))
+        print(l, err, A_)
