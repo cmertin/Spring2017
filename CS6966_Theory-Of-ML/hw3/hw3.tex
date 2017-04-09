@@ -147,12 +147,19 @@ Where the update is performed by multiplying the weight matrix by $J_{\bm{\theta
 
 \item Let us consider networks in whcih each node computes a rectified linear (ReLU) function, and show how they can comptue very ``spiky'' functions of the inptue variables. For this exercise, we restrict to one-variable.
 
-   {\bf Solution:}
-
 \begin{enumerate}
   \item Consider a single input $x$. Show how to compute a ``triangle wave'' using one hidden layer (constant number of nodes) connected to the input, followed by one output $f$. Formally, we should have $f(x) = 0$ for $x \leq 0$, $f(x) = 2x$ for $0 \leq x \leq 1/2$, $f(x) = 2(1-x)$ for $1/2 \leq x \leq 1$, and $f(x) = 0$ for $x \geq 1$. 
 
 [{\em Hint:} Choose the thresholds for the ReLU's appropriately]
+
+   {\bf Solution:}
+
+This can be done with 3 ReLU neurons, all with equal edge weights of 1. The first neuron is defined as the function $\max\{0, 2x\}$ with a threshold of 0, the second is $\max\{0, 2(1-x) - 2x\}$ with a threshold of $1/2$, and the third is defined as $\max\{0, -2(1-x)\}$ with a threshold of 1. This can be shown to work in the figure below, where this was implemented in Python, where 500 random numbers in the range $(-1, 2)$ were generated and run through these ReLU neurons. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.75\textwidth]{single_layer-13.pdf}
+\end{figure}
 
    {\bf Solution:}
 
@@ -162,11 +169,20 @@ Where the update is performed by multiplying the weight matrix by $J_{\bm{\theta
 
    {\bf Solution:}
 
+In doing the above, you get a triangle function again, except all the values are now in the range $(0, 1)$. This can be seen in the figure below, where the results of the previous output were refed into the input of the same network.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.75\textwidth]{stacked-13.pdf}
+\end{figure}
+
 \item Prove that there is a ReLU network with one input variable $x$, $2k + \BigO{1}$ layers, all coefficients and thresholds being constants, that computes a function that has $2^{k}$ ``peaks'' in the interval $[0,1]$.
 
 [The function above can be shown to be impossible to approximate using a small depth ReLU network, without an exponential blow-up in the width.]
 
    {\bf Solution:}
+
+Binary search?
 
 \end{enumerate}
 
