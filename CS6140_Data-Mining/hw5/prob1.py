@@ -63,3 +63,15 @@ while A_ > A_10:
 print("Minimum k: ", k_min)
 
 
+U, s, V = svd(A, full_matrices=True)
+
+x = V[:,0]
+y = V[:,1]
+
+plt.clf()
+plt.scatter(x,y,facecolors="none",edgecolors='r')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title("Lower Dimensional Space")
+plt.savefig("lower_dim.pdf", bbox_inches="tight")
+#plt.show()

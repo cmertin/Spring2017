@@ -81,12 +81,25 @@ Compute and report the $L_2$ norm of the difference between \texttt{A} and \text
 \noindent
 \texttt{norm(A-Ak,2)}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=.75\textwidth]{prob1a.pdf}
+\end{figure}
+
 \paragraph{B (5 points):}
 Find the smallest value $k$ so that the $L_2$ norm of \texttt{A-Ak} is less than 10\% that of \texttt{A}; $k$ might or might not be larger than $10$.  
+
+\verb~Minimum k:  10~
 
 \paragraph{C (5 points):}
 Treat the matrix as 1125 points in 30 dimensions.  Plot the points in $2$ dimensions in the way that minimizes the sum of residuals squared.  
 
+PCA allows us to map down to a lower dimensional space from $\mathbb{R}^{d}$ to $\mathbb{R}^{k}$ by selecting the first $k$ significant right singular vectors. This only works if the data is can be reprsented in Euclidean space, but it is assumed so for this problem. The plot of the data can be seen below.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.75\textwidth]{lower_dim.pdf}
+\end{figure}
 
 
 
