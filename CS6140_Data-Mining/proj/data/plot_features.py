@@ -54,6 +54,14 @@ if "Provo" in outfile:
 else:
     plt.scatter(x,y,color='b')
 
+ax.set_aspect("auto")
+ax.set_axis_off()
+
+labels = range(len(x))
+
+#for idx, lbl in enumerate(labels):
+#    ax.annotate(lbl, (x[idx],y[idx]))
+
 plt.savefig(outfile, bbox_inches="tight")
 #plt.show()
 
