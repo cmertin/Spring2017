@@ -107,6 +107,12 @@ B  & C  & D  & $P(D|B,C)$ \\ \hline
 \end{tabular}
 \end{center}
 
+Sample 1: +a, +b, +c, -d
+
+Sample 2: +a, +b, +c, -d
+
+The method used was the range was chosen from a ``top down'' approach. For example, $P(B|+a)$, the first range for +b was $0 \leq \text{{\tt rand()}} < 0.8$, and -b was $0.8 \leq \text{{\tt rand()}} < 1$.
+
 \item Given the samples below, answer the subsequent queries.
 
 \begin{flushleft}
@@ -148,6 +154,10 @@ B  & C  & D  & $P(D|B,C)$ \\ \hline
 \end{tabular}
 \end{center}
 
+Sample 1: -a, -b, +c, -d, $w= 1.0\times 0.2 \times 0.2 \times 0.8 = 0.032$
+
+Sample 2: -a, -b, +c, -d, $w= 1.0\times 0.2 \times 0.2 \times 0.8 = 0.032$
+
 \item Given the weighted samples below, answer the subsequent queries.
 
 \begin{flushleft}
@@ -167,15 +177,15 @@ B  & C  & D  & $P(D|B,C)$ \\ \hline
 
 \begin{enumerate}
 
-  \item $P(+d)$
+  \item $P(+d) = \frac{0.4+0.1+0.8}{0.3+0.4+0.1+0.3+0.4+0.1+0.2+0.5+0.7+0.8} = \frac{1.3}{3.8} = 0.342$
 
-  \item $P(+a,-b)$
+  \item $P(+a,-b) = \frac{0.3+0.1+0.4}{3.8} = \frac{0.8}{3.8} = 0.211$
 
-  \item $P(-a,-b,-c,-d)$
+  \item $P(-a,-b,-c,-d) = \frac{0.2}{3.8} = 0.053$
 
-  \item $P(-c | -d)$
+  \item $P(-c | -d) = \frac{0.3+0.3+0.2+0.7}{0.3+0.4+0.1+0.3+0.2+0.5+0.7} = \frac{1.5}{2.5} = 0.6$
 
-  \item $P(+d | -a, -b)$
+  \item $P(+d | -a, -b) = \frac{0.1}{0.1+0.2} = \frac{0.1}{0.3} = 0.333$
 
 \end{enumerate}
 
