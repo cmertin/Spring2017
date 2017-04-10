@@ -96,6 +96,42 @@ This can be derived by just looking at the parents of each node, only encoding {
   out $P(C)$ given $F=f$ and $D= \sim d$.  Do this by using factors.
   Please give the details of your derivation.
 
+  We can solve for $P(C)$ by summing over all the hidden variables $(a,e,b)$, giving
+
+\begin{align*}
+  P(C,f, \sim d) &= \sum_{a,b,e}P(C,f,\sim d, a, e, b)\\
+                 &= \sum_{a,b,e}P(C|a)P(\sim d | b)P(f|C) P(a) P(b|a) P(e|b)\\
+                 &= P(+a)P(+b|+a)P(C|+a)P(+e|+b)P(f|C)P(\sim d|+b)\\
+                 &\phantom{aa}+ P(+a)P(-b|+a)P(C|+a)P(+e|-b)P(f|C)P(\sim d|-b)\\
+                 &\phantom{aa}+ P(+a)P(+b|+a)P(C|+a)P(-e|+b)P(f|C)P(\sim d|+b)\\
+                 &\phantom{aa}+ P(-a)P(+b|-a)P(C|-a)P(+e|+b)P(f|C)P(\sim d|+b)\\
+                 &\phantom{aa}+ P(-a)P(-b|-a)P(C|-a)P(+e|-b)P(f|C)P(\sim d|-b)\\
+                 &\phantom{aa}+ P(-a)P(-b|-a)P(C|-a)P(-e|-b)P(f|C)P(\sim d|-b)\\
+                 &\phantom{aa}+ P(+a)P(-b|+a)P(C|+a)P(-e|-b)P(f|C)P(\sim d|-b)\\
+                 &\phantom{aa}+ P(-a)P(+b|-a)P(C|-a)P(-e|+b)P(f|C)P(\sim d|+b)
+\end{align*}
+
+We also need the values for $P(\sim d|b) = 0.3$, $P(\sim d | \sim b) = 0.8$, $P(\sim e | b) = 0.4$, $P(\sim e | \sim b) = 0.8$, $P(\sim b | a) = 0.2$, $P(\sim b | \sim a) = 0.5$, $P(\sim c | a) = 0.1$, $P(\sim c | \sim a) = 0.3$, $P(\sim f | c) = 0.5$, $P(\sim f | \sim c) = 0.2$. Using these values, derived from the given tables and plugging int the equation above gives
+
+\[
+  P(c,f,\sim d) = 0.19
+\]
+
+Now, in solving for $\sim c$, where we can use the above equations again but substitute $\sim c$ in for every value of $C$ gives
+
+\[
+  P(\sim c, f, \sim d) = 0.09
+\]
+
+Finally, we have to renormalize the above equation where we take the sum of $c$ and $\sim c$ and use this as the divisor in the total. In other words...
+
+\begin{align*}
+  P(c|f, \sim d) &= \frac{\sum_{a,b,e}P(c|f,\sim d)}{\sum_{C}P(C | f, \sim d)}\\
+                 &= (0.19)/(0.19 + 0.09) = 0.68\\
+  P(\sim c| f, \sim d) &= \frac{\sum_{a,b,e}P(\sim c|f,\sim d)}{\sum_{C}P(C | f, \sim d)}\\
+                       &= (0.09)/(0.19+0.09) = 0.32
+\end{align*}
+
 \end{enumerate}
 
 \end{document}
