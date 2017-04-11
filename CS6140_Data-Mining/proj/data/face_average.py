@@ -152,7 +152,7 @@ def Warp_Triangle(img1, img2, t1, t2):
     img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] += img2_rect
 
 
-city = "Random"
+city = "Provo"
 out_dir = city + "_Affine/"
 path = city + "_Crop/"
 
@@ -217,7 +217,7 @@ for key in sorted(points.iterkeys()):
     ax = plt.Axes(fig, [0., 0., 1., 1.])
     ax.set_axis_off()
     fig.add_axes(ax)
-    ax.imshow(img_, cmap="gray", aspect="auto")
+    ax.imshow(img_, aspect="auto", cmap="gray")
     plt.savefig(out_file, cmap="gray")
     plt.close()
     
