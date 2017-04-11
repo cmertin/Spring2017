@@ -177,20 +177,24 @@ We also need the ``average face'' of the two groups. This can be seen in the two
 
 \begin{block}{Eigenfaces}
 
-To understand how much influence each singular value has, we can calculate the singular value variance by
-
-\begin{align*}
-  \frac{\sigma_{i}}{\sum_{i=1}^{N}\sigma_{i}}
-\end{align*}
-
-The variance shows that the majority of the data/images are represented within the first 50 singular values.
+%\begin{align*}
+%  \frac{\sigma_{i}}{\sum_{i=1}^{N}\sigma_{i}}
+%end{align*}
 
 \begin{figure}
 \centering
   \centering
-  \includegraphics[width=.85\linewidth]{../data/Singularvalue_Variance.pdf}
-  \captionof{figure}{Accuracy of Eigenfaces with various metrics}
-  \label{fig:eig_acc}
+  \includegraphics[width=.75\linewidth]{../data/Singularvalue_Variance.pdf}
+  \captionof{figure}{Variance of Singular Values, $\sigma_{i}/\sum_{i=1}^{N}\sigma_{i}$}
+  \label{fig:sing_var}
+\end{figure}
+
+\begin{figure}
+\centering
+  \centering
+  \includegraphics[width=.85\linewidth]{../data/Face_Reconstruct.pdf}
+  \captionof{figure}{Reconstruction of Face for various values of $k$}
+  \label{fig:face_recon}
 \end{figure}
 
 \begin{figure}
@@ -229,10 +233,14 @@ The variance shows that the majority of the data/images are represented within t
 \begin{figure}
 \centering
   \includegraphics[width=.85\linewidth]{../data/eigennorm.pdf}
-  \captionof{figure}{Labeling based on largest eigenvector and eigenvalue}
+  \captionof{figure}{Values based on largest eigenvector and eigenvalue}
   \label{fig:eigennorm}
 \end{figure}
 
+\vspace{12em}
+\begin{center}
+[Dendrogram Taped Here]
+\end{center}
 \end{block}
 
 %----------------------------------------------------------------------------------------
