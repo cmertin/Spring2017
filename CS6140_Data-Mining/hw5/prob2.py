@@ -61,7 +61,7 @@ def FrequentDirections(A, l):
             U, s, V = svd(B, full_matrices=False)
 
             # Obtain squared singular value for threshold
-            sq_sv_center = s[np.floor(l/2)]**2
+            sq_sv_center = s[int(np.floor(l/2))]**2
 
             # Update sigma to shrink the row norms
             sigma_tilda = [(0.0 if d < 0.0 else np.sqrt(d)) for d in (s**2 - sq_sv_center)]
@@ -103,7 +103,7 @@ plt.savefig("prob2a.pdf", bbox_inches="tight")
 print("Minimum l: ", l)
 
 Ak = PCA(A, k=2)
-A_ = norm(A - Ak)
+A_ = norm(A - Ak)**2
 err = A_
 l = 0
 
@@ -117,15 +117,26 @@ print("Minimum l: ", l)
 def RandomVals(l,d):
     return 1.0/np.sqrt(l) * np.asarray([normal() for i in range(d)])
 
-for i in range(1):
+l_vals = []
+for i in range(1000):
     l = 0
 
-    A_ = norm(A)/10
-    err = norm(A)
+    A_ = norm(A)**2/10
+    err = norm(A)*norm(A)
     while err > A_:
         l += 1
         S = [RandomVals(l, np.shape(A)[0]) for i in range(l)]    
         S = np.asarray(S)
         B = np.dot(S, A)
         err = norm(np.dot(A.T, A) - np.dot(B.T, B))
-        print(l, err, A_)
+    l_vals.append(int(l))
+
+l_vals = np.asarray(np.sort(l_vals))
+l_ = l_vals/(0.1 * l_vals.sum())
+l_ = np.cumsum(l_ * 0.1)
+
+plt.clf()
+plt.plot(l_vals, l_)
+plt.xlabel("value")
+plt.ylabel("percentage")
+plt.savefig("prob2b.pdf", bbox_inches="tight")
