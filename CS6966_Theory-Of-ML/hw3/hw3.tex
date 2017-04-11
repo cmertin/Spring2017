@@ -110,12 +110,27 @@ The above example can be extrapolated easily into $n$ experts by simply stating 
   \item Specifically, how many ``network layouts'' can there be with $n$ nodes and $m$ edges? Show that ${n(n-1)/2}\choose{m}$ is an upper bound.
 
    {\bf Solution:}
+   
+   We can say that the total number of layouts based on the edges is $m$. We can also say that we can have 1 node with all of the $m$ edges, or we can have up to $n-1$ different combinations with each node getting different number of edges. Therefore, we get the total number of node combinations to be
+
+   \begin{align*}
+     \sum_{i=1}^{n-1}i &== \frac{n(n-1)}{2}
+     \intertext{Using the {\em binomial coefficient} to get the total number of combinations gives}
+     N &= {n(n-1)/2}\choose{m}
+     N &= \frac{(n(n-1)/2)!}{m!(m-n(n-1)/2)!}
+     \end{align*}
 
    \item Given a network layout, argue that the number of ``possible networks'' is at most $2^{m}(n+1)^{n}$. 
 
 [{\em Hint:} What can you say about the potential values for the thresholds?]
 
    {\bf Solution:}
+
+   As it's a threshold neural network, we know that the weights are binary and so therer are $2^{m}$ different combinations of the weights. We can also change the threshold of the nodes to be valid/non-valid. Valid means that it is set to some useful value, non-valid means that the threshold is set to $\infty$ and thus the node cannot be activated. This gives $\sum_{k=0}^{n}{n}\choose{k} n^{k} = (n+1)^{n}$ different combinations of the thresholds for the nodes. We can multiply the two values together to get the total number of ``possible networks,'' giving
+
+\[
+   2^{m}(n+1)^{n}
+\]
 
 \item Use these to show that the VC dimension of the class of binary-weight, threshold neural networks is $\BigO{(m+n)\log(n)}$.
 
@@ -142,6 +157,8 @@ The equation for the sigmoid function is
 \end{align*}
 
 Where the update is performed by multiplying the weight matrix by $J_{\bm{\theta}}(\sigma)$, which would obtain all of the same values in the back propogation step. There is no source of asymmetry between the neurons when they're initialized the same meaning the neural network can't learn.
+
+It's important to note that as all the values are the same, the gradients for each of the independent weights during the back propogation step would also be the same as they all would be starting at the same value and would all have the same gradients.
 
 \newpage
 
@@ -182,7 +199,6 @@ In doing the above, you get a triangle function again, except all the values are
 
    {\bf Solution:}
 
-Binary search?
 
 \end{enumerate}
 
