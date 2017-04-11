@@ -17,7 +17,7 @@
 \begin{document}
 \pagestyle{empty}
 \begin{center}
-{\Large{\bf Unsupervised Learning of Religious Group Facial Features}}\\*[3mm]
+{\Large{\bf Unsupervised Learning of Religious Facial Features}}\\*[3mm]
 {\bf Christopher E. Mertin} \\*[3mm]
 \end{center}
 
@@ -78,6 +78,13 @@ Eigenfaces is a technique developed in 1991 which was one of the first identific
 \end{figure}
 
 These average faces were obtained by averaging all of the pixels by the number of images in each group and then overlaying them one by one. As can be seen in the figures, there are slight differences between the two, but the difference themselves will be explored in the section on Clustering, as they're irrelevant for this algorithm. The algorithm is essentially Principal Component Analysis with the matrix being the images. 
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.65\textwidth]{data/Face_Reconstruct.pdf}
+  \caption{Reconstruction of a face with various values of $k$}
+  \label{fig:recon}
+\end{figure}
 
 After subtracting the averages, Singlar Value Decomposition (SVD) can be performed to extract the top $k$ features. In order to determine the top features to be extracted, we can look at the variance of the singular values. The variances can be seen in Figure~\ref{fig:lam_var}, which shows the elbow occurs at around 25, which is a good indicator as a value of $k$. 
 

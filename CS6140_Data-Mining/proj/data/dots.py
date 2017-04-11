@@ -30,7 +30,7 @@ x_s, y_s = ReadDots(dots_file)
 
 plt.scatter(x_p, y_p, c="red", label="Mormon")
 plt.scatter(x_s, y_s, c="blue", label="Non-Mormon")
-plt.legend(loc="best")
-plt.savefig("two_faces.pdf", bbox_inches="tight")
+plt.legend(loc="center", shadow=True, fancybox=True, bbox_to_anchor = (0,0,1.65,1.75), bbox_transform=plt.gcf().transFigure)
+plt.savefig("average_sift.pdf", bbox_inches="tight")
 plt.show()
 
