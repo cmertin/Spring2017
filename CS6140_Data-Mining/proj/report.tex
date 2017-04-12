@@ -33,6 +33,8 @@ In order to obtain photos of these two groups, the Tinder API package Pynder \ci
 
 To get faces that were not considered Mormon, not only was the opposite used, but the location was changed to various major cities around the United States. These cities included Seattle, Miami, Los Angeles, New York, Denver, Dallas, Las Vegas, and Raleigh. This was chosen as Mormons are a small percentage of the population, and there is less likely to be a false positive outside of Utah in a city with a large population.
 
+The methods used in this project were hierarchical clustering, namely KMeans and Agglomerative clustering, and also Eigenfaces.
+
 \section*{Transforming Data}
 
 The major difference between the data used in \cite{MormonID} and the data that was used with this project is that the images used in \cite{MormonID} were all taken at the same position. For accuracy, the algorithms used in this project also require the same, so we had to transform the data. 
@@ -142,7 +144,7 @@ In conclusion, the unsupervised algorithms such as hierarchical clustering and K
 
 The Eigenfaces algorithm performed much better with various values of $k$ and the metric. The best metric was the Manhattan Distance which was able to achieve up to 80\% labeling accuracy for $k \sim 35$. On average, the manhattan distance performed much better than either of the aforementioned clustering algorithms. 
 
-\section*{Group Feedback}
+\section*{In Class Peer Review}
 
 In meeting with another group, the feedback they gave was to try to use different distance metrics as the data is so close, and also figure out a way to reduce the dimensionality. Various metrics and agglomeration link-types were chosen for the Hierarchial Clustering case, where the best was chosen, and for KMeans and Eigenfaces multiple metrics were used. Also, the dimensionality was able to be reduced from 128 dimensions to 13, which greatly helped with the performance and the accuracy. So the feedback was useful.
 

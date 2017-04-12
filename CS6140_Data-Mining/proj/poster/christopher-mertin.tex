@@ -105,7 +105,7 @@ A paper published by N.O. Rule, {\em et. al}, explored the possibility of humans
 
 \begin{block}{Transforming the Data}
 
-Need to transform the faces such that the corners of the eyes are in the same spot for each picture. This is done with the following equation.
+The source of the data came from Tinder using Pynder \cite{pynder}. Faces from various parts of the US were used, namely: Seattle, Miami, Los Angeles, New York, Denver, Dallas, Las Vegas, Raleigh, and Provo. As most of the faces are not aligned, they had to be transformed to the same space.
 
 \begin{align*}
   \begin{pmatrix}
@@ -125,8 +125,6 @@ Need to transform the faces such that the corners of the eyes are in the same sp
 
 %------------------------------------------------
 
-This transformation applied to a cropped image can be seen below.
-
 \begin{figure}
 \centering
 \begin{minipage}{.5\textwidth}
@@ -143,7 +141,7 @@ This transformation applied to a cropped image can be seen below.
 \end{minipage}
 \end{figure}
 
-We also need the ``average face'' of the two groups. This can be seen in the two figures below
+We also need the ``average face'' of the two groups, done by averaging over the total number of images and summing them, resuling in
 
 \begin{figure}
 \centering
@@ -181,13 +179,17 @@ We also need the ``average face'' of the two groups. This can be seen in the two
 %  \frac{\sigma_{i}}{\sum_{i=1}^{N}\sigma_{i}}
 %end{align*}
 
-\begin{figure}
-\centering
-  \centering
-  \includegraphics[width=.75\linewidth]{../data/Singularvalue_Variance.pdf}
-  \captionof{figure}{Variance of Singular Values, $\sigma_{i}/\sum_{i=1}^{N}\sigma_{i}$}
-  \label{fig:sing_var}
-\end{figure}
+Eigenfaces uses Principal Component Analysis (PCA) for identification. It is usually used for 
+individuals, though in this instance $\sim 250$ Mormon faces were used. In order to determine
+the appropriate value of $k$, we needed to find the variance of the singular values
+
+\vspace{-1em}
+\begin{align*}
+  \frac{\sigma_{i}}{\sum_{i=1}^{N}\sigma_{i}}
+\end{align*}
+
+Weights $\omega = U^{T}\cdot (X - \mu)$ are used for identification and can recreate the 
+faces for various values of $k$.
 
 \begin{figure}
 \centering
@@ -196,6 +198,9 @@ We also need the ``average face'' of the two groups. This can be seen in the two
   \captionof{figure}{Reconstruction of Face for various values of $k$}
   \label{fig:face_recon}
 \end{figure}
+
+\vspace{-1em}
+The results of testing the eigenfaces accuracy on {\em unseen faces} show that $k \sim 50$ gives the best results with the Cosine distance. This is the same result obtained from looking at the singular value variance.
 
 \begin{figure}
 \centering
@@ -223,25 +228,39 @@ We also need the ``average face'' of the two groups. This can be seen in the two
 
 \begin{block}{Agglomerative Clustering}
 
+
+In order to cluster, SIFT Features were extracted and trained on. After mapping each 
+face to the same space and find the ``average face,'' we can look for 
+differences in the average for dimensionality reduction.
+
+
+\begin{figure}
+\centering
+  \includegraphics[width=.85\linewidth]{../data/average_sift.pdf}
+  \captionof{figure}{SIFT Features of ``average faces''}
+  \label{fig:sift_avg}
+\end{figure}
+
 \begin{itemize}
   \item Hierarchial Clustering:
     Complete-Link with Euclidean Distance, 58.4\% Accuracy
 \end{itemize}
 
-\begin{figure}
-\centering
-  \includegraphics[width=.75\linewidth]{../data/average_sift.pdf}
-  \captionof{figure}{SIFT Features of ``average faces''}
-  \label{fig:sift_avg}
-\end{figure}
 
-\begin{figure}
-\centering
-  \includegraphics[width=.75\linewidth]{../data/kmeans_cdf.pdf}
-  \captionof{figure}{Cumulative Distribution Function for KMeans for 1000 runs}
-  \label{fig:kmeans_cdf}
-\end{figure}
+KMeans was run 1000 times on the data set to obtain the ``best'' cluster, and to obtain the distribution of minimums. 
+There are two saddle points in the data which settled at 42.3\% accuracy 40\% of the time,
+and 59.3\% accuracy for the remaining 60\%. 
 
+After clustering, the ``best'' cluster was used to get the labels, and the values chosen to 
+look at were the left eigenvectors multiplied by the eigenvalues to obtain the first principal 
+component, $U^{T}\Sigma\text{\tt{[0:N,0]}}$
+
+%\begin{figure}
+%\centering
+%  \includegraphics[width=.75\linewidth]{../data/kmeans_cdf.pdf}
+%  \captionof{figure}{Cumulative Distribution Function for KMeans for 1000 runs}
+%  \label{fig:kmeans_cdf}
+%\end{figure}
 
 \begin{figure}
 \centering
@@ -271,7 +290,7 @@ We also need the ``average face'' of the two groups. This can be seen in the two
 
 In conclusion, the unsupervised algorithms such as hierarchical clustering and KMeans did better than humans in \cite{MormonID}, with hierarchical clustering obtaining 58.4\% accuracy and KMeans 59.3\%. 
 
-The Eigenfaces algorithm performed much better with various values of $k$ and the metric. The best metric was the Manhattan Distance which was able to achieve up to 80\% labeling accuracy for $k \sim 35$. On average, the manhattan distance performed much better than either of the aforementioned clustering algorithms.
+The Eigenfaces algorithm performed much better with various values of $k$ and the metric. The best metric was the Manhattan Distance which was able to achieve up to 70\% labeling accuracy for $k \sim 50$. On average, the manhattan distance performed much better than either of the aforementioned clustering algorithms.
 
 All implementations performed better than humans in \cite{MormonID}.
 
