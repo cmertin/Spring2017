@@ -4,6 +4,7 @@
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage[normalem]{ulem}
+\usepackage{listings}
 
 \newcommand{\norm}[1]{\left|\left| #1 \right|\right|}
 
@@ -96,7 +97,7 @@ Find the smallest value $k$ so that the $L_2$ norm of \texttt{A-Ak} is less than
 \paragraph{C (5 points):}
 Treat the matrix as 1125 points in 30 dimensions.  Plot the points in $2$ dimensions in the way that minimizes the sum of residuals squared.  
 
-PCA allows us to map down to a lower dimensional space from $\mathbb{R}^{d}$ to $\mathbb{R}^{k}$ by selecting the first $k$ significant right singular vectors. This only works if the data is can be reprsented in Euclidean space, but it is assumed so for this problem. The plot of the data can be seen below.
+PCA allows us to map down to a lower dimensional space from $\mathbb{R}^{d}$ to $\mathbb{R}^{k}$ by selecting the first $k$ significant right singular vectors. This only works if the data is can be reprsented in Euclidean space, but it is assumed so for this problem. The plot of the data can be seen below, where the first two largest singlar vectors were chosen as the $x$ and $y$ to plot the data.
 
 \begin{figure}[H]
 \centering
@@ -118,7 +119,7 @@ We can measure the error $\max_{\|x\|=1} | \|A x\|^2 - \|B x\|^2 |$ as
 \begin{itemize} \denselist
 \item How large does \texttt{l} need to be for the above error to be at most $\|A\|_F^2 /10$?  
 
-\verb~Minimum l:  8~
+\verb~Minimum l:  10~
 
 \item How does this compare to the theoretical bound (e.g. for $k=0$).
 
@@ -127,15 +128,17 @@ We can measure the error $\max_{\|x\|=1} | \|A x\|^2 - \|B x\|^2 |$ as
 \includegraphics[width=.75\textwidth]{prob2a.pdf}
 \end{figure}
 
-Frequent Directions shows that $\ell = 1/\epsilon$ in any direction in $\mathbb{R}^{d}$, such that the direction is preserved up to $\epsilon \norm{A}^{2}_{2}$. Therefore, as we extend this out to larger values of $\ell$, we get an error bound of $\epsilon = 1/\ell$, which for our case was $\ell = 8$. This is bounded by an order of magnitude worse than the observed result, which is close to $k = 0$ due to the magnitude of the values.
+Frequent Directions shows that $\ell = 1/\epsilon$ in any direction in $\mathbb{R}^{d}$, such that the direction is preserved up to $\epsilon \norm{A}^{2}_{2}$. Therefore, as we extend this out to larger values of $\ell$, we get an error bound of $\epsilon = 1/\ell$, which for our case was $\ell = 10$. This is bounded by an order of magnitude worse than the observed result, which is close to $k = 0$ due to the magnitude of the values. As we increase $\ell$ we would get closer to the result, but being within a order of magnitude is most likely good enough.
   
 \item How large does \texttt{l} need to be for the above error to be at most $\|A - A_k\|_F^2/10$ (for $k=2$)?
 
-\verb~Minimum l:  54~
+Note: you can calculate $\|A\|_F^2$ as \texttt{norm(A, 'fro')\^{}2}.  
+
+
+\verb~Minimum l:  20~
 
 \end{itemize}
 
-Note: you can calculate $\|A\|_F^2$ as \texttt{norm(A, 'fro')\^{}2}.  
 
 
 
@@ -154,7 +157,35 @@ Create another \texttt{l x d} matrix $B$, but using random projections.  You can
 
 Estimate how large should \texttt{l} be in order to achieve $\max_{\|x\|=1} | \|A x\|^2 - \|B x\|^2 | \leq \|A\|_F^2/10$.  To estimate the relationship between \texttt{l} and the error in this randomized algorithm, you will need to run multiple trials.  Be sure to describe how you used these multiple trials, and discuss how many you ran and why you thought this was enough trials to run to get a good estimate.  
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=.75\textwidth]{prob2b.pdf}
+\end{figure}
 
+Code for the multiple runs: 
+
+\begin{lstlisting}[language=Python]
+def RandomVals(l,d):
+    return 1.0/np.sqrt(l) * np.asarray([normal() for i in range(d)])
+
+l_vals = []
+for i in range(1000):
+    l = 0
+
+    A_ = norm(A)**2/10
+    err = norm(A)**2
+    while err > A_:
+        l += 1
+        S = [RandomVals(l, np.shape(A)[0]) for i in range(l)]    
+        S = np.asarray(S)
+        B = np.dot(S, A)
+        err = norm(np.dot(A.T, A) - np.dot(B.T, B))
+    l_vals.append(int(l))
+
+l_vals = np.asarray(np.sort(l_vals))
+l_ = l_vals/(0.1 * l_vals.sum())
+l_ = np.cumsum(l_ * 0.1)
+\end{lstlisting}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -173,6 +204,11 @@ We will find coefficients \texttt{C} (was $a_1, \ldots, a_d$ in notes, but chang
 Solve for the coefficients \texttt{C} (or \texttt{Cs}) using Least Squares and Ridge Regression with $s = \{0.1, 0.3, 0.5, 1.0, 2.0\}$ (i.e. $s$ will take on one of those $5$ values each time you try, say obtaining \texttt{C05} for $s=0.5$).  
 For each set of coefficients, report the error in the estimate $\hat{Y}$ of $Y$ as 
 \texttt{norm(Y - X*C,2)}.
+
+\ \newline
+\ \newline
+
+{\em Note:} Least Squares is the same as Ridge Regression with $s = 0$, so $s=0$ denotes the results for the Least Squares Method.
 
 \begin{table}[H]
 \centering
