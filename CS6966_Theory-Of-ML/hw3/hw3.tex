@@ -196,18 +196,15 @@ This can be done with 3 ReLU neurons, all with equal edge weights of 1. The firs
 
    {\bf Solution:}
 
-In doing the above, you get a triangle function again, except all the values are now in the range $(0, 1)$. This can be seen in the figure below, where the results of the previous output were refed into the input of the same network.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.75\textwidth]{stacked-13.pdf}
-\end{figure}
+In stacking the network ontop of itself, it creates two triangle functions, where the domain is split in half. This means that the ``trough'' between the two is at $x = 0.5$ with the peak of each being at $0.25$ and $0.75$ respectively. 
 
 \item Prove that there is a ReLU network with one input variable $x$, $2k + \BigO{1}$ layers, all coefficients and thresholds being constants, that computes a function that has $2^{k}$ ``peaks'' in the interval $[0,1]$.
 
 [The function above can be shown to be impossible to approximate using a small depth ReLU network, without an exponential blow-up in the width.]
 
    {\bf Solution:}
+
+In order to do this, you simply need to stack the network ontop of itself, giving $2k$ layers, where $\BigO{1}$ comes from the input and output layers. Each layer of the network doubles the number of peaks.
 
 
 \end{enumerate}
