@@ -206,6 +206,23 @@ In stacking the network ontop of itself, it creates two triangle functions, wher
 
 In order to do this, you simply need to stack the network ontop of itself, giving $2k$ layers, where $\BigO{1}$ comes from the input and output layers. Each layer of the network doubles the number of peaks.
 
+This can be seen by mapping out two layers of the network.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c | c c c c c}
+\hline\hline
+ & $x_{1}$ & $x_{2}$ & $x_{3}$ & $x_{4}$ & $x_{5}$\\
+\hline
+$x$ & $0$ & $1/4$ & $1/2$ & $3/4$ & $1$\\
+$NN(x)$ & $0$ & $1/2$ & $1$ & $1/2$ & $0$\\
+$NN(NN(x))$ & $0$ & $1$ & $0$ & $1$ & $0$\\
+\hline
+\end{tabular}
+\end{table}
+
+Therefore, as it doubles with every layer, we only need $2k$ layers to map out $2^{k}$ peaks.
+
 
 \end{enumerate}
 
