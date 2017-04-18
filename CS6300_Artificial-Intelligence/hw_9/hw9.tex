@@ -17,7 +17,7 @@
 \begin{document}
 
 \begin{center}
-{\bf CS 6300} \hfill {\large\bf HW09: VPI and HMMs \hfill Due April 18, 2017}
+{\bf CS 6300} \hfill {\large\bf HW9: VPI and HMMs \hfill Due April 18, 2017}
 \end{center}
 
 \noindent
@@ -40,15 +40,29 @@ probability values and utilities are shown in the tables above.
 
 Compute $P(S), P(A|S)$ and compute the quantities below. 
 
+\begin{align*}
+P(S=e) &= 1.2 \Rightarrow \frac{1.2}{0.8 + 1.2} = 0.6\\
+P(S=l) &= 0.8 \Rightarrow \frac{0.8}{0.8 + 1.2} = 0.4
+\end{align*}
+
+\begin{align*}
+P(A=e|S=e) &= \frac{P(S=e|A=e)P(A=e)}{P(s=e)} = \frac{0.8(0.5)}{0.6} = 2/3\\
+P(A=l|S=e) &= 1 - 2/3 = 1/3\\
+P(A=l|S=l) &= \frac{P(S=l|A=l)P(A=l)}{P(s=e)} = \frac{0.6(0.5)}{0.4} = 3/4\\
+P(A=e|S=l) &= 1 - 3/4 = 1/4
+\end{align*}
+
 \begin{enumerate}
 
-\item $EU(T=e)$
+\item $EU(T=e) = 0.5(600) + 0.5(300) = 450$
 
-\item $EU(T=l)$
+\item $EU(T=l) = 0.5(0) + 0.5(600) = 300$
 
-\item $MEU( \{ \} )$
+\item $MEU( \{ \} ) = \max_{T}EU(T,A) = 450$
 
 \item Optimal action with no observations
+
+$ T = e$
 
 \end{enumerate}
 
@@ -59,21 +73,49 @@ Now we consider the case where you decide to ask your sister for input.
 
 \item $EU(T=e | S = e)$
 
+$ = P(A=e|S=e)EU(T=e|A=e) + P(A=l|S=e)EU(T=e|A=l)$
+
+$ =  2/3(600) + 1/3(300) = 500$
+
 \item $EU(T=l | S = e)$
+
+$ = P(A=e|S=e)EU(T=l|A=e) + P(A=l|S=e)EU(T=l|A=l)$
+
+$ = 2/3(0) + 1/3(600) = 200$
 
 \item $MEU( \{ S=e \} )$
 
+$ = \max_{T}\sum_{A}P(A|S=e)EU(T|A) = 500$
+
 \item Optimal action with observation $\{S = e\}$
+
+$T = e$
 
 \item $EU(T = e | S = l)$
 
+$ = P(A=l|S=l)EU(T=e,A=l) + P(A=e|S=l)EU(T=e,A=e)$
+
+$ = 3/4(300) + 1/4(600) = 375$
+
 \item $EU(T = l | S = l)$
+
+$ = P(A=l|S=l)EU(T=l,A=l) + P(A=e|S=l)EU(T=l,A=e)$
+
+$ = 3/4(600) + 1/4(0) = 450$
 
 \item $MEU( \{ S=l \} )$
 
+$\max_{T}\sum_{A} P(A|S=l)EU(T) = 450$
+
 \item Optimal action with observation $S = l$
 
+$T = l$
+
 \item $VPI(S)$
+
+$ = MEU(\{S=e\})P(S=e) + MEU(\{S=l\})P(S=l) - MEU(\{\})$
+
+$ = 500(0.6) + 450(0.4) - 450 = 30$
 
 \end{enumerate}
 
