@@ -134,8 +134,83 @@ Juliet where he is: 2 walls, 2 walls, 3 walls.
 
 \item[Forward Algorithm] Compute the most likely location, given the evidence.
 
+The forward algorithm is given by
+
+\begin{align*}
+  P(x_{t+1}|e_{1:t+1}) &= P(e_{1:t+1}|x_{t+1})\sum_{x_{t}}P(x_{t+1}|x_{t})P(x_{t},e_{1:t})
+\end{align*}
+
+We can use this for each time step to calculate the probability of each square. The {\em possible} squares for the robot to be in for $t = 1$ are $\{B\}$ and $\{D,G,F\}$, where $B$ would be where number of walls were wrong and $\{D,G,F\}$ being a correct reading. From here, we can calculate the probability of each square for $t = 1$.
+
+\begin{align*}
+  P(B) &= 1/4[1(1/7) + 1(1/7)] = 1/14\\
+  P(D) &= 3/4[1/3(1/7) + 1/2(1/7)] = 5/56\\
+  P(G) &= 3/4[1/2(1/7) + 1/2(1/7)] = 3/28\\
+  P(F) &= 3/4[1(1/7) + 1/2(1/7)] = 3/7
+\end{align*}
+
+For $t = 2$ we get $\{B\}$ and $\{D,G,F\}$ again, except this time each room isn't equally likely, as we're constrained to being in the previous states for $t = 1$. This gives
+
+\begin{align*}
+  P(B) &= 1/4[1/2(5/56)] = 5/448\\
+  P(D) &= 3/4[1/3(1/14) + 1/2(3/28)] = 13/224\\
+  P(G) &= 3/4[1/2(5/56) + 1/2(3/7)] = 87/448\\
+  P(F) &= 3/4[1/2(3/28)] = 9/224
+\end{align*}
+
+Finally, for $t=3$ we have the following sets $\{D,G,F\}$ and $\{A, C, E\}$, where again we're constrained from starting at $\{B,D,G,F\}$ for $t=2$. 
+
+\begin{align*}
+  P(D) &= 1/4[1/3(5/448) + 1/2(87/448)] = 271/10752 \approx 0.0252\\
+  P(G) &= 1/4[1/2(13/224) + 1/2(9/224)] = 11/896 \approx 0.0123\\
+  P(F) &= 1/4[1/2(87/448)] = 87/3584 \approx 0.0243\\
+  P(A) &= 3/4[1/3(5/448)] = 5/1792 \approx 0.0028\\
+  P(B) &= 3/4[1/3(5/448)] = 5/1792 \approx 0.0028\\
+  P(E) &= 3/4[1/2(9/224)] = 27/1792 \approx 0.0151\\
+\end{align*}
+
+The largest is $P(D)$ meaning the robot is most likely in square $D$
+
 \item[Viterbi Algorithm] Compute the most likely sequence of steps he
   took in the maze for the above evidence.
+
+The equation for the Viterbi Algorithm is similar to that of the Forward Algorithm except for a minor change. It can be seen below
+
+\begin{align*}
+  P(x_{t+1}|e_{1:t+1}) &= P(e_{1:t+1}|x_{t+1})\max_{x_{t}}P(x_{t+1}|x_{t})P(x_{t},e_{1:t})
+\end{align*}
+
+For $t=1$ we get the same set of states, $\{B\}$ and $\{D,G,F\}$, giving
+
+\begin{align*}
+  P(B) &= 1/4[1(1/7)] = 1/28\\
+  P(D) &= 3/4[1/2(1/7)] = 3/56\\
+  P(G) &= 3/4[1/2(1/7)] = 3/56\\
+  P(F) &= 3/4[1(1/7)] = 3/28
+\end{align*}
+
+For $t=2$ we get the same set of states, $\{B\}$ and $\{D,G,F\}$, giving
+
+\begin{align*}
+  P(B) &= 1/4[1/2(3/56)] = 3/448\\
+  P(D) &= 3/4[1/2(3/56)] = 9/448\\
+  P(G) &= 3/4[1/2(3/28)] = 9/224\\
+  P(F) &= 3/4[1/2(3/56)] = 9/448
+\end{align*}
+
+Finally, for $t=3$ we have the following sets $\{D,G,F\}$ and $\{A, C, E\}$, where again we're constrained from starting at $\{B,D,G,F\}$ for $t=2$.
+
+\begin{align*}
+  P(D) &= 1/4[1/2(9/224)] = 9/1792 \approx 0.0050\\
+  P(G) &= 1/4[1/2(9/448)] = 9/3584 \approx 0.0025\\
+  P(F) &= 1/4[1/2(9/224)] = 9/1792 \approx 0.0050\\
+  P(A) &= 3/4[1/3(3/448)] = 3/1792 \approx 0.0017\\
+  P(C) &= 3/4[1/3(3/448)] = 3/1792 \approx 0.0017\\
+  P(E) &= 3/4[1/2(9/448)] = 37/3584 \approx 0.0075
+\end{align*}
+
+With the highest being block $E$, meaning the robot has the highest probability of being in block $E$.
+
 
 \end{description}
 
