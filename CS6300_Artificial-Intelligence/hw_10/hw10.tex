@@ -8,6 +8,7 @@
 \usepackage{enumerate}
 \usepackage{float}
 \usepackage{tikz}
+\usepackage{pgfplots}
 
 \setlength{\textwidth}{6.5in}
 \setlength{\textheight}{8.9in}
@@ -286,10 +287,12 @@ define $p_1 = b(s_1)$.  Hence $b(s_2) = 1 - p_1$.
 
 \begin{align*}
   V_{p_{i}}(b) &= \sum_{s}b(s)V_{p_{i}}(s)\\
-  V^{stay}(s_{1}) &= V^{stay}(s_{1})p_{1} + (1 - p_{1})V^{stay}(s_{2})\\
-  V^{stay}(s_{2}) &= V^{stay}(s_{2})p_{2} + (1 - p_{2})V^{stay}(s_{1})\\
-  V^{go}(s_{1}) &= V^{go}(s_{1})p_{1} + (1 - p_{1})V^{go}(s_{2})\\
-  V^{go}(s_{2}) &= V^{go}(s_{2})p_{2} + (1 - p_{2})V^{go}(s_{1})\\
+  V^{stay}(b,stay) &= V^{stay}(s_{1})p_{1} + V^{stay}(s_{2})(1-p_{1})\\
+                  &= 0\cdot p_{1} + 1 \cdot (1 - p_{1})\\
+                  &= 1 - p_{1}\\
+  V^{go}(b,go) &= V^{go}(s_{1})p_{1} + V^{go}(s_{2})(1 - p_{1})\\
+              &= 0.25\cdot p_{1} + 0.75(1 - p_{1})\\
+              &= 0.75 - 0.5p_{1}
 \end{align*}
 
 The expected reward can be found by calculating $E[V(b,go)]$
@@ -298,19 +301,58 @@ The expected reward can be found by calculating $E[V(b,go)]$
 \item Plot both expected reward functions on the same plot with $p_1$
   on the x-axis.  Identify the optimal strategy based on your plot.
 
+\begin{centering}
+\begin{tikzpicture}[scale=1.5]
+  \begin{axis}[
+    xlabel=$p_{1}$,
+    ylabel={$V(b,stay)$ and $V(b,go)$},
+    legend pos=north east,
+    xmin=0,
+    xmax=1,
+    ymin=0,
+    ymax=1,
+  ]
+    \addplot[green, thick] {1-x}; 
+    \addplot[blue, thick] {0.75 - 0.5 * x};
+    \addlegendentry{$V(b,stay)$};
+    \addlegendentry{$V(b,go)\phantom{ay}$};
+  \end{axis}
+\end{tikzpicture}
+\end{centering}
+
+From this, we can say that we chose to stay if $p_{1} \leq 1/2$ and to go if $p_{1}>1/2$. 
+
 \item Suppose you are able to get a sensor reading before taking an
   action, and you observe $z_1$.  Update your belief to find $p(s_1 |
   z_1)$ and $p(s_2 | z_1)$.
 
+  Before doing this we need $p(z_{1})$, giving
+
   \begin{align*}
-    P(s_{1}|z_{1}) &= \frac{P(z_{1}|s_{1})P(s_{1})}{P(z_{1})}\\
-    P(s_{2}|z_{1}) &= \frac{P(z_{1}|s_{2})P(s_{2})}{P(z_{1})}
+    p(z_{1}) &= \sum_{i}p(z_{1}|s_{i})p(s_{i})\\
+            &= p(z_{1}|s_{1})p(s_{1}) + p(z_{1}|s_{2})p(s_{2})\\
+            &= 0.8p_{1} + 0.2(1 - p_{1})
+  \end{align*}
+
+  Now, we can solve for $p(s_{i}|z_{1})$, giving
+
+  \begin{align*}
+    p(s_{i}|s_{1}) &= \frac{p(z_{1}|s_{i})p(s_{i})}{p(z_{1})}\\
+    p(s_{1}|z_{1}) &= \frac{p(z_{1}|s_{1})p(s_{1})}{p(z_{1}|s_{1})p(s_{1}) + p(z_{1}|s_{2})p(s_{2})}\\
+                  &= \frac{0.8p_{1}}{0.8p_{1} + 0.2(1-p_{1})}\\
+    p(s_{2}|z_{1}) &= \frac{p(z_{1}|s_{2})p(s_{2})}{p(z_{1}|s_{1})p(s_{1}) + p(z_{1}|s_{2})p(s_{2})}\\
+                  &= \frac{0.2(1 - p_{1})}{0.8p_{1} + 0.2(1-p_{1})}
     \end{align*}
 
 \item Solve for the new value functions given $b^{\prime}$.
 
 \begin{align*}
-  b^{\prime}(s^{\prime}) &= \frac{P(e|s^{\prime},a,b)P(s^{\prime}|a,b)}{P(e|a,b)}
+  V(b^{\prime},stay) &= p(s_{1}|z_{1}) V^{stay}(s_{1},stay) + p(s_{2}|z_{1})V^{stay}(s_{2},stay)\\
+                   &= \frac{0.8p_{1}}{0.8p_{1} + 0.2(1-p_{1})}V^{stay}(s_{1},stay) + \frac{0.2(1 - p_{1})}{0.8p_{1} + 0.2(1-p_{1})}V^{stay}(s_{2},stay)\\
+                   &= \frac{0.8p_{1}}{0.8p_{1} + 0.2(1-p_{1})}\cdot 0 + \frac{0.2(1 - p_{1})}{0.8p_{1} + 0.2(1-p_{1})} \cdot 1\\
+  V(b^{\prime},go) &= p(s_{1}|z_{1}) V^{go}(s_{1},go) + p(s_{2}|z_{1})V^{go}(s_{2},go)\\
+                 &= \frac{0.8p_{1}}{0.8p_{1} + 0.2(1-p_{1})}V^{go}(s_{1},go) + \frac{0.2(1 - p_{1})}{0.8p_{1} + 0.2(1-p_{1})}V^{go}(s_{2},go)\\
+&= \frac{0.8p_{1}}{0.8p_{1} + 0.2(1-p_{1})}\cdot 0.25 + \frac{0.2(1 - p_{1})}{0.8p_{1} + 0.2(1-p_{1})} \cdot 0.75
 \end{align*}
 
 \end{enumerate}
