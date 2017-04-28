@@ -271,10 +271,29 @@ define $p_1 = b(s_1)$.  Hence $b(s_2) = 1 - p_1$.
   yet, derive the one-time-step utilities $V^{stay}(s_i)$ and
   $V^{go}(s_i)$, $i=1,2$, for actions $stay$ and $go$.
 
+\begin{align*}
+  V_{p_{i}}(s) &= r(s,a(p_{i})) = \sum_{s^{\prime}}T(s,a(p_{i}),s^{\prime})R(s,a(p_{i}),s^{\prime})\\
+  V^{stay}(s_{1}) &= 1\cdot 0 + 0\cdot 1 = 0\\
+  V^{stay}(s_{2}) &= 1\cdot 0 + 1 \cdot 1 = 1\\
+  V^{go}(s_{1}) &= 0.75 \cdot 0 + 0.25 \cdot 1 = 0.25\\
+  V^{go}(s_{2}) &= 0.25\cdot 0 + 0.75 \cdot 1 = 0.75
+\end{align*}
+
 \item You don't actually know which state you're in, and you have to
   use your belief function $b(s_i)$ to combine the results above.
   Find the expected reward $V(b,go)$ for action $go$, and $V(b,stay)$
   for action $stay$.
+
+\begin{align*}
+  V_{p_{i}}(b) &= \sum_{s}b(s)V_{p_{i}}(s)\\
+  V^{stay}(s_{1}) &= V^{stay}(s_{1})p_{1} + (1 - p_{1})V^{stay}(s_{2})\\
+  V^{stay}(s_{2}) &= V^{stay}(s_{2})p_{2} + (1 - p_{2})V^{stay}(s_{1})\\
+  V^{go}(s_{1}) &= V^{go}(s_{1})p_{1} + (1 - p_{1})V^{go}(s_{2})\\
+  V^{go}(s_{2}) &= V^{go}(s_{2})p_{2} + (1 - p_{2})V^{go}(s_{1})\\
+\end{align*}
+
+The expected reward can be found by calculating $E[V(b,go)]$
+
 
 \item Plot both expected reward functions on the same plot with $p_1$
   on the x-axis.  Identify the optimal strategy based on your plot.
@@ -283,7 +302,16 @@ define $p_1 = b(s_1)$.  Hence $b(s_2) = 1 - p_1$.
   action, and you observe $z_1$.  Update your belief to find $p(s_1 |
   z_1)$ and $p(s_2 | z_1)$.
 
+  \begin{align*}
+    P(s_{1}|z_{1}) &= \frac{P(z_{1}|s_{1})P(s_{1})}{P(z_{1})}\\
+    P(s_{2}|z_{1}) &= \frac{P(z_{1}|s_{2})P(s_{2})}{P(z_{1})}
+    \end{align*}
+
 \item Solve for the new value functions given $b^{\prime}$.
+
+\begin{align*}
+  b^{\prime}(s^{\prime}) &= \frac{P(e|s^{\prime},a,b)P(s^{\prime}|a,b)}{P(e|a,b)}
+\end{align*}
 
 \end{enumerate}
  
