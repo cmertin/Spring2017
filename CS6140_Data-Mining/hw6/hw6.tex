@@ -2,6 +2,7 @@
 
 \usepackage{classDM17}
 \usepackage{hyperref}
+\usepackage{listings}
 
 \title{Assignment 6: Graphs}
 \author{Christohper Mertin/\verb~u1010077~\\
@@ -67,45 +68,131 @@ Compute \texttt{eig(M)} and take the first eigenvector after it has been normali
 \paragraph{A (20 points):}
 Run each method (with $t = 1024$, $q_0 = [1$, $0$, $0$, $\ldots$, $0]^T$ and $t_0 = 100$ when needed) and report the answers.  
 
+\begin{lstlisting}[breaklines]
+  Matrix Power
+============
+[[ 0.03575751]
+ [ 0.05721201]
+ [ 0.0580922 ]
+ [ 0.07921664]
+ [ 0.08581802]
+ [ 0.06601386]
+ [ 0.15790516]
+ [ 0.17163604]
+ [ 0.13730883]
+ [ 0.15103972]]
+
+State Propogation
+=================
+[[ 0.03575751]
+ [ 0.05721201]
+ [ 0.0580922 ]
+ [ 0.07921664]
+ [ 0.08581802]
+ [ 0.06601386]
+ [ 0.15790516]
+ [ 0.17163604]
+ [ 0.13730883]
+ [ 0.15103972]]
+
+Random Walk
+===========
+[[ 0.14746094]
+ [ 0.10742188]
+ [ 0.11328125]
+ [ 0.12207031]
+ [ 0.13867188]
+ [ 0.06640625]
+ [ 0.10449219]
+ [ 0.05664062]
+ [ 0.09570312]
+ [ 0.04785156]]
+
+Eigenvalues
+===========
+[[ 0.10238015]
+ [ 0.16380824]
+ [ 0.16632836]
+ [ 0.2268114 ]
+ [ 0.24571235]
+ [ 0.1890095 ]
+ [ 0.45211073]
+ [ 0.49142471]
+ [ 0.39313977]
+ [ 0.43245374]]
+\end{lstlisting}
+
+
 \paragraph{B (10 points):}
 Rerun the \textsf{Matrix Power} and \textsf{State Propagation} techniques with $q_0 = [0.1, 0.1, \ldots, 0.1]^T$.  For what value of $t$ is required to get as close to the true answer as the older initial state?
+
+The decay is quite rapid, and if you take the value using these methods and compute the normed difference between the true value and this method, as the following
+
+\begin{align*}
+  \frac{\left|\left| q_{\star} - q_{\star}^{\prime}\right|\right|}{\left|\left| q_{\star}\right|\right|}
+\end{align*}
+
+Then we can get an idea on the ``percentage'' that it is off. If we look at the figure below, we see that around $t\approx 50$ gives essentially the same value.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=.75\linewidth]{partb.pdf}
+\end{figure}
+
+After 200 iterations we have the same values, which can be seen below.
+
+\begin{lstlisting}[breaklines]
+Matrix Power
+============
+[ 0.03575751  0.05721201  0.0580922   0.07921664  0.08581802  0.06601386
+  0.15790516  0.17163604  0.13730883  0.15103972]
+
+State Propogation
+=================
+[ 0.03575751  0.05721201  0.0580922   0.07921664  0.08581802  0.06601386
+  0.15790516  0.17163604  0.13730883  0.15103972]
+\end{lstlisting}
 
 \paragraph{C (12 points):}
 Explain at least one \textbf{Pro} and one \textbf{Con} of each approach.  
 The \textbf{Pro} should explain a situation when it is the best option to use.  
 The \textbf{Con} should explain why another approach may be better for some situation.  
 
+\begin{itemize}
+  \item Matrix Power
+
+    Pro: Accurate Equilibrium Estimation
+
+    Con: Computationally Expensive $\mathcal{O}(\log(t))$
+
+  \item State Propogation
+
+    Pro: Similar to matrix power, easy to implement
+
+    Con: Computationally Expensive
+
+  \item Random Walk
+
+    Pro: Scalable and allows for less complexity $\mathcal{O}(\left|\text{nodes}\right|\times \left|\text{edges}\right|)$ which allows for analysis over larger graphs
+
+    Con: If the number of iterations are too small the resulting state vector has a wide variance. Another is that Random Walk is subject to the structure of a graph and poorly linked clusters might cause it to become stuck.
+
+    \item Eigen Analysis
+      
+      Pro: Keeps the structure
+
+      Con: Computationally Expensive
+\end{itemize}
+
 \paragraph{D (4 points):}
 Is the Markov chain \emph{ergodic}?  Explain why or why not.  
+
+A Markov chain is ergodic if there exists a stationary state, thereby preventing the three conditions discussed in class and allowing one to go from any state to any other state. A stationary state can be seen as $x$ such that $x = x^{T}M$. This is the case for $M$ it is true that $[0.1,\ldots,0.1]^{T} = [0.1,\ldots,0.1]^{T}M$. Therefore, the matrix is ergodic.
 
 \paragraph{E (4 points):}
 Each matrix row and column represents a node of the graph, label these from $1$ to $10$ starting from the top and from the left.  
 What nodes can be reached from node $4$ in one step, and with what probabilities?  
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{BONUS:  Taxation (5 points)}
-
-Repeat the trials in part \textbf{1.A} above using taxation $\beta = 0.85$ so at each step, with probability $1-\beta$, any state jumps to a random node.  It is useful to see how the outcome changes with respect to the results from Question 1.  Recall that this output is the \emph{PageRank} vector of the graph represented by \texttt{M}.  
-
-Briefly explain (no more than 2 sentences) what you needed to do in order to alter the process  in question 1 to apply this taxation.  
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{BONUS 2: Graph Sparsification (5 points)}
-%
-%\paragraph{A (3 points):}
-%Consider the adjacency matrix \texttt{L}.  
-%Run the basic graph sparsification algorithm in \textbf{\sffamily L26.1} with $t = 2$.  Report the new matrix representing the graph.  
-%
-%
-%\paragraph{B (2 points):}
-%Explain how clustering on the new graph may differ from that on the old graph.  What problems may occur?   Would these persist on a large graph with a large value of $t$, and Why?  
 
 
 \end{document}
